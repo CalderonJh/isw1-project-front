@@ -7,6 +7,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class StadiumsService {
+  toggleStadiumPublication(id: number, status: boolean): Observable<void> {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = 'http://localhost:8080/api/stadiums';  // Cambia la URL según tu API
 
   constructor(private http: HttpClient) {}
