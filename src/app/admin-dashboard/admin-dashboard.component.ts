@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminDashboardService } from '../admin-dashboard.service';
 
+
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -21,8 +22,13 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   loadDashboardInfo(): void {
-    this.dashboardService.getDashboardInfo().subscribe(data => {
-      this.dashboardInfo = data;
+    this.dashboardService.getDashboardInfo().subscribe({
+      next: (data) => {
+        this.dashboardInfo = data;
+      },
+      error: (err) => {
+        console.error('Error loading dashboard info', err);
+      }
     });
   }
 
