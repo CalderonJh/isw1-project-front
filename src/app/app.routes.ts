@@ -9,6 +9,20 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'login',
+    loadComponent: () =>
+      import('./pages/login-page/login-page.component').then(
+        (m) => m.LoginPageComponent,
+      ),
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./pages/register-page/register-page.component').then(
+        (m) => m.RegisterPageComponent,
+      ),
+  },
+  {
     path: 'matches',
     loadComponent: () =>
       import('./pages/sport-match-page/sport-match-page.component').then(
