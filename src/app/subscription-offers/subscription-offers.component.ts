@@ -1,6 +1,6 @@
 // src/app/subscription-offers/subscription-offers.component.ts
 import { Component, OnInit } from '@angular/core';
-import { SubscriptionOffersService } from '../subscription-offers.service';
+import { SubscriptionOffersService } from '../service_app/subscription-offers.service';
 
 @Component({
   selector: 'app-subscription-offers',

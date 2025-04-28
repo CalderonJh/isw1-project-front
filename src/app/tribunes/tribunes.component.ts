@@ -1,6 +1,6 @@
 // src/app/tribunes/tribunes.component.ts
 import { Component, OnInit } from '@angular/core';
-import { TribunesService } from '../tribunes.service';
+import { TribunesService } from '../service_app/tribunes.service';
 
 @Component({
   selector: 'app-tribunes',

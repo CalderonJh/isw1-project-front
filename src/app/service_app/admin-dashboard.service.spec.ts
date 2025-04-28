@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AdminDashboardService } from './admin-dashboard.service';
+import { AdminDashboardService } from '../service_app/admin-dashboard.service';
 
 describe('AdminDashboardService', () => {
   let service: AdminDashboardService;

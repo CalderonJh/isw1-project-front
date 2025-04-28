@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdminDashboardComponent } from './admin-dashboard.component';
-import { AdminDashboardService } from '../admin-dashboard.service';
+import { AdminDashboardService } from '../service_app/admin-dashboard.service';
 import { of } from 'rxjs';
 
 describe('AdminDashboardComponent', () => {

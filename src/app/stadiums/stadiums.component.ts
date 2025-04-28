@@ -1,6 +1,6 @@
 // src/app/stadiums/stadiums.component.ts
 import { Component, OnInit } from '@angular/core';
-import { StadiumsService } from '../stadiums.service';
+import { StadiumsService } from '../service_app/stadiums.service';
 
 @Component({
   selector: 'app-stadiums',

@@ -1,6 +1,6 @@
 // src/app/sports-matches/sports-matches.component.ts
 import { Component, OnInit } from '@angular/core';
-import { SportsMatchesService } from '../sports-matches.service';
+import { SportsMatchesService } from '../service_app/sports-matches.service';
 
 @Component({
   selector: 'app-sports-matches',

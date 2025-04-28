@@ -1,6 +1,6 @@
 // src/app/tickets/tickets.component.ts
 import { Component, OnInit } from '@angular/core';
-import { TicketsService } from '../tickets.service';
+import { TicketsService } from '../service_app/tickets.service';
 
 @Component({
   selector: 'app-tickets',

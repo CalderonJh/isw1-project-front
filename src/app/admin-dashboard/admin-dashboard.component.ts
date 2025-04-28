@@ -1,6 +1,6 @@
 // src/app/admin-dashboard/admin-dashboard.component.ts
 import { Component, OnInit } from '@angular/core';
-import { AdminDashboardService } from '../admin-dashboard.service';
+import { AdminDashboardService } from '../service_app/admin-dashboard.service';
 
 
 @Component({
