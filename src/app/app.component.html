@@ -227,6 +227,26 @@
       </svg>
       <h1>Hello, {{ title }}</h1>
       <p>Congratulations! Your app is running. 🎉</p>
+
+
+        <!-- src/app/app.component.html -->
+        <nav>
+          <a routerLink="/">Admin Dashboard</a>
+          <!-- Agrega enlaces a otras rutas aquí -->
+        </nav>
+        <router-outlet></router-outlet>  <!-- Aquí se cargarán las vistas según la ruta -->
+        <nav>
+          <a routerLink="/">Admin Dashboard</a>
+          <a routerLink="/sports-matches">Sports Matches</a>
+          <a routerLink="/stadiums">Stadiums</a>
+          <a routerLink="/subscription-offers">Subscription Offers</a>
+          <a routerLink="/tickets">Tickets</a>
+          <a routerLink="/tribunes">Tribunes</a>
+        </nav>
+        
+        <router-outlet></router-outlet>
+        
+
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div class="right-side">
@@ -331,6 +351,6 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
+<!-- src/app/app.component.html -->
 
 <router-outlet />
