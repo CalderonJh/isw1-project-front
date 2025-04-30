@@ -1,0 +1,32 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="bg-white p-10 rounded-lg shadow-lg w-full max-w-sm">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <h2 class="text-2xl font-bold text-center text-gray-800">Login</h2>
+
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Email</mat-label>
+        <input
+          type="email"
+          matInput
+          [formControl]="emailFormControl"
+          placeholder="Ex. pat@example.com"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Contraseña</mat-label>
+        <input type="password" matInput [formControl]="passwordFormControl" />
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="w-full py-3"
+        type="submit"
+        [disabled]="loginForm.invalid"
+      >
+        Login
+      </button>
+    </form>
+  </div>
+</div>

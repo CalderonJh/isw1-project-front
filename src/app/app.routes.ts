@@ -1,19 +1,53 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    loadComponent: () =>
+      import('./pages/admin-home-page/admin-home-page.component').then(
+        (m) => m.AdminHomePageComponent,
+      ),
   },
   {
     path: 'login',
-    component: LoginComponent,
+    loadComponent: () =>
+      import('./pages/login-page/login-page.component').then(
+        (m) => m.LoginPageComponent,
+      ),
   },
   {
     path: 'register',
-    component: RegisterComponent,
+    loadComponent: () =>
+      import('./pages/register-page/register-page.component').then(
+        (m) => m.RegisterPageComponent,
+      ),
+  },
+  {
+    path: 'matches',
+    loadComponent: () =>
+      import('./pages/sport-match-page/sport-match-page.component').then(
+        (m) => m.SportMatchPageComponent,
+      ),
+  },
+  {
+    path: 'stadiums',
+    loadComponent: () =>
+      import('./pages/stadium-page/stadium-page.component').then(
+        (m) => m.StadiumPageComponent,
+      ),
+  },
+  {
+    path: 'tickets',
+    loadComponent: () =>
+      import(
+        './pages/view-ticket-offers-page/view-ticket-offers-page.component'
+      ).then((m) => m.ViewTicketOffersPageComponent),
+  },
+  {
+    path: 'tickets/create',
+    loadComponent: () =>
+      import(
+        './pages/create-ticket-offers-page/create-ticket-offers-page.component'
+      ).then((m) => m.CreateTicketOffersPageComponent),
   },
 ];
