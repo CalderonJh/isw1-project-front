@@ -58,10 +58,10 @@ export const routes: Routes = [
       ).then((m) => m.UserProfilePageComponent),
   },
   {
-    path: 'dashboard',
+    path: 'dashboardUser',
     loadComponent: () =>
       import(
-        './pages/dashboard-page/dashboard-page.component'
+        './pages/dashboard-user-page/dashboard-user-page.component'
       ).then((m) => m.DashboardPageComponent),
   },
   {

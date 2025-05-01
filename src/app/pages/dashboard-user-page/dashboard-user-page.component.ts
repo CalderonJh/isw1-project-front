@@ -5,8 +5,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-dashboard-page',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './dashboard-page.component.html',
-  styleUrls: ['./dashboard-page.component.css']
+  templateUrl: './dashboard-user-page.component.html',
+  styleUrls: ['./dashboard-user-page.component.css']
 })
 export class DashboardPageComponent {
   activeTab = 0;
