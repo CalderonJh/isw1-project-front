@@ -1,15 +1,123 @@
-.dashboard-buttons {
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4fdf67, #c5ee31);
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Estilo de la barra de navegación */
+mat-toolbar {
+  background-color: #59bd40;  /* Verde que ya tenías */
+  color: white;
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  margin-top: 20px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 15px; /* Bordes redondeados */
+  font-family: 'Roboto', sans-serif; /* Cambia la fuente aquí */
+  font-weight: 500; /* Un peso de fuente moderado para legibilidad */
 }
 
+mat-toolbar .mat-icon {
+  color: rgb(255, 255, 255);
+}
+
+/* Establecer el color de fondo de la página */
+body {
+  background-color: #f1f1f1; /* Fondo gris claro para la página */
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;  
+  justify-content: center; /* Centra el contenedor horizontalmente */
+  align-items: center; /* Centra el contenedor verticalmente */
+  height: 100vh; /* Altura completa de la pantalla */
+  flex-direction: column; /* Asegura que todo se coloque en una columna */
+}
+
+/* Contenedor que centrará los botones */
+.dashboard-container {
+  display: flex;
+  justify-content: center; /* Centra el contenido horizontalmente */
+  align-items: center; /* Centra el contenido verticalmente */
+  width: 100%;  /* Asegura que ocupe todo el ancho */
+  padding: 20px;
+  flex-direction: column; /* Asegura que los botones estén organizados en una columna */
+  box-sizing: border-box;  /* Ajusta el ancho de los contenedores */
+}
+
+/* Contenedor de los botones */
+.dashboard-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Crear 2 columnas */
+  gap: 30px; /* Espacio entre los botones */
+  justify-items: center; /* Centra los botones dentro de cada celda */
+  background-color: white; /* Fondo blanco para los botones */
+  padding: 30px;
+  border-radius: 15px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  border: 2px solid #ddd; /* Borde gris alrededor del contenedor */
+  width: 80%; /* Asegura que el contenedor de los botones no sea demasiado grande */
+  max-width: 600px; /* Ancho máximo para que no se estire demasiado */
+  justify-items: center; /* Centra los botones dentro de cada celda */
+}
+
+/* Estilo de cada botón en la dashboard */
 .dashboard-buttons button {
-  width: 200px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 15px;
+  transition: all 0.3s ease;
+  color: #fff; /* Color de las letras por defecto (blanco) */
+  border: none;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif; /* Cambia la fuente aquí */
+  font-weight: 1000; /* Un peso de fuente moderado para legibilidad */
 }
 
-.selected {
-  background-color: #3d3d3d !important; /* Cambia el color del botón seleccionado */
+/* Estilos para los botones al pasar el cursor (hover) */
+.dashboard-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos específicos para los botones */
+#boletas {
+  background-color: #82de00 !important; /* El color verde que tenías */
+}
+
+.classboletas:hover {
+  background: linear-gradient(to right, #dae630, #0dd532);
+}
+
+#abonos {
+  background-color: #82de00;
+}
+
+.classabonos:hover {
+  background: linear-gradient(to right, #dae630, #0dd532);
+}
+
+#estadios {
+  background-color: #82de00;
+}
+
+.classestadios:hover {
+  background: linear-gradient(to right, #dae630, #0dd532);
+}
+
+#partidos {
+  background-color: #82de00;
+}
+
+.classpartidos:hover {
+  background: linear-gradient(to right, #dae630, #0dd532);
+}
+
+/* Asegúrate de que los íconos sean visibles y tengan un tamaño adecuado */
+.button-icon {
+  font-size: 50px; /* Ajusta el tamaño del icono si es necesario */
+  color: white; /* Ajusta el color del ícono */
 }
