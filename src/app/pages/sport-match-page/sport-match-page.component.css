@@ -1,0 +1,80 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #4fdf67, #c5ee31);
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* Barra de navegación */
+.toolbar {
+    background-color: #59bd40;  /* Verde que ya tenías */
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 15px;
+  }
+  
+  .toolbar-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+  }
+  
+  .toolbar-title {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .admin-icon button {
+    background-color: transparent;
+  }
+  
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 5px solid #ffffff;
+    margin: 10px 20px;
+  }
+  
+  /* Contenedor del título y botón Nuevo */
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin-top: 20px;
+  }
+  
+  .section-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .new-button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  /* Estilos de la tabla */
+  .mat-table {
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 8px;
+  }
+  
+  .mat-header-row, .mat-row {
+    background-color: #5d2828;
+    color: #980909;
+  }
+  
+  .mat-column-visitante,
+  .mat-column-estadio,
+  .mat-column-temporada,
+  .mat-column-fecha {
+    text-align: center;
+  }
+  
