@@ -37,7 +37,8 @@
 .logo {
   width: 80px;
   height: 80px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  margin-top: auto;
 }
 
 h1 {
@@ -122,7 +123,7 @@ input.invalid {
 }
 
 .login-button:hover {
-  background: linear-gradient(to right, #dae630, #2ad738);
+  background: linear-gradient(to right, #dae630, #0dd532);
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
