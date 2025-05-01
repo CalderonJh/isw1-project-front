@@ -51,6 +51,20 @@ export const routes: Routes = [
       ).then((m) => m.ViewTicketOffersPageComponent),
   },
   {
+    path: 'profile',
+    loadComponent: () =>
+      import(
+        './pages/user-profile-page/user-profile-page.component'
+      ).then((m) => m.UserProfilePageComponent),
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import(
+        './pages/dashboard-page/dashboard-page.component'
+      ).then((m) => m.DashboardPageComponent),
+  },
+  {
     path: 'tickets/create',
     loadComponent: () =>
       import(
