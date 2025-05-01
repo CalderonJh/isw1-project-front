@@ -30,6 +30,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'favorite',
+    loadComponent: () =>
+      import('./pages/favorite-team-page/favorite-team-page.component').then(
+        (m) => m.FavoriteTeamPageComponent,
+      ),
+  },
+  {
     path: 'stadiums',
     loadComponent: () =>
       import('./pages/stadium-page/stadium-page.component').then(
