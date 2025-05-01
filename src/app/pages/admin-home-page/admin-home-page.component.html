@@ -1,4 +1,14 @@
-<div>
-  Admin home page works!
+<mat-toolbar color="primary">
+  <span>Bienvenido ADMIN</span>
+  <button mat-icon-button>
+    <mat-icon>account_circle</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div class="dashboard-buttons">
+  <button mat-raised-button color="accent" [ngClass]="{'selected': selected === 'boletas'}" (click)="navigateTo('boletas')">Boletas</button>
+  <button mat-raised-button color="accent" [ngClass]="{'selected': selected === 'abonos'}" (click)="navigateTo('abonos')">Abonos</button>
+  <button mat-raised-button color="accent" [ngClass]="{'selected': selected === 'estadios'}" (click)="navigateTo('estadios')">Estadios y tribunas</button>
+  <button mat-raised-button color="accent" [ngClass]="{'selected': selected === 'partidos'}" (click)="navigateTo('partidos')">Partidos</button>
 </div>
 

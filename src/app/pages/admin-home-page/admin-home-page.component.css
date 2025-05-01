@@ -1,0 +1,15 @@
+.dashboard-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.dashboard-buttons button {
+  width: 200px;
+}
+
+.selected {
+  background-color: #3d3d3d !important; /* Cambia el color del botón seleccionado */
+}
