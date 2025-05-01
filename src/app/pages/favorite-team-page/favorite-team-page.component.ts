@@ -12,10 +12,10 @@ export class FavoriteTeamPageComponent {
   selectedTeam: number | null = null;
 
   teams = [
-    { id: 1, name: 'Bucaramanga', logo: '/src/app/img/bga.jpg' },
-    { id: 2, name: 'Real Santander', logo: 'assets/teams/real-santander.png' },
-    { id: 3, name: 'Llaneros FC', logo: 'assets/teams/llaneros.png' },
-    { id: 4, name: 'Junior', logo: 'assets/teams/junior.png' },
+    { id: 1, name: 'Bucaramanga', logo: 'assets/img/bga1.png' },
+    { id: 2, name: 'Real Santander', logo: 'assets/img/real.png' },
+    { id: 3, name: 'Llaneros FC', logo: 'assets/img/llaneros.jpg' },
+    { id: 4, name: 'Junior', logo: 'assets/img/junior.png' },
     // Puedes agregar más equipos aquí
   ];
 
