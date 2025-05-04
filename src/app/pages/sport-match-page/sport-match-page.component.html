@@ -1,12 +1,11 @@
-<mat-toolbar color="primary" class="toolbar">
-    <div class="toolbar-content">
-      <span class="toolbar-title"><b>Bienvenido ADMIN</b></span>
-    </div>
-    <div class="admin-icon">
-      <button mat-icon-button>
-        <mat-icon>account_circle</mat-icon>
-      </button>
-    </div>
+<mat-toolbar color="primary">
+    <span>Bienvenido ADMIN</span>
+    <button mat-icon-button (click)="navigateToHome()">
+      <mat-icon>home</mat-icon>
+    </button>
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
   </mat-toolbar>
   
   <hr class="divider" />

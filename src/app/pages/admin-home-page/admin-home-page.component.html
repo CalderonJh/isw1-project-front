@@ -1,27 +1,35 @@
 <mat-toolbar color="primary">
-  <span>Bienvenido ADMIN</span>
   <button mat-icon-button>
     <mat-icon>account_circle</mat-icon>
+  </button>
+  <span>Bienvenido ADMIN</span>
+  <button mat-icon-button (click)="logout()">
+    <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>
 
 <div class="dashboard-container">
-  <div class="dashboard-buttons">
-    <button id="boletas" class="classboletas" mat-raised-button color="accent" [ngClass]="{'selected': selected === 'boletas'}" (click)="navigateTo('boletas')">
-      Boletas
-      <mat-icon class="button-icon">confirmation_number</mat-icon> <!-- Icono debajo del texto -->  
-    </button>
-    <button id="abonos" class="classabonos" mat-raised-button color="accent" [ngClass]="{'selected': selected === 'abonos'}" (click)="navigateTo('abonos')">
-      Abonos
-      <mat-icon class="button-icon">card_giftcard</mat-icon> <!-- Icono debajo del texto -->
-    </button>
-    <button id="estadios" class="classestadios" mat-raised-button color="accent" [ngClass]="{'selected': selected === 'estadios'}" (click)="navigateTo('estadios')">
-      Estadios y tribunas
-      <mat-icon class="button-icon">location_city</mat-icon> <!-- Icono debajo del texto -->
-    </button>
-    <button id="partidos" class="classpartidos" mat-raised-button color="accent" [ngClass]="{'selected': selected === 'partidos'}" (click)="navigateTo('partidos')">
-      Partidos
-      <mat-icon class="button-icon">sports_soccer</mat-icon> <!-- Icono debajo del texto -->
-    </button>
+  <div class="dashboard-card">
+    <div class="logo-container">
+      <h1>FPC</h1>
+    </div>
+    <div class="dashboard-buttons">
+      <button id="boletas" class="classboletas" mat-raised-button color="accent" [ngClass]="{'selected': selected === 'boletas'}" (click)="navigateTo('boletas')">
+        Boletas
+        <mat-icon class="button-icon">confirmation_number</mat-icon>
+      </button>
+      <button id="abonos" class="classabonos" mat-raised-button color="accent" [ngClass]="{'selected': selected === 'abonos'}" (click)="navigateTo('abonos')">
+        Abonos
+        <mat-icon class="button-icon">card_giftcard</mat-icon>
+      </button>
+      <button id="estadios" class="classestadios" mat-raised-button color="accent" [ngClass]="{'selected': selected === 'estadios'}" (click)="navigateTo('estadios')">
+        Estadios y tribunas
+        <mat-icon class="button-icon">location_city</mat-icon>
+      </button>
+      <button id="partidos" class="classpartidos" mat-raised-button color="accent" [ngClass]="{'selected': selected === 'partidos'}" (click)="navigateTo('partidos')">
+        Partidos
+        <mat-icon class="button-icon">sports_soccer</mat-icon>
+      </button>
+    </div>
   </div>
 </div>
