@@ -1,80 +1,133 @@
 :host {
-    display: block;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #4fdf67, #c5ee31);
-    padding: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4fdf67, #c5ee31);
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-  /* Barra de navegación */
-.toolbar {
-    background-color: #59bd40;  /* Verde que ya tenías */
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    border-radius: 15px;
-  }
-  
-  .toolbar-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-  }
-  
-  .toolbar-title {
-    font-size: 22px;
-    font-weight: bold;
-  }
-  
-  .admin-icon button {
-    background-color: transparent;
-  }
-  
-  /* Divider */
-  .divider {
-    border: none;
-    border-top: 5px solid #ffffff;
-    margin: 10px 20px;
-  }
-  
-  /* Contenedor del título y botón Nuevo */
-  .header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    margin-top: 20px;
-  }
-  
-  .section-title {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .new-button {
-    padding: 10px 20px;
-    font-size: 14px;
-  }
-  
-  /* Estilos de la tabla */
-  .mat-table {
-    width: 100%;
-    margin-top: 20px;
-    border-radius: 8px;
-  }
-  
-  .mat-header-row, .mat-row {
-    background-color: #5d2828;
-    color: #980909;
-  }
-  
-  .mat-column-visitante,
-  .mat-column-estadio,
-  .mat-column-temporada,
-  .mat-column-fecha {
-    text-align: center;
-  }
-  
+/* Barra de navegación */
+mat-toolbar {
+  background-color: #59bd40;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 15px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+}
+
+mat-toolbar .mat-icon {
+  color: rgb(255, 255, 255);
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Divider */
+.divider {
+  border: none;
+  border-top: 5px solid #ffffff;
+  margin: 10px 20px;
+}
+.add-form-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+
+/* Contenedor del título y botón Nuevo */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.new-button {
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: #82de00;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: 0.3s ease;
+}
+
+.new-button:hover {
+  background-color: #66bb00;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos de la tabla */
+.mat-table {
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo ligeramente opaco */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd; /* Borde sutil de la tabla */
+}
+
+.mat-header-row, .mat-row {
+  background-color: rgba(93, 40, 40, 0.7); /* Color de fondo transparente */
+  color: #fff;
+}
+
+.mat-column-visitante,
+.mat-column-estadio,
+.mat-column-temporada,
+.mat-column-fecha {
+  text-align: center;
+}
+
+/* Bordes más claros y suaves para celdas */
+.mat-cell, .mat-header-cell {
+  padding: 16px;
+  font-size: 16px;
+  border-bottom: 1px solid #ddd; /* Bordes suaves entre las filas */
+}
+
+.mat-header-cell {
+  font-weight: bold;
+  background-color: #59bd40; /* Color de fondo para la cabecera */
+  color: white;
+}
+
+/* Estilos de los íconos de la tabla */
+.button-icon {
+  font-size: 36px;
+  color: white;
+  margin-left: 10px;
+}
+
+/* Estilo de los textos */
+h1 {
+  color: #333;
+  font-size: 24px;
+  margin: 0;
+  font-weight: 600;
+}
