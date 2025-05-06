@@ -1,7 +1,7 @@
 :host {
     display: block;
     min-height: 100vh;
-    background: linear-gradient(135deg, #4fdf67, #c5ee31);
+    background: linear-gradient(135deg, #ced7d0, #268ae8);
     padding: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }

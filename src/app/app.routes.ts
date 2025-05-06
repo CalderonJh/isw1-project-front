@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './services/auth.guard.service';
 
 export const routes: Routes = [
   {
@@ -14,13 +13,6 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/admin-home-page/admin-home-page.component').then(
         (m) => m.AdminHomePageComponent
-      ),
-  },
-  {
-    path: 'register',
-    loadComponent: () =>
-      import('./pages/register-page/register-page.component').then(
-        (m) => m.RegisterPageComponent
       ),
   },
   {
@@ -51,7 +43,13 @@ export const routes: Routes = [
         './pages/create-ticket-offers-page/create-ticket-offers-page.component'
       ).then((m) => m.CreateTicketOffersPageComponent),
   },
-
+  {
+    path: 'abono',
+    loadComponent: () =>
+      import(
+        './pages/abono-page/abono-page.component'
+      ).then((m) => m.AbonoPageComponent),
+  },
 
   // Aquí se agregan las rutas del administrador
   {
@@ -74,7 +72,6 @@ export const routes: Routes = [
       import('./pages/stadium-page/stadium-page.component').then(
         (m) => m.StadiumPageComponent
       ),
-      canActivate: [AuthGuard] // Protege esta ruta
   },
   {
     path: 'adminhome/partidos',

@@ -5,7 +5,7 @@
 :host {
   display: block;
   height: 100vh;
-  background: #f0f0f0;
+  background: linear-gradient(135deg, #ced7d0, #268ae8);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 

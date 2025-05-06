@@ -1,7 +1,7 @@
 :host {
   display: block;
   min-height: 100vh;
-  background: linear-gradient(135deg, #4fdf67, #c5ee31);
+  background: linear-gradient(135deg, #ced7d0, #268ae8);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 20px;
 }
@@ -30,7 +30,7 @@ h1 {
 
 /* Barra de navegación */
 mat-toolbar {
-  background-color: #59bd40;  
+  background-color: #2e74be;  
   color: white;
   display: flex;
   justify-content: space-between;
@@ -47,7 +47,7 @@ mat-toolbar .mat-icon {
 
 /* Contenedor de la página */
 body {
-  background-color: #f1f1f1;
+  background: linear-gradient(135deg, #ced7d0, #268ae8);;
   margin: 0;
   font-family: Arial, sans-serif;
   display: flex;  
@@ -76,7 +76,7 @@ body {
   padding: 30px; /* Aumenté el padding para darle más espacio alrededor */
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 2px solid #ddd;
+  border: 2px solid #4b6fff;
   width: 100%;
   max-width: 900px; /* Aumenté el ancho máximo para que los botones se vean más amplios */
 }
@@ -106,7 +106,7 @@ body {
 
 /* Colores específicos de los botones */
 #boletas, #abonos, #estadios, #partidos {
-  background-color: #82de00;
+  background-color: #446fee;
 }
 
 /* Estilos de los íconos de los botones */
@@ -118,7 +118,7 @@ body {
 
 /* Estilos al pasar el cursor sobre los botones */
 .classboletas:hover, .classabonos:hover, .classestadios:hover, .classpartidos:hover {
-  background: linear-gradient(to right, #dae630, #0dd532);
+  background: linear-gradient(to right, #bbbec3, #347fdc);
 }
 
 /* Estilo de los textos */

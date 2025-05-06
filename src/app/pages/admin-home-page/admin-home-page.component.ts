@@ -23,9 +23,9 @@ export class AdminHomePageComponent {
   constructor(private router: Router) {} // Inyectamos el servicio Router
 
   // Este es el método navigateTo que maneja la navegación
-  navigateTo(page: string): void {
-    this.selected = page; // Guardamos el valor de la página seleccionada
-    this.router.navigate([`/admin/${page}`]); // Navegamos a la página correspondiente
+  navigateTo(routes: string): void {
+    this.selected = routes; // Guardamos el valor de la página seleccionada
+    this.router.navigate([`/adminhome/${routes}`]); // Navegamos a la página correspondiente
   }
 
   // Función para ir al inicio
