@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './services/auth.guard.service'; // Asegúrate que la ruta sea correcta
 
 export const routes: Routes = [
   {
@@ -14,6 +15,7 @@ export const routes: Routes = [
       import('./pages/admin-home-page/admin-home-page.component').then(
         (m) => m.AdminHomePageComponent
       ),
+      canActivate: [AuthGuard] // Protege esta ruta
   },
   {
     path: 'matches',

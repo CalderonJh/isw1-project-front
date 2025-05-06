@@ -2,7 +2,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; // Importación añadida
-import { AuthInterceptor } from './services/auth.interceptor.service'; // Asegúrate que la ruta es correcta
+import { AuthGuard} from './services/auth.guard.service'; // Asegúrate que la ruta es correcta
 
 @NgModule({
   imports: [
@@ -13,7 +13,7 @@ import { AuthInterceptor } from './services/auth.interceptor.service'; // Asegú
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor, // Corregido "uscClass" a "useClass"
+      useClass: AuthGuard, // Corregido "uscClass" a "useClass"
       multi: true
     }
     // ... otros providers
