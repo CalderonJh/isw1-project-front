@@ -1,0 +1,130 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4fdf67, #c5ee31);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+}
+
+/* Contenedor de la logo */
+.logo-container {
+  display: flex;
+  justify-content: center; /* Centra los elementos horizontalmente */
+  align-items: center; /* Centra los elementos verticalmente */
+  gap: 500px; /* Espacio entre la imagen y el texto */
+}
+
+.logo-image {
+  width: 200px; /* Tamaño de la imagen */
+  height: 200px; /* Tamaño de la imagen */
+  object-fit: cover; /* Asegura que la imagen no se distorsione */
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+
+/* Barra de navegación */
+mat-toolbar {
+  background-color: #59bd40;  
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 15px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+}
+
+mat-toolbar .mat-icon {
+  color: rgb(255, 255, 255);
+}
+
+/* Contenedor de la página */
+body {
+  background-color: #f1f1f1;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;  
+  justify-content: center; 
+  align-items: center; 
+  height: 100vh; 
+  flex-direction: column; 
+}
+
+/* Contenedor del dashboard */
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 50px;
+  flex-direction: column;
+}
+
+/* Contenedor de los botones */
+.dashboard-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  justify-items: center;
+  padding: 30px; /* Aumenté el padding para darle más espacio alrededor */
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #ddd;
+  width: 100%;
+  max-width: 900px; /* Aumenté el ancho máximo para que los botones se vean más amplios */
+}
+
+/* Estilo de los botones */
+.dashboard-buttons button {
+  width: 100%;
+  font-size: 20px; /* Aumenté el tamaño de la fuente */
+  font-weight: bold;
+  border-radius: 15px;
+  padding: 33px; /* Aumenté el padding de los botones para hacerlos más grandes */
+  transition: all 0.3s ease;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilos al pasar el cursor sobre los botones */
+.dashboard-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Colores específicos de los botones */
+#boletas, #abonos, #estadios, #partidos {
+  background-color: #82de00;
+}
+
+/* Estilos de los íconos de los botones */
+.button-icon {
+  font-size: 36px; /* Aumenté el tamaño del icono */
+  color: white;
+  margin-left: 10px; /* Espacio entre el texto y el ícono */
+}
+
+/* Estilos al pasar el cursor sobre los botones */
+.classboletas:hover, .classabonos:hover, .classestadios:hover, .classpartidos:hover {
+  background: linear-gradient(to right, #dae630, #0dd532);
+}
+
+/* Estilo de los textos */
+h1 {
+  color: #333;
+  font-size: 24px;
+  margin: 0;
+  font-weight: 600;
+}

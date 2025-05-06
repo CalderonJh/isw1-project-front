@@ -1,10 +1,17 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-ticket-offers-page',
-  imports: [],
   templateUrl: './view-ticket-offers-page.component.html',
-  standalone: true,
-  styleUrl: './view-ticket-offers-page.component.css',
+  styleUrls: ['./view-ticket-offers-page.component.css']
 })
-export class ViewTicketOffersPageComponent {}
+export class ViewTicketOffersPageComponent {
+
+  constructor(private router: Router) {}
+
+  // Función para navegar programáticamente a "admin/boletas"
+  navigateToBoletas(): void {
+    this.router.navigate(['/admin/boletas']);
+  }
+}
