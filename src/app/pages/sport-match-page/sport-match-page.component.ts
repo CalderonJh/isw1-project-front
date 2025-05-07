@@ -6,7 +6,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog'; // Importa MatDialog
 import { FormBuilder, FormGroup } from '@angular/forms'; // Importa FormBuilder y FormGroup
-import { DialogOverviewExampleDialog } from './path-to-dialog/path-to-dialog.component'; // Importa el dialogo que creaste
+import { DialogOverviewExampleDialog } from '..//../components/path-to-dialog/path-to-dialog.component';
 
 @Component({
   selector: 'app-sport-match-page',
