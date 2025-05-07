@@ -1,12 +1,10 @@
-:host {
-  display: block;
-}
 /* Estilos generales */
 :host {
   display: block;
-  height: 100vh;
-  background: linear-gradient(135deg, #ced7d0, #268ae8);
+  min-height: 100vh;
+  color: #bbbec3;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
 }
 
 .login-container {
@@ -25,7 +23,10 @@
   width: 100%;
   max-width: 400px;
   animation: fadeIn 0.5s ease-in-out;
-}
+
+    /* Borde alrededor de la tarjeta */
+  border: 1px solid #6e8efb; /* Aquí puedes elegir el color que prefieras */
+  }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }

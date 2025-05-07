@@ -8,6 +8,7 @@ export const routes: Routes = [
       import('./pages/login-page/login-page.component').then(
         (m) => m.LoginPageComponent
       ),
+      canActivate: [AuthGuard] // Protege esta ruta
   },
   {
     path: 'adminhome',
@@ -15,7 +16,6 @@ export const routes: Routes = [
       import('./pages/admin-home-page/admin-home-page.component').then(
         (m) => m.AdminHomePageComponent
       ),
-      canActivate: [AuthGuard] // Protege esta ruta
   },
   {
     path: 'matches',

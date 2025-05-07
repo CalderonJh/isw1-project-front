@@ -1,8 +1,25 @@
 :host {
-    display: block;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #ced7d0, #268ae8);
-    padding: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
+  display: block;
+  min-height: 100vh;
+  color: #bbbec3;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+}
+
+/* Barra de navegación */
+mat-toolbar {
+  background-color: #2e74be;
+  color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  position: fixed; /* Fija la barra de navegación */
+  top: 0; /* La coloca en la parte superior */
+  left: 0; /* Asegura que esté alineada a la izquierda */
+  width: 100%; /* Ocupa todo el ancho de la ventana */
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más suave */
+  padding: 0 20px; /* Ajusta el espaciado para que no esté demasiado pegado a los bordes */
+}
