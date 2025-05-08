@@ -23,3 +23,22 @@ mat-toolbar {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más suave */
   padding: 0 20px; /* Ajusta el espaciado para que no esté demasiado pegado a los bordes */
 }
+
+/* Estilo para el contenedor del título y el botón */
+.header-container {
+  margin-top: 20px; /* Este margen empuja el título hacia abajo */
+  padding: 10px;
+}
+
+/* Estilo para el título de "Creación de Partidos" */
+.section-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1e5ea8; /* Cambié el color a un azul más destacado */
+  margin-bottom: 10px; /* Un pequeño margen debajo del título */
+}
+
+button {
+  margin-left: 20px;
+}
+

@@ -4,9 +4,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatDialog } from '@angular/material/dialog'; // Importa MatDialog
-import { FormBuilder, FormGroup } from '@angular/forms'; // Importa FormBuilder y FormGroup
-
 
 @Component({
   selector: 'view-ticket-offers-page',
@@ -15,22 +12,24 @@ import { FormBuilder, FormGroup } from '@angular/forms'; // Importa FormBuilder 
   templateUrl: './view-ticket-offers-page.component.html',
   styleUrls: ['./view-ticket-offers-page.component.css']
 })
+
 export class ViewTicketOffersPageComponent {
 
-
-
-
-
-  
   constructor(private router: Router) {}
-  // Función para ir al inicio
+
+  // Función para redirigir a la página de inicio (adminhome)
   navigateToHome(): void {
-    this.router.navigate(['adminhome']); // Navega a la página principal del admin
+    this.router.navigate(['adminhome']);
   }
 
   // Función para cerrar sesión (Logout)
   logout(): void {
-    this.router.navigate(['']); // Redirige a la página de login
+    this.router.navigate(['']);
   }
 
+  // Función para redirigir al formulario de creación de oferta
+  crearOferta(): void {
+    this.router.navigate(['tickets/create']);  // Redirige a la página de creación de oferta
+  }
 }
+

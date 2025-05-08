@@ -1,13 +1,41 @@
 <mat-toolbar color="primary">
-    <span>Bienvenido ADMIN</span>
-    <div class="toolbar-actions">
-      <button mat-icon-button (click)="navigateToHome()">
-        <mat-icon>home</mat-icon>
-      </button>
-      <button mat-icon-button (click)="logout()">
-        <mat-icon>logout</mat-icon>
-      </button>
-    </div>
-  </mat-toolbar>
+  <span>Bienvenido ADMIN</span>
+  <div class="toolbar-actions">
+    <button mat-icon-button (click)="navigateToHome()">
+      <mat-icon>home</mat-icon>
+    </button>
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
 
-  
+<!-- Sección de Ofertas de Boletas -->
+<div class="content-container">
+  <div class="header-container">
+    <h1 class="section-title">Ofertas de Boletas</h1>
+    <button mat-raised-button color="primary" class="crear-oferta-btn" (click)="crearOferta()">Crear oferta</button>
+  </div>
+
+  <!-- Contenedor de las tarjetas de las ofertas -->
+  <div class="boletas-container">
+    <div class="oferta-card">
+      <p>Oferta 1</p>
+    </div>
+    <div class="oferta-card">
+      <p>Oferta 2</p>
+    </div>
+    <div class="oferta-card">
+      <p>Oferta 3</p>
+    </div>
+    <div class="oferta-card">
+      <p>Oferta 4</p>
+    </div>
+    <div class="oferta-card">
+      <p>Oferta 5</p>
+    </div>
+    <div class="oferta-card">
+      <p>Oferta 6</p>
+    </div>
+  </div>
+</div>
