@@ -9,7 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';7
+import { DialogOverviewExampleDialog } from '..//app/components/path-to-dialog/path-to-dialog.component';  // Ajusta la ruta según tu estructura
 
 
 @NgModule({

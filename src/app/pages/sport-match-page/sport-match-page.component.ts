@@ -16,6 +16,8 @@ import { DialogOverviewExampleDialog } from '..//../components/path-to-dialog/pa
   styleUrls: ['./sport-match-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
+
 export class SportMatchPageComponent {
   partidoForm: FormGroup; // Define el formulario reactivo
 
@@ -52,13 +54,12 @@ export class SportMatchPageComponent {
   // Abre el dialogo del partido
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      data: { partidoForm: this.partidoForm }  // Pasa el formulario al dialogo
+      width: '250px',
+      data: { name: 'Partido' }
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Datos del partido:', result);  // Muestra los datos obtenidos del dialogo
-      }
+      console.log('El diálogo se cerró', result);
     });
   }
 }

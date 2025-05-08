@@ -8,7 +8,6 @@ export const routes: Routes = [
       import('./pages/login-page/login-page.component').then(
         (m) => m.LoginPageComponent
       ),
-      canActivate: [AuthGuard] // Protege esta ruta
   },
   {
     path: 'adminhome',
@@ -16,6 +15,7 @@ export const routes: Routes = [
       import('./pages/admin-home-page/admin-home-page.component').then(
         (m) => m.AdminHomePageComponent
       ),
+      canActivate: [AuthGuard] // Protege esta ruta
   },
   {
     path: 'matches',
@@ -23,6 +23,7 @@ export const routes: Routes = [
       import('./pages/sport-match-page/sport-match-page.component').then(
         (m) => m.SportMatchPageComponent
       ),
+      canActivate: [AuthGuard] // Protege esta ruta
   },
   {
     path: 'stadiums',
@@ -30,6 +31,7 @@ export const routes: Routes = [
       import('./pages/stadium-page/stadium-page.component').then(
         (m) => m.StadiumPageComponent
       ),
+      canActivate: [AuthGuard] // Protege esta ruta
   },
   {
     path: 'tickets',
@@ -37,6 +39,7 @@ export const routes: Routes = [
       import(
         './pages/view-ticket-offers-page/view-ticket-offers-page.component'
       ).then((m) => m.ViewTicketOffersPageComponent),
+      canActivate: [AuthGuard] // Protege esta ruta
   },
   {
     path: 'tickets/create',
@@ -44,6 +47,7 @@ export const routes: Routes = [
       import(
         './pages/create-ticket-offers-page/create-ticket-offers-page.component'
       ).then((m) => m.CreateTicketOffersPageComponent),
+      canActivate: [AuthGuard] // Protege esta ruta
   },
   {
     path: 'abono',
@@ -51,6 +55,7 @@ export const routes: Routes = [
       import(
         './pages/abono-page/abono-page.component'
       ).then((m) => m.AbonoPageComponent),
+      canActivate: [AuthGuard] // Protege esta ruta
   },
 
   // Aquí se agregan las rutas del administrador

@@ -59,7 +59,7 @@ export class AuthService {
         console.log('Token extraído:', token); // Debug
         this.storeToken(token);
         this.isAuthenticatedSubject.next(true);
-        this.router.navigate(['/dashboardUser']);
+        this.router.navigate(['/adminhome']);
       }),
       catchError(error => {
         console.error('Error en el login:', error);
@@ -105,7 +105,7 @@ export class AuthService {
   // Método mejorado de redirección
   redirectToDashboard(): void {
     if (this.hasValidToken()) {
-      this.router.navigate(['/dashboardUser'], {
+      this.router.navigate(['/adminhome'], {
         replaceUrl: true // Evita que el usuario vuelva atrás con el botón del navegador
       });
     } else {
