@@ -1,90 +1,56 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './services/auth.guard.service'; // Asegúrate que la ruta sea correcta
+import { AuthGuard } from './services/auth.guard.service';
 
 export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
       import('./pages/login-page/login-page.component').then(
-        (m) => m.LoginPageComponent
+        (m) => m.LoginPageComponent,
       ),
   },
   {
-    path: 'adminhome',
+    path: 'home',
     loadComponent: () =>
       import('./pages/admin-home-page/admin-home-page.component').then(
-        (m) => m.AdminHomePageComponent
+        (m) => m.AdminHomePageComponent,
       ),
-      canActivate: [AuthGuard] // Protege esta ruta
+    canActivate: [AuthGuard], // Protege esta ruta
   },
   {
-    path: 'matches',
+    path: 'partidos',
     loadComponent: () =>
       import('./pages/sport-match-page/sport-match-page.component').then(
-        (m) => m.SportMatchPageComponent
+        (m) => m.SportMatchPageComponent,
       ),
-      canActivate: [AuthGuard] // Protege esta ruta
+    canActivate: [AuthGuard], // Protege esta ruta
   },
   {
-    path: 'stadiums',
+    path: 'estadios',
     loadComponent: () =>
       import('./pages/stadium-page/stadium-page.component').then(
-        (m) => m.StadiumPageComponent
+        (m) => m.StadiumPageComponent,
       ),
-      canActivate: [AuthGuard] // Protege esta ruta
+    canActivate: [AuthGuard], // Protege esta ruta
   },
   {
-    path: 'tickets',
+    path: 'boletas',
     loadComponent: () =>
       import(
         './pages/view-ticket-offers-page/view-ticket-offers-page.component'
       ).then((m) => m.ViewTicketOffersPageComponent),
-      canActivate: [AuthGuard] // Protege esta ruta
-  },
-  {
-    path: 'tickets/create',
-    loadComponent: () =>
-      import(
-        './pages/create-ticket-offers-page/create-ticket-offers-page.component'
-      ).then((m) => m.CreateTicketOffersPageComponent),
-      canActivate: [AuthGuard] // Protege esta ruta
-  },
-  {
-    path: 'abono',
-    loadComponent: () =>
-      import(
-        './pages/abono-page/abono-page.component'
-      ).then((m) => m.AbonoPageComponent),
-      canActivate: [AuthGuard] // Protege esta ruta
-  },
-
-  // Aquí se agregan las rutas del administrador
-  {
-    path: 'adminhome/boletas',
-    loadComponent: () =>
-      import('./pages/view-ticket-offers-page/view-ticket-offers-page.component').then(
-        (m) => m.ViewTicketOffersPageComponent
+    loadChildren: () =>
+      import('./pages/view-ticket-offers-page/ticket.routes').then(
+        (m) => m.routes,
       ),
+    canActivate: [AuthGuard], // Protege esta ruta
   },
   {
-    path: 'adminhome/abonos',
+    path: 'abonos',
     loadComponent: () =>
       import('./pages/abono-page/abono-page.component').then(
-        (m) => m.AbonoPageComponent
+        (m) => m.AbonoPageComponent,
       ),
-  },
-  {
-    path: 'adminhome/estadios',
-    loadComponent: () =>
-      import('./pages/stadium-page/stadium-page.component').then(
-        (m) => m.StadiumPageComponent
-      ),
-  },
-  {
-    path: 'adminhome/partidos',
-    loadComponent: () =>
-      import('./pages/sport-match-page/sport-match-page.component').then(
-        (m) => m.SportMatchPageComponent 
-      ),
+    canActivate: [AuthGuard], // Protege esta ruta
   },
 ];

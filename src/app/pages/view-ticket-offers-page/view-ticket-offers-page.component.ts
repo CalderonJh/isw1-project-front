@@ -19,7 +19,7 @@ export class ViewTicketOffersPageComponent {
 
   // Función para redirigir a la página de inicio (adminhome)
   navigateToHome(): void {
-    this.router.navigate(['adminhome']);
+    this.router.navigate(['home']);
   }
 
   // Función para cerrar sesión (Logout)

@@ -105,7 +105,7 @@ export class AuthService {
   // Método mejorado de redirección
   redirectToDashboard(): void {
     if (this.hasValidToken()) {
-      this.router.navigate(['/adminhome'], {
+      this.router.navigate(['/home'], {
         replaceUrl: true // Evita que el usuario vuelva atrás con el botón del navegador
       });
     } else {

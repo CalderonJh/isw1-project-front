@@ -1,30 +1,33 @@
 <mat-toolbar color="primary">
   <span class="toolbar-title">Panel de Administración</span>
-    <!-- Botón de logout actualizado -->
-    <button class="menu-btn logout" (click)="logout()">
-      <i class="material-icons">logout</i>
-      <span>Salir</span>
-    </button>
+  <!-- Botón de logout actualizado -->
+  <button class="menu-btn logout" (click)="logout()">
+    <i class="material-icons">logout</i>
+    <span>Salir</span>
+  </button>
 </mat-toolbar>
-
 
 
 <div class="dashboard-container">
   <div class="dashboard-buttons">
     <!-- Botones -->
-    <button id="boletas" class="classboletas" mat-raised-button color="accent" [ngClass]="{'selected': selected === 'boletas'}" (click)="navigateTo('boletas')">
+    <button id="boletas" class="classboletas" mat-raised-button color="accent"
+            [ngClass]="{'selected': selected === 'boletas'}" (click)="navigateTo('boletas')">
       Boletas
       <mat-icon class="button-icon">confirmation_number</mat-icon>
     </button>
-    <button id="abonos" class="classabonos" mat-raised-button color="accent" [ngClass]="{'selected': selected === 'abonos'}" (click)="navigateTo('abonos')">
+    <button id="abonos" class="classabonos" mat-raised-button color="accent"
+            [ngClass]="{'selected': selected === 'abonos'}" (click)="navigateTo('abonos')">
       Abonos
       <mat-icon class="button-icon">card_giftcard</mat-icon>
     </button>
-    <button id="estadios" class="classestadios" mat-raised-button color="accent" [ngClass]="{'selected': selected === 'estadios'}" (click)="navigateTo('estadios')">
+    <button id="estadios" class="classestadios" mat-raised-button color="accent"
+            [ngClass]="{'selected': selected === 'estadios'}" (click)="navigateTo('estadios')">
       Estadios y tribunas
       <mat-icon class="button-icon">location_city</mat-icon>
     </button>
-    <button id="partidos" class="classpartidos" mat-raised-button color="accent" [ngClass]="{'selected': selected === 'partidos'}" (click)="navigateTo('partidos')">
+    <button id="partidos" class="classpartidos" mat-raised-button color="accent"
+            [ngClass]="{'selected': selected === 'partidos'}" (click)="navigateTo('partidos')">
       Partidos
       <mat-icon class="button-icon">sports_soccer</mat-icon>
     </button>

@@ -28,7 +28,7 @@ export class AdminHomePageComponent {
   // Este es el método navigateTo que maneja la navegación
   navigateTo(routes: string): void {
     this.selected = routes; // Guardamos el valor de la página seleccionada
-    this.router.navigate([`/adminhome/${routes}`]); // Navegamos a la página correspondiente
+    this.router.navigate([`/${routes}`]); // Navegamos a la página correspondiente
   }
 
   // Función para cerrar sesión (Logout)
