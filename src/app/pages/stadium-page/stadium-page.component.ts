@@ -1,20 +1,18 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';  // Necesario para *ngFor
-
+import { CommonModule } from '@angular/common'; // Necesario para *ngFor
+import { MatDialogModule } from '@angular/material/dialog'; // Importar MatDialogModule correctamente
 
 // Definir las interfaces para los datos del estadio
 interface Stand {
-  id: number;  // id es obligatorio
+  id: number;
   name: string;
   capacity: number;
 }
@@ -28,25 +26,24 @@ interface Stadium {
 
 @Component({
   selector: 'app-stadium-page',
+  standalone: true,
+  imports: [
+    CommonModule, // Necesario para *ngFor
+    MatDialogModule, // Asegúrate de que MatDialogModule esté importado aquí
+    MatCardModule,
+    MatTableModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule, // Necesario para usar ngModel
+  ],
   templateUrl: './stadium-page.component.html',
   styleUrls: ['./stadium-page.component.css'],
-  standalone: true, // Este es un componente independiente
-  imports: [
-    CommonModule,       // Necesario para *ngFor
-    MatDialogModule,     // Para diálogos
-    MatCardModule,       // Para tarjetas
-    MatTableModule,      // Para tablas
-    MatButtonModule,     // Para botones
-    MatFormFieldModule,  // Para formularios
-    MatInputModule,      // Para inputs
-    FormsModule          // Para ngModel
-  ]
 })
 export class StadiumPageComponent implements OnInit {
   stadiums: Stadium[] = [];
   token = 'tu_token_aqui'; // Token de autenticación
-
-  private apiUrl = 'http://100.26.187.163/fpc/api/stadiums'; // URL base actualizada
+  private apiUrl = 'http://100.26.187.163/fpc/api/stadiums'; // URL base
 
   constructor(private http: HttpClient, public dialog: MatDialog) {}
 
@@ -54,7 +51,6 @@ export class StadiumPageComponent implements OnInit {
     this.loadStadiums();
   }
 
-  // Cargar los estadios desde el backend
   loadStadiums() {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
     this.http.get<Stadium[]>(this.apiUrl, { headers })
@@ -68,9 +64,8 @@ export class StadiumPageComponent implements OnInit {
       );
   }
 
-  // Abrir diálogo para agregar estadio
   openAddStadiumDialog() {
-    const dialogRef = this.dialog.open(StadiumDialogComponent, {
+    const dialogRef = this.dialog.open(StadiumDialog, {
       width: '400px',
       data: { nombre: '' }
     });
@@ -80,11 +75,11 @@ export class StadiumPageComponent implements OnInit {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
         const newStadium = {
           stadium: {
-            id: 0, 
-            name: result, 
-            stands: [] 
+            id: 0,
+            name: result,
+            stands: []
           },
-          image: '' 
+          image: ''
         };
         this.http.post<any>(this.apiUrl, newStadium, { headers })
           .subscribe(() => {
@@ -94,17 +89,16 @@ export class StadiumPageComponent implements OnInit {
     });
   }
 
-  // Abrir diálogo para agregar tribuna
   openAddTribunaDialog(stadium: Stadium) {
-    const dialogRef = this.dialog.open(TribunaDialogComponent, {
+    const dialogRef = this.dialog.open(TribunaDialog, {
       width: '400px',
       data: { estadioId: stadium.id, nombre: '', capacidad: '' }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const tribuna: Stand = { 
-          id: Math.floor(Math.random() * 1000), // Generamos un id temporal para la tribuna
+        const tribuna: Stand = {
+          id: Math.floor(Math.random() * 1000),
           name: result.nombre,
           capacity: result.capacidad
         };
@@ -117,7 +111,6 @@ export class StadiumPageComponent implements OnInit {
     });
   }
 
-  // Eliminar tribuna
   deleteTribuna(stadium: Stadium, tribuna: Stand) {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
     this.http.delete<any>(`${this.apiUrl}/${stadium.id}/stands/${tribuna.id}`, { headers })
@@ -125,12 +118,21 @@ export class StadiumPageComponent implements OnInit {
         this.loadStadiums();
       });
   }
-
 }
 
-// Componente de Diálogo para agregar estadio
+// Diálogo para agregar estadio
 @Component({
-  selector: 'app-stadium-dialog',
+  selector: 'stadium-dialog',
+  imports: [
+    CommonModule, // Necesario para *ngFor
+    MatDialogModule, // Asegúrate de que MatDialogModule esté importado aquí
+    MatCardModule,
+    MatTableModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule, // Necesario para usar ngModel
+  ],
   template: `
     <h2 mat-dialog-title>Agregar Estadio</h2>
     <mat-dialog-content>
@@ -145,9 +147,9 @@ export class StadiumPageComponent implements OnInit {
     </mat-dialog-actions>
   `,
 })
-export class StadiumDialogComponent {
+export class StadiumDialog {
   constructor(
-    public dialogRef: MatDialogRef<StadiumDialogComponent>,
+    public dialogRef: MatDialogRef<StadiumDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -156,9 +158,19 @@ export class StadiumDialogComponent {
   }
 }
 
-// Componente de Diálogo para agregar tribuna
+// Diálogo para agregar tribuna
 @Component({
-  selector: 'app-tribuna-dialog',
+  selector: 'tribuna-dialog',
+  imports: [
+    CommonModule, // Necesario para *ngFor
+    MatDialogModule, // Asegúrate de que MatDialogModule esté importado aquí
+    MatCardModule,
+    MatTableModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule, // Necesario para usar ngModel
+  ],
   template: `
     <h2 mat-dialog-title>Agregar Tribuna</h2>
     <mat-dialog-content>
@@ -177,9 +189,9 @@ export class StadiumDialogComponent {
     </mat-dialog-actions>
   `,
 })
-export class TribunaDialogComponent {
+export class TribunaDialog {
   constructor(
-    public dialogRef: MatDialogRef<TribunaDialogComponent>,
+    public dialogRef: MatDialogRef<TribunaDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
