@@ -2,15 +2,15 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-// Importar los módulos necesarios de Angular Material
-import { MatDialogModule } from '@angular/material/dialog'; 
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms'; // Necesario para ngModel
-import { CommonModule } from '@angular/common'; // Importar CommonModule para *ngFor
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';  // Necesario para *ngFor
+
 
 // Definir las interfaces para los datos del estadio
 interface Stand {
@@ -32,14 +32,14 @@ interface Stadium {
   styleUrls: ['./stadium-page.component.css'],
   standalone: true, // Este es un componente independiente
   imports: [
-    CommonModule, // Necesario para *ngFor
-    MatDialogModule, 
-    MatCardModule, 
-    MatTableModule, 
-    MatButtonModule, 
-    MatFormFieldModule, 
-    MatInputModule,
-    FormsModule // Necesario para ngModel
+    CommonModule,       // Necesario para *ngFor
+    MatDialogModule,     // Para diálogos
+    MatCardModule,       // Para tarjetas
+    MatTableModule,      // Para tablas
+    MatButtonModule,     // Para botones
+    MatFormFieldModule,  // Para formularios
+    MatInputModule,      // Para inputs
+    FormsModule          // Para ngModel
   ]
 })
 export class StadiumPageComponent implements OnInit {
