@@ -2,13 +2,17 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; // Necesario para *ngFor
-import { MatDialogModule } from '@angular/material/dialog'; // Importar MatDialogModule correctamente
+import { MatDialogModule } from '@angular/material/dialog'; // Asegúrate de importar MatDialogModule correctamente
+import { Router } from '@angular/router'; // Asegúrate de importar Router
+import { AuthService } from '../../services/login.user.service';
 
 // Definir las interfaces para los datos del estadio
 interface Stand {
@@ -34,7 +38,9 @@ interface Stadium {
     MatTableModule,
     MatButtonModule,
     MatFormFieldModule,
+    MatToolbarModule,
     MatInputModule,
+    MatIconModule,
     FormsModule, // Necesario para usar ngModel
   ],
   templateUrl: './stadium-page.component.html',
@@ -42,17 +48,29 @@ interface Stadium {
 })
 export class StadiumPageComponent implements OnInit {
   stadiums: Stadium[] = [];
-  token = 'tu_token_aqui'; // Token de autenticación
-  private apiUrl = 'http://100.26.187.163/fpc/api/stadiums'; // URL base
 
-  constructor(private http: HttpClient, public dialog: MatDialog) {}
+  // URL de la API para obtener todos los estadios
+  private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/stadium/all';
+
+  constructor(private http: HttpClient, public dialog: MatDialog, private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.loadStadiums();
   }
 
   loadStadiums() {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
+    const token = this.authService.getToken(); // Obtener el token del AuthService
+
+    if (!token) {
+      console.error('No se encontró el token');
+      return;
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`, // Usar el token del AuthService
+      'Content-Type': 'application/json'  // Asegúrate de que el tipo de contenido esté correcto
+    });
+
     this.http.get<Stadium[]>(this.apiUrl, { headers })
       .subscribe(
         data => {
@@ -60,10 +78,14 @@ export class StadiumPageComponent implements OnInit {
         },
         error => {
           console.error('Error cargando estadios', error);
+          if (error.status === 403) {
+            alert('No tienes permiso para acceder a esta información. Verifica tu token.');
+          }
         }
       );
   }
 
+  // Método para crear un estadio
   openAddStadiumDialog() {
     const dialogRef = this.dialog.open(StadiumDialog, {
       width: '400px',
@@ -72,7 +94,18 @@ export class StadiumPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
+        const token = this.authService.getToken(); // Obtener el token del AuthService
+
+        if (!token) {
+          console.error('No se encontró el token');
+          return;
+        }
+
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        });
+
         const newStadium = {
           stadium: {
             id: 0,
@@ -81,14 +114,17 @@ export class StadiumPageComponent implements OnInit {
           },
           image: ''
         };
-        this.http.post<any>(this.apiUrl, newStadium, { headers })
+
+        // Ruta para crear un nuevo estadio
+        this.http.post<any>('http://100.26.187.163/fpc/api/club-admin/stadium/create', newStadium, { headers })
           .subscribe(() => {
-            this.loadStadiums();
+            this.loadStadiums(); // Recarga la lista de estadios
           });
       }
     });
   }
 
+  // Método para agregar una tribuna
   openAddTribunaDialog(stadium: Stadium) {
     const dialogRef = this.dialog.open(TribunaDialog, {
       width: '400px',
@@ -102,21 +138,77 @@ export class StadiumPageComponent implements OnInit {
           name: result.nombre,
           capacity: result.capacidad
         };
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
+
+        const token = this.authService.getToken(); // Obtener el token del AuthService
+
+        if (!token) {
+          console.error('No se encontró el token');
+          return;
+        }
+
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        });
+
+        // Ruta para agregar una tribuna a un estadio
         this.http.post<any>(`${this.apiUrl}/${stadium.id}/stands`, tribuna, { headers })
           .subscribe(() => {
-            this.loadStadiums();
+            this.loadStadiums(); // Recarga la lista de estadios
           });
       }
     });
   }
 
+  // Método para eliminar una tribuna
   deleteTribuna(stadium: Stadium, tribuna: Stand) {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
+    const token = this.authService.getToken(); // Obtener el token del AuthService
+
+    if (!token) {
+      console.error('No se encontró el token');
+      return;
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    // Ruta para eliminar una tribuna
     this.http.delete<any>(`${this.apiUrl}/${stadium.id}/stands/${tribuna.id}`, { headers })
       .subscribe(() => {
-        this.loadStadiums();
+        this.loadStadiums(); // Recarga la lista de estadios
       });
+  }
+
+  // Método para eliminar un estadio
+  deleteStadium(stadium: Stadium) {
+    const token = this.authService.getToken(); // Obtener el token del AuthService
+
+    if (!token) {
+      console.error('No se encontró el token');
+      return;
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    // Ruta para eliminar un estadio
+    this.http.delete<any>(`http://100.26.187.163/fpc/api/club-admin/stadium/delete/${stadium.id}`, { headers })
+      .subscribe(() => {
+        this.loadStadiums(); // Recarga la lista de estadios
+      });
+  }
+
+  navigateToHome(): void {
+    this.router.navigate(['home']);
+  }
+
+  // Función para cerrar sesión (Logout)
+  logout(): void {
+    this.router.navigate(['']);
   }
 }
 
@@ -151,7 +243,7 @@ export class StadiumDialog {
   constructor(
     public dialogRef: MatDialogRef<StadiumDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) { }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -193,7 +285,7 @@ export class TribunaDialog {
   constructor(
     public dialogRef: MatDialogRef<TribunaDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) { }
 
   onNoClick(): void {
     this.dialogRef.close();

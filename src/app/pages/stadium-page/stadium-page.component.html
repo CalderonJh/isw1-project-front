@@ -1,5 +1,21 @@
+<hr class="divider" />
+
+<mat-toolbar color="primary">
+  <span>Bienvenido ADMIN</span>
+  <div class="toolbar-actions">
+    <!-- Botón para ir al Home -->
+    <button mat-icon-button (click)="navigateToHome()">
+      <mat-icon>home</mat-icon> <!-- Ícono de Home -->
+    </button>
+    <!-- Botón para Logout -->
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon> <!-- Ícono de Logout -->
+    </button>
+  </div>
+</mat-toolbar>
+
 <div class="stadium-container">
-  <h2>Estadios</h2>
+  <h2 class="section-title">Estadios</h2>
   
   <button mat-raised-button color="primary" (click)="openAddStadiumDialog()">Agregar Estadio</button>
   
