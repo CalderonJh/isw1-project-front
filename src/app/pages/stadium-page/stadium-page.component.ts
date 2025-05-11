@@ -26,7 +26,6 @@ interface Stadium {
   image: string;
 }
 
-
 @Component({
   selector: 'app-stadium-page',
   templateUrl: './stadium-page.component.html',
