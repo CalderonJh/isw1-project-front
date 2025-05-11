@@ -3,51 +3,70 @@
 <mat-toolbar color="primary">
   <span>Bienvenido ADMIN</span>
   <div class="toolbar-actions">
-    <!-- Botón para ir al Home -->
-    <button mat-icon-button (click)="navigateToHome()">
-      <mat-icon>home</mat-icon> <!-- Ícono de Home -->
+    <button mat-icon-button (click)="navigateToHome()" matTooltip="Inicio">
+      <mat-icon>home</mat-icon>
     </button>
-    <!-- Botón para Logout -->
-    <button mat-icon-button (click)="logout()">
-      <mat-icon>logout</mat-icon> <!-- Ícono de Logout -->
+    <button mat-icon-button (click)="logout()" matTooltip="Cerrar sesión">
+      <mat-icon>logout</mat-icon>
     </button>
   </div>
 </mat-toolbar>
 
 <div class="stadium-container">
-  <h2 class="section-title">Estadios</h2>
+  <div class="header-section">
+    <h2 class="section-title">Estadios</h2>
+    <button mat-raised-button color="primary" (click)="openAddStadiumDialog()">
+      <mat-icon>add</mat-icon> Agregar Estadio
+    </button>
+  </div>
   
-  <button mat-raised-button color="primary" (click)="openAddStadiumDialog()">Agregar Estadio</button>
-  
-  <div *ngFor="let stadium of stadiums">
+  <div *ngFor="let stadium of stadiums" class="stadium-list">
     <mat-card class="stadium-card">
-      <h3>{{ stadium.name }}</h3>
+      <div class="stadium-header">
+        <h3>{{ stadium.name }}</h3>
+        <button mat-raised-button color="warn" (click)="deleteStadium(stadium)">
+          <mat-icon>delete</mat-icon> Eliminar Estadio
+        </button>
+      </div>
       
-      <h4>Tribunas</h4>
-      <table mat-table [dataSource]="stadium.stands">
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef>Nombre</th>
-          <td mat-cell *matCellDef="let tribuna">{{ tribuna.name }}</td>
-        </ng-container>
+      <!-- Mostrar imagen si existe -->
+      <img *ngIf="stadium.image" [src]="'http://100.26.187.163/fpc/' + stadium.image" alt="Imagen del estadio" class="stadium-image">
+      
+      <div class="tribunas-section">
+        <div class="tribunas-header">
+          <h4>Tribunas</h4>
+          <button mat-raised-button color="accent" (click)="openAddTribunaDialog(stadium)">
+            <mat-icon>add</mat-icon> Agregar Tribuna
+          </button>
+        </div>
+        
+        <table mat-table [dataSource]="stadium.stands" class="tribunas-table">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let tribuna">{{ tribuna.name }}</td>
+          </ng-container>
 
-        <ng-container matColumnDef="capacity">
-          <th mat-header-cell *matHeaderCellDef>Capacidad</th>
-          <td mat-cell *matCellDef="let tribuna">{{ tribuna.capacity }}</td>
-        </ng-container>
+          <ng-container matColumnDef="capacity">
+            <th mat-header-cell *matHeaderCellDef>Capacidad</th>
+            <td mat-cell *matCellDef="let tribuna">{{ tribuna.capacity | number }}</td>
+          </ng-container>
 
-        <ng-container matColumnDef="acciones">
-          <th mat-header-cell *matHeaderCellDef>Acciones</th>
-          <td mat-cell *matCellDef="let tribuna">
-            <button mat-button (click)="openAddTribunaDialog(stadium)">Editar</button>
-            <button mat-button color="warn" (click)="deleteTribuna(stadium, tribuna)">Eliminar</button>
-          </td>
-        </ng-container>
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let tribuna">
+              <button mat-button (click)="openAddTribunaDialog(stadium)">
+                <mat-icon>edit</mat-icon> Editar
+              </button>
+              <button mat-button color="warn" (click)="deleteTribuna(stadium, tribuna)">
+                <mat-icon>delete</mat-icon> Eliminar
+              </button>
+            </td>
+          </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="['name', 'capacity', 'acciones']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['name', 'capacity', 'acciones'];"></tr>
-      </table>
-
-      <button mat-raised-button color="accent" (click)="openAddTribunaDialog(stadium)">Agregar Tribuna</button>
+          <tr mat-header-row *matHeaderRowDef="['name', 'capacity', 'acciones']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['name', 'capacity', 'acciones'];"></tr>
+        </table>
+      </div>
     </mat-card>
   </div>
 </div>

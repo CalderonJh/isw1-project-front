@@ -1,90 +1,154 @@
 :host {
   display: block;
   min-height: 100vh;
-  color: #bbbec3;
+  color: #333;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 20px;
-}
-
-/* Para evitar que el contenido quede detrás de la barra de navegación */
-body {
-  padding-top: 80px;
+  background-color: #f5f5f5;
 }
 
 /* Barra de navegación */
 mat-toolbar {
   background-color: #2e74be;
-  color: rgb(255, 255, 255);
+  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  position: fixed; /* Fija la barra de navegación */
-  top: 0; /* La coloca en la parte superior */
-  left: 0; /* Asegura que esté alineada a la izquierda */
-  width: 100%; /* Ocupa todo el ancho de la ventana */
-  z-index: 1000; /* Asegura que esté por encima de otros elementos */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más suave */
-  padding: 0 20px; /* Ajusta el espaciado para que no esté demasiado pegado a los bordes */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  height: 64px;
 }
 
-/* Título de la sección */
+.toolbar-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Contenedor principal */
+.stadium-container {
+  max-width: 1200px;
+  margin: 80px auto 20px;
+  padding: 20px;
+}
+
 .section-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 600;
-  color: #333;
+  color: #2e74be;
+  margin-bottom: 20px;
+}
+
+/* Tarjetas de estadio */
+.stadium-card {
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.stadium-card h3 {
+  font-size: 22px;
+  color: #2e74be;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.stadium-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Tabla de tribunas */
+.tribunas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.tribunas-header h4 {
+  font-size: 18px;
+  color: #444;
   margin: 0;
 }
 
-/* Estilo para el botón "Nuevo Partido" */
-button.mat-raised-button {
-  margin-left: 10px;
-  padding: 10px 20px;
-  background-color: #2e74be;
-  color: white;
-  border-radius: 5px;
-}
-
-button.mat-raised-button:hover {
-  background-color: #1f5b8c; /* Cambio de color al pasar el mouse */
-}
-
-/* Estilos para los íconos en la barra de navegación */
-.toolbar-actions button {
-  margin-left: 10px;
-  color: white;
-}
-
-/* Divider */
-.divider {
-  margin: 20px 0;
-  border: 0;
-  border-top: 1px solid #ccc;
-}
-
-/* Ajustes para la tabla */
 table {
   width: 100%;
+  margin-bottom: 15px;
+  border-collapse: collapse;
 }
 
-th.mat-sort-header-sorted {
-  color: black;
+th.mat-header-cell {
+  background-color: #2e74be;
+  color: white;
+  font-weight: 500;
+  padding: 12px 16px;
+  text-align: left;
 }
 
-/* Estilo para los encabezados de tabla */
-th.mat-sort-header {
-  cursor: pointer;
+td.mat-cell {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
 }
 
-/* Estilo para las filas de la tabla */
-.mat-header-row, .mat-row {
-  text-align: center;
+/* Botones */
+button.mat-raised-button {
+  margin: 5px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-/* Ajustes para la responsividad */
-@media (max-width: 600px) {
-  .mat-header-row, .mat-row {
+button[color="primary"] {
+  background-color: #2e74be;
+  color: white;
+}
+
+button[color="accent"] {
+  background-color: #4caf50;
+  color: white;
+}
+
+button[color="warn"] {
+  background-color: #f44336;
+  color: white;
+}
+
+button.mat-button {
+  margin: 0 5px;
+  padding: 6px 12px;
+}
+
+/* Acciones */
+.actions-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stadium-card {
+    padding: 15px;
+  }
+  
+  th.mat-header-cell, td.mat-cell {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  
+  button.mat-raised-button {
+    padding: 6px 12px;
     font-size: 14px;
   }
 }
