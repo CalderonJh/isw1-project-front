@@ -12,34 +12,8 @@
 
 <hr class="divider" />
 
-<!-- Título y botón "Nuevo" -->
+<!-- Título y botón "Nuevo Partido" -->
 <div class="header-container">
   <h2 class="section-title">Partidos</h2>
-  <button mat-raised-button color="accent" class="new-button">Nuevo</button>
+  <button mat-raised-button color="primary" (click)="openDialog()">Nuevo Partido</button>
 </div>
-
-<!-- Tabla de Partidos -->
-<mat-table [dataSource]="partidos" class="mat-elevation-z8">
-  <ng-container matColumnDef="visitante">
-    <th mat-header-cell *matHeaderCellDef> Visitante </th>
-    <td mat-cell *matCellDef="let partido"> {{partido.visitante}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="estadio">
-    <th mat-header-cell *matHeaderCellDef> Estadio </th>
-    <td mat-cell *matCellDef="let partido"> {{partido.estadio}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="temporada">
-    <th mat-header-cell *matHeaderCellDef> Temporada </th>
-    <td mat-cell *matCellDef="let partido"> {{partido.temporada}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="fecha">
-    <th mat-header-cell *matHeaderCellDef> Fecha </th>
-    <td mat-cell *matCellDef="let partido"> {{partido.fecha}} </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</mat-table>

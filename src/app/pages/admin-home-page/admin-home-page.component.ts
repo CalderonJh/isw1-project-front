@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';  // Para los botones
 import { MatToolbarModule } from '@angular/material/toolbar';  // Para la barra de herramientas
 import { MatIconModule } from '@angular/material/icon';  // Para los íconos
 import { CommonModule } from '@angular/common'; // Importa CommonModule
+import { AuthGuard } from '../../services/auth.guard.service';
 
 
 @Component({
@@ -17,25 +18,22 @@ import { CommonModule } from '@angular/common'; // Importa CommonModule
   styleUrls: ['./admin-home-page.component.css'], // Cambié "styleUrl" por "styleUrls" (es el nombre correcto)
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class AdminHomePageComponent {
   selected: string = ''; // Para gestionar el botón seleccionado
+  canActivate: boolean = true; // Inicialización de la propiedad
 
-  constructor(private router: Router) {} // Inyectamos el servicio Router
+  constructor(private router: Router) {}
 
   // Este es el método navigateTo que maneja la navegación
-  navigateTo(page: string): void {
-    this.selected = page; // Guardamos el valor de la página seleccionada
-    this.router.navigate([`/admin/${page}`]); // Navegamos a la página correspondiente
-  }
-
-  // Función para ir al inicio
-  navigateToHome(): void {
-    this.router.navigate(['/admin/home']); // Navega a la página principal del admin
+  navigateTo(routes: string): void {
+    this.selected = routes; // Guardamos el valor de la página seleccionada
+    this.router.navigate([`/${routes}`]); // Navegamos a la página correspondiente
   }
 
   // Función para cerrar sesión (Logout)
   logout(): void {
     // Lógica para cerrar sesión, puede incluir eliminación de datos de usuario, redirección a la página de login, etc.
-    this.router.navigate(['/login']); // Redirige a la página de login
+    this.router.navigate(['']); // Redirige a la página de login
   }
 }

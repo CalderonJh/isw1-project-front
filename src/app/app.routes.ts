@@ -1,33 +1,29 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './services/auth.guard.service';
 
 export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/admin-home-page/admin-home-page.component').then(
-        (m) => m.AdminHomePageComponent
-      ),
-  },
-  {
-    path: 'login',
-    loadComponent: () =>
       import('./pages/login-page/login-page.component').then(
-        (m) => m.LoginPageComponent
+        (m) => m.LoginPageComponent,
       ),
   },
   {
-    path: 'register',
+    path: 'home',
     loadComponent: () =>
-      import('./pages/register-page/register-page.component').then(
-        (m) => m.RegisterPageComponent
+      import('./pages/admin-home-page/admin-home-page.component').then(
+        (m) => m.AdminHomePageComponent,
       ),
+    canActivate: [AuthGuard], // Protege esta ruta
   },
   {
-    path: 'matches',
+    path: 'partidos',
     loadComponent: () =>
       import('./pages/sport-match-page/sport-match-page.component').then(
-        (m) => m.SportMatchPageComponent
+        (m) => m.SportMatchPageComponent,
       ),
+    canActivate: [AuthGuard], // Protege esta ruta
   },
   {
     path: 'favorite',
@@ -37,32 +33,19 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'stadiums',
+    path: 'estadios',
     loadComponent: () =>
       import('./pages/stadium-page/stadium-page.component').then(
-        (m) => m.StadiumPageComponent
+        (m) => m.StadiumPageComponent,
       ),
+    canActivate: [AuthGuard], // Protege esta ruta
   },
   {
-    path: 'tickets',
+    path: 'boletas',
     loadComponent: () =>
       import(
         './pages/view-ticket-offers-page/view-ticket-offers-page.component'
       ).then((m) => m.ViewTicketOffersPageComponent),
-  },
-  {
-    path: 'profile',
-    loadComponent: () =>
-      import(
-        './pages/user-profile-page/user-profile-page.component'
-      ).then((m) => m.UserProfilePageComponent),
-  },
-  {
-    path: 'dashboardUser',
-    loadComponent: () =>
-      import(
-        './pages/dashboard-user-page/dashboard-user-page.component'
-      ).then((m) => m.DashboardPageComponent),
   },
   {
     path: 'tickets/create',
@@ -82,24 +65,11 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'admin/abonos',
+    path: 'abonos',
     loadComponent: () =>
       import('./pages/abono-page/abono-page.component').then(
-        (m) => m.AbonoPageComponent
+        (m) => m.AbonoPageComponent,
       ),
-  },
-  {
-    path: 'admin/estadios',
-    loadComponent: () =>
-      import('./pages/stadium-page/stadium-page.component').then(
-        (m) => m.StadiumPageComponent
-      ),
-  },
-  {
-    path: 'admin/partidos',
-    loadComponent: () =>
-      import('./pages/sport-match-page/sport-match-page.component').then(
-        (m) => m.SportMatchPageComponent 
-      ),
+    canActivate: [AuthGuard], // Protege esta ruta
   },
 ];
