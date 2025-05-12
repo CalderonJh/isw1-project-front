@@ -52,38 +52,31 @@ mat-toolbar {
   border: 1px solid #e0e0e0;
 }
 
-.stadium-header h3 {
-  font-size: 22px;
-  color: #2e74be;
-  margin: 0;
+.stadium-header {
+  display: flex;
+  justify-content: space-between; /* Divide el espacio entre el contenido a la izquierda y la imagen a la derecha */
+  align-items: center;
+  gap: 20px;
 }
 
-
-.stadium-card h3 {
-  font-size: 22px;
-  color: #2e74be;
-  margin-bottom: 15px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
+.stadium-info {
+  flex: 1; /* El contenido a la izquierda ocupa el espacio restante */
 }
 
-.stadium-card img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.stadium-image-container {
+  flex-shrink: 0;
+  width: 200px; /* Establece un tamaño fijo para la imagen */
 }
 
 .stadium-image {
-  max-width: 100%;
+  width: 100%; /* Asegura que la imagen ocupe todo el espacio de su contenedor */
   height: auto;
-  border-radius: 4px;
-  margin: 15px 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  max-width: 100%; /* Garantiza que la imagen no sea demasiado grande */
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   display: block;
+  margin: 15px 0; /* Espaciado alrededor de la imagen */
 }
-
 
 /* Tabla de tribunas */
 .tribunas-header {

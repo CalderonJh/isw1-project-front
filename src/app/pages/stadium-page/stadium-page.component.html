@@ -23,22 +23,27 @@
   <div *ngFor="let stadium of stadiums" class="stadium-list">
     <mat-card class="stadium-card">
       <div class="stadium-header">
-        <mat-form-field appearance="outline">
-          <input matInput [(ngModel)]="stadium.name" placeholder="Nombre del estadio" />
-        </mat-form-field>
+        <div class="stadium-info">
+          <mat-form-field appearance="outline">
+            <input matInput [(ngModel)]="stadium.name" placeholder="Nombre del estadio" />
+          </mat-form-field>
+          <div class="stadium-actions">
+            <button mat-raised-button color="accent" (click)="updateStadium(stadium)">
+              <mat-icon>edit</mat-icon> Guardar Cambios
+            </button>
+            <input type="file" accept="image/*" (change)="onImageSelected($event, stadium.id)" />
+            <button mat-raised-button color="warn" (click)="deleteStadium(stadium)">
+              <mat-icon>delete</mat-icon> Eliminar Estadio
+            </button>
+          </div>
+        </div>
 
-        <div class="stadium-actions">
-          <button mat-raised-button color="accent" (click)="updateStadium(stadium)">
-            <mat-icon>edit</mat-icon> Guardar Cambios
-          </button>
-          <input type="file" accept="image/*" (change)="onImageSelected($event, stadium.id)" />
-          <button mat-raised-button color="warn" (click)="deleteStadium(stadium)">
-            <mat-icon>delete</mat-icon> Eliminar Estadio
-          </button>
+        <!-- Imagen en la parte derecha -->
+        <div class="stadium-image-container">
+          <img *ngIf="stadium.imageUrl" [src]="stadium.imageUrl" [alt]="stadium.name" class="stadium-image" />
         </div>
       </div>
-      <!-- Mostrar imagen desde el servicio de imágenes -->
-      <img *ngIf="stadium.imageUrl" [src]="stadium.imageUrl" [alt]="stadium.name" class="stadium-image" />
+
       <div class="tribunas-section">
         <div class="tribunas-header">
           <h4>Tribunas</h4>
