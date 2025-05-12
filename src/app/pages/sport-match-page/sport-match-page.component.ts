@@ -1,9 +1,26 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  model,
+} from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog'; // Importa MatDialog
+import { FormBuilder, FormGroup, FormsModule } from '@angular/forms'; // Importa FormBuilder y FormGroup
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-sport-match-page',
@@ -14,42 +31,76 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SportMatchPageComponent {
-  selected: string = ''; // Para gestionar el botón seleccionado
-  isAddFormVisible: boolean = false; // Controla la visibilidad del formulario de agregar partido
-  newPartido = { visitante: '', estadio: '', temporada: '', fecha: '' }; // Datos del nuevo partido
-  partidos = [
-    { visitante: 'Equipo A', estadio: 'Estadio A', temporada: '2023', fecha: '2023-04-01' },
-    { visitante: 'Equipo B', estadio: 'Estadio B', temporada: '2023', fecha: '2023-04-02' },
-    { visitante: 'Equipo C', estadio: 'Estadio C', temporada: '2023', fecha: '2023-04-03' }
-  ];
-  displayedColumns: string[] = ['visitante', 'estadio', 'temporada', 'fecha'];
+  partidoForm: FormGroup; // Define el formulario reactivo
 
-  constructor(private router: Router) {}
-
-  // Abre el formulario de agregar un nuevo partido
-  openAddForm(): void {
-    this.isAddFormVisible = true;
-  }
-
-  // Cierra el formulario sin guardar cambios
-  closeAddForm(): void {
-    this.isAddFormVisible = false;
-    this.newPartido = { visitante: '', estadio: '', temporada: '', fecha: '' }; // Limpiar formulario
-  }
-
-  // Agrega el nuevo partido a la lista y cierra el formulario
-  addPartido(): void {
-    this.partidos.push({ ...this.newPartido }); // Agregar una copia del nuevo partido
-    this.closeAddForm(); // Cerrar el formulario
+  constructor(
+    private router: Router,
+    private dialog: MatDialog, // Agrega el servicio MatDialog
+    private fb: FormBuilder, // Agrega FormBuilder para crear el formulario reactivo
+  ) {
+    // Crea el formulario reactivo
+    this.partidoForm = this.fb.group({
+      equipoVisitante: [''],
+      estadio: [''],
+      temporada: this.fb.group({
+        anio: [''],
+        periodo: [''],
+      }),
+      inicio: this.fb.group({
+        fecha: [''],
+        hora: [''],
+      }),
+    });
   }
 
   // Función para ir al inicio
   navigateToHome(): void {
-    this.router.navigate(['']);
+    this.router.navigate(['adminhome']); // Navega a la página principal del admin
   }
 
   // Función para cerrar sesión (Logout)
   logout(): void {
-    this.router.navigate(['/login']);
+    this.router.navigate(['']); // Redirige a la página de login
   }
+
+  // Abre el dialogo del partido
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialog);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        console.log('Dialog result:', result);
+      }
+    });
+  }
+}
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: './dialog-overview-example-dialog.html',
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+  ],
+  standalone: true,
+})
+export class DialogOverviewExampleDialog {
+  readonly dialogRef = inject(MatDialogRef<DialogOverviewExampleDialog>);
+  readonly data = inject<DialogData>(MAT_DIALOG_DATA);
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+export interface DialogData {
+  animal: string;
+  name: string;
 }
