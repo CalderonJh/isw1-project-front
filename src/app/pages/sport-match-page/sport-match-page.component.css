@@ -29,7 +29,6 @@ mat-toolbar {
   padding: 0 20px; /* Ajusta el espaciado para que no esté demasiado pegado a los bordes */
 }
 
-/* Contenedor de la sección de "Partidos" */
 .header-container {
   display: flex;
   justify-content: space-between;
