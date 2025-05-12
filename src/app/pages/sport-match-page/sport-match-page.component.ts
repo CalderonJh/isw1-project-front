@@ -55,7 +55,7 @@ export class SportMatchPageComponent {
 
   // Función para ir al inicio
   navigateToHome(): void {
-    this.router.navigate(['adminhome']); // Navega a la página principal del admin
+    this.router.navigate(['home']); // Navega a la página principal del admin
   }
 
   // Función para cerrar sesión (Logout)
