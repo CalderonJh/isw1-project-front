@@ -12,7 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 
-import { StadiumService, Stadium, Stand } from '../../services/stadium.service';
+import { StadiumService, Stadium, Stand, StadiumWithImage} from '../../services/stadium.service';
 import { StadiumDialog } from './stadium-dialog.component';
 import { TribunaDialog } from './tribuna-dialog.component';
 
@@ -35,7 +35,7 @@ import { TribunaDialog } from './tribuna-dialog.component';
   ],
 })
 export class StadiumPageComponent implements OnInit {
-  stadiums: Stadium[] = [];
+  stadiums: StadiumWithImage[] = [];
 
   constructor(
     private stadiumService: StadiumService,
