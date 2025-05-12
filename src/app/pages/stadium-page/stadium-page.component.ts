@@ -12,10 +12,11 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { forkJoin, of } from 'rxjs';
+import { switchMap, map, catchError } from 'rxjs/operators';
 import { AuthService } from '../../services/login.user.service';
 
 interface Stand {
-  id: number;
   name: string;
   capacity: number;
 }
@@ -24,8 +25,10 @@ interface Stadium {
   id: number;
   name: string;
   stands: Stand[];
-  image: string;
+  image: string; // Este es el publicId
+  imageUrl?: string; // Esta es la URL real que se mostrará
 }
+
 
 @Component({
   selector: 'app-stadium-page',
@@ -47,7 +50,7 @@ interface Stadium {
 })
 export class StadiumPageComponent implements OnInit {
   stadiums: Stadium[] = [];
-  private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/stadium/all';
+  private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/stadium';
 
   constructor(private http: HttpClient, public dialog: MatDialog, private router: Router, private authService: AuthService) { }
 
@@ -57,29 +60,34 @@ export class StadiumPageComponent implements OnInit {
 
   loadStadiums() {
     const token = this.authService.getToken();
+    if (!token) return;
 
-    if (!token) {
-      console.error('No se encontró el token');
-      return;
-    }
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
 
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-    });
+    this.http.get<Stadium[]>(`${this.apiUrl}/all`, { headers })
+      .pipe(
+        switchMap((stadiums) => {
+          const requests = stadiums.map(stadium => {
+            if (stadium.image) {
+              return this.http
+                .get<{ url: string }>(`http://100.26.187.163/fpc/api/images/${stadium.image}`, { headers })
+                .pipe(
+                  map(response => ({ ...stadium, imageUrl: response.url })),
+                  catchError(() => of({ ...stadium, imageUrl: 'assets/img/error.jpg' })) // Imagen de error
+                );
+            } else {
+              return of({ ...stadium, imageUrl: 'assets/img/defecto.jpg' }); // Imagen por defecto
+            }
+          });
 
-    this.http.get<Stadium[]>(this.apiUrl, { headers })
-      .subscribe(
-        data => {
-          this.stadiums = data;
-        },
-        error => {
-          console.error('Error cargando estadios', error);
-          if (error.status === 403) {
-            alert('No tienes permiso para acceder a esta información. Verifica tu token.');
-          }
-        }
-      );
+          return forkJoin(requests);
+        })
+      )
+      .subscribe((finalStadiums: Stadium[]) => {
+        this.stadiums = finalStadiums;
+      });
   }
+
 
   openAddStadiumDialog() {
     const dialogRef = this.dialog.open(StadiumDialog, {
@@ -88,48 +96,26 @@ export class StadiumPageComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result && result.name) {
+      if (result?.name) {
         const token = this.authService.getToken();
-
-        if (!token) {
-          console.error('No se encontró el token');
-          return;
-        }
+        if (!token) return;
 
         const formData = new FormData();
+        const defaultStand = { name: 'Tribuna Principal', capacity: 1000 };
 
-        // Crear tribuna por defecto
-        const defaultStand = {
-          name: 'Tribuna Principal',
-          capacity: 1000  // Capacidad por defecto
-        };
-
-        // Crear objeto stadium con tribuna incluida
         const stadiumData = {
           name: result.name,
-          image: result.image ? result.image.name : null,
-          stands: [defaultStand]  // Incluir la tribuna por defecto
+          stands: [defaultStand],
+          imageId: ''
         };
 
-        formData.append('stadium', new Blob([JSON.stringify(stadiumData)], {
-          type: 'application/json'
-        }));
+        formData.append('stadium', new Blob([JSON.stringify(stadiumData)], { type: 'application/json' }));
+        if (result.image) formData.append('image', result.image);
 
-        // Si hay imagen, añadirla al FormData
-        if (result.image) {
-          formData.append('image', result.image);
-        }
+        const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
 
-        const headers = new HttpHeaders({
-          'Authorization': `Bearer ${token}`,
-        });
-
-        this.http.post<any>('http://100.26.187.163/fpc/api/club-admin/stadium/create', formData, { headers })
-          .subscribe(() => {
-            this.loadStadiums();
-          }, error => {
-            console.error('Error al crear estadio', error);
-          });
+        this.http.post(`${this.apiUrl}/create`, formData, { headers })
+          .subscribe(() => this.loadStadiums());
       }
     });
   }
@@ -137,69 +123,79 @@ export class StadiumPageComponent implements OnInit {
   openAddTribunaDialog(stadium: Stadium) {
     const dialogRef = this.dialog.open(TribunaDialog, {
       width: '400px',
-      data: { estadioId: stadium.id, nombre: '', capacidad: '' }
+      data: { nombre: '', capacidad: '' }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        const token = this.authService.getToken();
-
-        if (!token) {
-          console.error('No se encontró el token');
-          return;
-        }
-
-        const formData = new FormData();
-        formData.append('name', result.nombre);
-        formData.append('capacity', result.capacidad);
-
-        const headers = new HttpHeaders({
-          'Authorization': `Bearer ${token}`,
-        });
-
-        this.http.post<any>(`${this.apiUrl}/${stadium.id}/stands`, formData, { headers })
-          .subscribe(() => {
-            this.loadStadiums();
-          });
+      if (result?.nombre && result?.capacidad) {
+        stadium.stands.push({ name: result.nombre, capacity: +result.capacidad });
+        this.updateStadium(stadium);
       }
     });
   }
 
-  deleteTribuna(stadium: Stadium, tribuna: Stand) {
+  updateStadium(stadium: Stadium) {
     const token = this.authService.getToken();
-
-    if (!token) {
-      console.error('No se encontró el token');
-      return;
-    }
+    if (!token) return;
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
     });
 
-    this.http.delete<any>(`${this.apiUrl}/${stadium.id}/stands/${tribuna.id}`, { headers })
-      .subscribe(() => {
-        this.loadStadiums();
-      });
+    const payload = {
+      id: stadium.id,
+      name: stadium.name,
+      stands: stadium.stands,
+      imageId: stadium.image
+    };
+
+    this.http.put(`${this.apiUrl}/update/${stadium.id}`, payload, { headers })
+      .subscribe(() => this.loadStadiums());
+  }
+
+  updateStadiumImage(stadiumId: number, image: File) {
+    const token = this.authService.getToken();
+    if (!token) return;
+
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+    const formData = new FormData();
+    formData.append('image', image);
+
+    this.http.put(`${this.apiUrl}/update/${stadiumId}/image`, formData, { headers })
+      .subscribe(() => this.loadStadiums());
   }
 
   deleteStadium(stadium: Stadium) {
     const token = this.authService.getToken();
+    if (!token) return;
 
-    if (!token) {
-      console.error('No se encontró el token');
-      return;
-    }
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
 
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
+    this.http.delete(`${this.apiUrl}/delete/${stadium.id}`, { headers })
+      .subscribe(() => this.loadStadiums());
+  }
+
+  deleteTribuna(stadium: Stadium, tribuna: Stand) {
+    stadium.stands = stadium.stands.filter(t => t.name !== tribuna.name);
+    this.updateStadium(stadium);
+  }
+
+  editTribunaDialog(stadium: Stadium, tribuna: Stand) {
+    const dialogRef = this.dialog.open(TribunaDialog, {
+      width: '400px',
+      data: { nombre: tribuna.name, capacidad: tribuna.capacity }
     });
 
-    this.http.delete<any>(`http://100.26.187.163/fpc/api/club-admin/stadium/delete/${stadium.id}`, { headers })
-      .subscribe(() => {
-        this.loadStadiums();
-      });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        tribuna.name = result.nombre;
+        tribuna.capacity = +result.capacidad;
+        this.updateStadium(stadium);
+      }
+    });
   }
+
 
   navigateToHome(): void {
     this.router.navigate(['home']);
@@ -207,6 +203,14 @@ export class StadiumPageComponent implements OnInit {
 
   logout(): void {
     this.router.navigate(['']);
+  }
+
+  onImageSelected(event: Event, stadiumId: number) {
+    const input = event.target as HTMLInputElement;
+    if (input?.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.updateStadiumImage(stadiumId, file);
+    }
   }
 }
 

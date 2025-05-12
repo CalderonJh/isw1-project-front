@@ -47,8 +47,17 @@ mat-toolbar {
   margin: 20px 0;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
 }
+
+.stadium-header h3 {
+  font-size: 22px;
+  color: #2e74be;
+  margin: 0;
+}
+
 
 .stadium-card h3 {
   font-size: 22px;
@@ -65,6 +74,16 @@ mat-toolbar {
   margin-bottom: 15px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+.stadium-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 15px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: block;
+}
+
 
 /* Tabla de tribunas */
 .tribunas-header {
@@ -151,4 +170,12 @@ button.mat-button {
     padding: 6px 12px;
     font-size: 14px;
   }
+}
+
+.stadium-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+  align-items: center;
 }
