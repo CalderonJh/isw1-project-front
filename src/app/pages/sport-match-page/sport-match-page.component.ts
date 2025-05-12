@@ -78,7 +78,7 @@ export class SportMatchPageComponent {
 
 @Component({
   selector: 'dialog-overview-example-dialog',
-  templateUrl: './ dialog-overview-example-dialog.html',
+  templateUrl: './dialog-overview-example-dialog.html',
   imports: [
     MatFormFieldModule,
     MatInputModule,
