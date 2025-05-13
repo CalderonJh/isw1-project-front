@@ -1,51 +1,48 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  model,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
-} from '@angular/material/dialog'; // Importa MatDialog
-import { FormBuilder, FormGroup, FormsModule } from '@angular/forms'; // Importa FormBuilder y FormGroup
+import { MatDialog } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { SportsMatchesService } from '../../services/sports-matches.service'; 
+import { DialogOverviewExampleDialog } from './dialog-overview-example-dialog.component';
+import { Partido } from './partido.interface';  // Asegúrate de que la ruta sea correcta
 
 @Component({
   selector: 'app-sport-match-page',
-  imports: [MatTableModule, MatIconModule, MatButtonModule, MatToolbarModule],
+  imports: [
+    MatTableModule,
+    MatIconModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+  ],
   templateUrl: './sport-match-page.component.html',
-  standalone: true,
   styleUrls: ['./sport-match-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class SportMatchPageComponent {
-  partidoForm: FormGroup; // Define el formulario reactivo
+  partidoForm: FormGroup;
+  partidos: [] = [];
+  displayedColumns: string[] = ['visitante', 'estadio', 'temporada', 'fecha'];
+  apiUrl = 'http://100.26.187.163/fpc/api/club-admin/match/all';
 
   constructor(
     private router: Router,
-    private dialog: MatDialog, // Agrega el servicio MatDialog
-    private fb: FormBuilder, // Agrega FormBuilder para crear el formulario reactivo
+    private dialog: MatDialog,
+    private fb: FormBuilder,
+    private sportsMatchesService: SportsMatchesService // Inyectamos el servicio de partidos
   ) {
-    // Crea el formulario reactivo
     this.partidoForm = this.fb.group({
       equipoVisitante: [''],
       estadio: [''],
-      temporada: this.fb.group({
-        anio: [''],
-        periodo: [''],
-      }),
       inicio: this.fb.group({
         fecha: [''],
         hora: [''],
@@ -53,24 +50,32 @@ export class SportMatchPageComponent {
     });
   }
 
-  // Función para ir al inicio
-  navigateToHome(): void {
-    this.router.navigate(['adminhome']); // Navega a la página principal del admin
+  ngOnInit(): void {
+    this.loadPartidos(); // Cargar partidos cuando se inicia el componente
+  }
+  
+  loadPartidos() {
+  this.sportsMatchesService.getSportsMatches().subscribe((data: any) => {
+    console.log('Datos recibidos:', data);
+    // Asegúrate de que cada partido tenga un valor válido en 'matchDate'
+    this.partidos = data.map((partido: any) => ({
+      ...partido,
+      visitante: partido.awayClubId,  // Mostrar el ID del equipo visitante
+      estadio: partido.estadioId,      // Mostrar el ID del estadio
+      temporada: `${partido.year} - ${partido.season}`,  // Mostrar la temporada
+      fecha: partido.matchDate ? partido.matchDate.split('T')[0] : 'Fecha no disponible',  // Extraer solo la fecha
+    }));
+  });
   }
 
-  // Función para cerrar sesión (Logout)
-  logout(): void {
-    this.router.navigate(['']); // Redirige a la página de login
-  }
 
-  // Abre el dialogo del partido
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog);
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-      if (result !== undefined) {
-        console.log('Dialog result:', result);
+      console.log('El dialogo fue cerrado');
+      if (result) {
+        this.createPartido(result); // Crear el partido después de cerrar el dialog
       }
     });
   }
@@ -78,7 +83,7 @@ export class SportMatchPageComponent {
 
 @Component({
   selector: 'dialog-overview-example-dialog',
-  templateUrl: './dialog-overview-example-dialog.html',
+  templateUrl: './ dialog-overview-example-dialog.html',
   imports: [
     MatFormFieldModule,
     MatInputModule,
@@ -98,9 +103,8 @@ export class DialogOverviewExampleDialog {
   onNoClick(): void {
     this.dialogRef.close();
   }
-}
 
-export interface DialogData {
-  animal: string;
-  name: string;
+  logout(): void {
+    this.router.navigate(['']);
+  }
 }
