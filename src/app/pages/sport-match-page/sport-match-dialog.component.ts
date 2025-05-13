@@ -9,43 +9,47 @@ import { MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } fr
 @Component({
   selector: 'sport-match-dialog',
   template: `
-    <h2 mat-dialog-title>Nuevo Partido</h2>
-    <mat-dialog-content>
-      <mat-form-field>
-        <mat-label>Equipo Visitante</mat-label>
-        <input matInput [(ngModel)]="equipoVisitante" required />
-      </mat-form-field>
+    <mat-dialog-content class="dialog-content p-5">
+  <h2 mat-dialog-title class="dialog-title text-center text-xl font-semibold text-[#2e74be] mb-5">
+    Nuevo Partido
+  </h2>
 
-      <mat-form-field>
-        <mat-label>Estadio</mat-label>
-        <input matInput [(ngModel)]="estadio" required />
-      </mat-form-field>
+  <mat-form-field appearance="outline" class="form-field w-full mb-5">
+    <mat-label>Equipo Visitante</mat-label>
+    <input matInput [(ngModel)]="equipoVisitante" required class="input-field" />
+  </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Temporada Año</mat-label>
-        <input matInput [(ngModel)]="temporadaAnio" required />
-      </mat-form-field>
+  <mat-form-field appearance="outline" class="form-field w-full mb-5">
+    <mat-label>Estadio</mat-label>
+    <input matInput [(ngModel)]="estadio" required class="input-field" />
+  </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Temporada Periodo</mat-label>
-        <input matInput [(ngModel)]="temporadaPeriodo" required />
-      </mat-form-field>
+  <mat-form-field appearance="outline" class="form-field w-full mb-5">
+    <mat-label>Temporada Año</mat-label>
+    <input matInput [(ngModel)]="temporadaAnio" required class="input-field" />
+  </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Fecha</mat-label>
-        <input matInput [(ngModel)]="fecha" required />
-      </mat-form-field>
+  <mat-form-field appearance="outline" class="form-field w-full mb-5">
+    <mat-label>Temporada Periodo</mat-label>
+    <input matInput [(ngModel)]="temporadaPeriodo" required class="input-field" />
+  </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Hora</mat-label>
-        <input matInput [(ngModel)]="hora" required />
-      </mat-form-field>
-    </mat-dialog-content>
+  <mat-form-field appearance="outline" class="form-field w-full mb-5">
+    <mat-label>Fecha</mat-label>
+    <input matInput [(ngModel)]="fecha" required class="input-field" />
+  </mat-form-field>
 
-    <mat-dialog-actions>
-      <button mat-button (click)="onNoClick()">Cancelar</button>
-      <button mat-button (click)="onSave()">Guardar</button>
-    </mat-dialog-actions>
+  <mat-form-field appearance="outline" class="form-field w-full mb-5">
+    <mat-label>Hora</mat-label>
+    <input matInput [(ngModel)]="hora" required class="input-field" />
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions flex justify-end p-4 bg-[#f9f9f9]">
+  <button mat-button class="mat-button bg-[#2e74be] text-white px-4 py-2 rounded hover:bg-[#1f5b8c]" (click)="onNoClick()">Cancelar</button>
+  <button mat-button class="mat-button bg-[#2e74be] text-white px-4 py-2 rounded hover:bg-[#1f5b8c]" (click)="onSave()">Guardar</button>
+</mat-dialog-actions>
+
   `,
   imports: [
     MatFormFieldModule,
