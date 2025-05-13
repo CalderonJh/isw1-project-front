@@ -1,29 +1,46 @@
-// src/app/sports-matches.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthService } from './login.user.service';  // Importa el servicio de autenticación
+import { Partido } from '..//pages/sport-match-page/partido.interface';  
 
 @Injectable({
   providedIn: 'root',
 })
 export class SportsMatchesService {
-  private apiUrl = 'http://localhost:8080/api/sports-matches';  // Cambia la URL según tu API
+  private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/match';  // URL de la API de partidos
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getSportsMatches(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  // Método para obtener todos los partidos (usando la interfaz Partido)
+  getSportsMatches(): Observable<Partido[]> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`, // Asegúrate de que tu AuthService tenga el método getToken()
+    });
+    return this.http.get<Partido[]>(`${this.apiUrl}/all`, { headers });
   }
 
-  createSportsMatch(match: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, match);
+  // Método para crear un partido
+  createSportsMatch(partido: any): Observable<any> {
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${this.authService.getToken()}`, // Asegúrate de que tu AuthService tenga el método getToken()
+  });
+  return this.http.post<any>(`${this.apiUrl}/save`, partido, { headers });
+  }
+  
+  // Método para actualizar un partido
+  updateSportsMatch(id: number, partido: Partido): Observable<Partido> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`, // Asegúrate de que tu AuthService tenga el método getToken()
+    });
+    return this.http.put<Partido>(`${this.apiUrl}/update/${id}`, partido, { headers });
   }
 
-  updateSportsMatch(id: number, match: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, match);
-  }
-
-  deleteSportsMatch(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  // Método para eliminar un partido
+  deleteSportsMatch(id: number): Observable<void> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`, // Asegúrate de que tu AuthService tenga el método getToken()
+    });
+    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`, { headers });
   }
 }
