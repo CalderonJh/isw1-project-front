@@ -45,7 +45,7 @@ export class SportsMatchesService {
       map((response: any[]) => {
         // Buscar el club cuyo ID coincida con el `clubId`
         const club = response.find(c => c.id === clubId);
-        return club ? club.name : 'Club no encontrado';  // Si no se encuentra el club, devolver un mensaje adecuado
+        return club ? club.shortName : 'Club no encontrado';  // Si no se encuentra el club, devolver un mensaje adecuado
       }),
       catchError(error => {
         console.error('Error fetching club name:', error);
