@@ -5,9 +5,9 @@ import { AuthService } from './login.user.service';  // Importa el servicio de a
 
 export interface Partido {
   awayClubId: number;  // ID del equipo visitante
-  estadioId: number;   // ID del estadio
-  year: string;        // Año de la temporada
-  season: string;      // Temporada
+  stadiumId: number;   // ID del estadio
+  year: number;        // Año de la temporada
+  season: number;      // Temporada
   matchDate: string;   // Fecha y hora del partido
 }
 

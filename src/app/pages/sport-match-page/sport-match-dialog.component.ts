@@ -55,21 +55,21 @@ import { MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } fr
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
-    ],
+  ],
 })
 
 export class SportMatchDialog {
   equipoVisitante: string = '';
   estadio: string = '';
-  temporadaAnio: string = '';  
-  temporadaPeriodo: string = '';  
+  temporadaAnio: string = '';
+  temporadaPeriodo: string = '';
   fecha: string = '';
   hora: string = '';
 
   readonly dialogRef = inject(MatDialogRef<SportMatchDialog>);
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close();  // Cerrar sin enviar datos
   }
 
   onSave(): void {
@@ -78,16 +78,27 @@ export class SportMatchDialog {
       return;
     }
 
+    // Verificar que la fecha y la hora sean válidas
+    const fechaHora = this.fecha + 'T' + this.hora;
+    const matchDate = new Date(fechaHora);
+
+    if (isNaN(matchDate.getTime())) {
+      alert('La fecha o la hora proporcionada no es válida');
+      return;
+    }
+
+    // Crear el objeto partido con los datos del formulario
     const partido = {
       awayClubId: parseInt(this.equipoVisitante, 10),
       estadioId: parseInt(this.estadio, 10),
       year: this.temporadaAnio,
       season: this.temporadaPeriodo,
-      matchDate: new Date(this.fecha + 'T' + this.hora).toISOString(),
+      matchDate: matchDate.toISOString(),  // Guardar la fecha correctamente formateada
     };
 
     console.log('Datos del partido:', partido);
 
-    this.dialogRef.close(partido);
+    // Cerrar el diálogo y pasar el objeto partido al componente principal
+    this.dialogRef.close(partido);  // Asegúrate de que este objeto sea pasado correctamente
   }
 }

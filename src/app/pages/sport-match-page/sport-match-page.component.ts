@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common'; // Importar CommonModule
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,12 +12,13 @@ import { MatInputModule } from '@angular/material/input';
 import { SportsMatchesService } from '../../services/sports-matches.service';
 import { SportMatchDialog } from './sport-match-dialog.component';
 import { Partido } from '../../services/sports-matches.service';
-import { forkJoin, map } from 'rxjs';
+import { forkJoin, map, of } from 'rxjs';
 
 
 @Component({
   selector: 'app-sport-match-page',
   imports: [
+    CommonModule,
     MatTableModule,
     MatIconModule,
     MatButtonModule,
@@ -52,55 +54,87 @@ export class SportMatchPageComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.loadPartidos();
+  }
+
+
   loadPartidos() {
     this.sportsMatchesService.getSportsMatches().subscribe((data: Partido[]) => {
       console.log('Datos recibidos:', data);
 
       const partidoObservables = data.map((partido: Partido) => {
         const visitante$ = this.sportsMatchesService.getClubNameById(partido.awayClubId);
-        const estadio$ = this.sportsMatchesService.getStadiumNameById(partido.estadioId);
+
+        // Verificar si estadioId está definido antes de hacer la llamada
+        const estadio$ = partido.stadiumId
+          ? this.sportsMatchesService.getStadiumNameById(partido.stadiumId)
+          : of('Estadio no disponible');
 
         return forkJoin([visitante$, estadio$]).pipe(
           map(([clubName, stadiumName]) => ({
             ...partido,
-            visitante: clubName,  // Asignar el nombre del club
-            estadio: stadiumName, // Asignar el nombre del estadio
+            visitante: clubName,
+            estadio: stadiumName,
             temporada: `${partido.year} - ${partido.season}`,
-            fecha: partido.matchDate ? new Date(partido.matchDate).toLocaleDateString() : 'Fecha no disponible',
+            // Asegurarse de que la fecha no sea nula
+            fecha: partido.matchDate
+              ? new Date(partido.matchDate).toLocaleDateString()
+              : 'Fecha no disponible',
           }))
         );
       });
 
-      // Espera a que todos los observables terminen antes de actualizar la lista de partidos
       forkJoin(partidoObservables).subscribe((partidosConNombre) => {
         this.partidos = partidosConNombre;
+        console.log('Partidos cargados:', this.partidos);  // Verifica si los partidos están bien cargados
       });
     });
   }
+
 
   navigateToHome(): void {
     this.router.navigate(['/home']);
   }
 
   logout(): void {
-    this.router.navigate(['/login']);
+    this.router.navigate(['']);
   }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(SportMatchDialog);
 
     dialogRef.afterClosed().subscribe((result) => {
+
       if (result) {
-        this.createPartido(result);
+        this.createPartido(result);  // Llamar al método para guardar el partido
       }
     });
   }
 
-  createPartido(partido: any): void {
-    console.log('Nuevo partido creado:', partido);
-  }
+  createPartido(partidos: any): void {
 
-  ngOnInit(): void {
-    this.loadPartidos();
+    // Modificar el objeto para que coincida con el formato esperado
+    const partidoToSave = {
+      awayClubId: parseInt(partidos.awayClubId, 10),
+      stadiumId: parseInt(partidos.estadioId, 10),
+      year: partidos.year,
+      season: partidos.season,
+      // Usamos directamente el toISOString() que ya incluye la zona horaria y los milisegundos
+      matchDate: new Date(partidos.matchDate).toISOString(),
+    };
+
+    console.log('Datos del partido listos para guardar:', partidoToSave);
+
+    // Llamada al servicio para guardar el partido
+    this.sportsMatchesService.createSportsMatch(partidoToSave).subscribe(
+      (response) => {
+        console.log('Partido guardado exitosamente:', response);
+        this.loadPartidos();  // Recargar los partidos
+      },
+      (error) => {
+        console.error('Error al guardar el partido:', error);
+      }
+    );
   }
 }
