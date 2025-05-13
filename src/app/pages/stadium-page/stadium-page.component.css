@@ -4,22 +4,175 @@
   color: #bbbec3;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 20px;
+  background-color: #f5f5f5;
 }
 
 /* Barra de navegación */
 mat-toolbar {
   background-color: #2e74be;
-  color: rgb(255, 255, 255);
+  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: 'Roboto', sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  height: 64px;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Contenedor principal */
+.stadium-container {
+  max-width: 1200px;
+  margin: 80px auto 20px;
+  padding: 20px;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #2e74be;
+  margin-bottom: 20px;
+}
+
+/* Tarjetas de estadio */
+.stadium-card {
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+}
+
+.stadium-header {
+  display: flex;
+  justify-content: space-between; /* Divide el espacio entre el contenido a la izquierda y la imagen a la derecha */
+  align-items: center;
+  gap: 20px;
+}
+
+.stadium-info {
+  flex: 1; /* El contenido a la izquierda ocupa el espacio restante */
+}
+
+.stadium-image-container {
+  flex-shrink: 0;
+  width: 200px; /* Establece un tamaño fijo para la imagen */
+}
+
+.stadium-image {
+  width: 100%; /* Asegura que la imagen ocupe todo el espacio de su contenedor */
+  height: auto;
+  max-width: 100%; /* Garantiza que la imagen no sea demasiado grande */
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 15px 0; /* Espaciado alrededor de la imagen */
+}
+
+/* Tabla de tribunas */
+.tribunas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.tribunas-header h4 {
+  font-size: 18px;
+  color: #444;
+  margin: 0;
+}
+
+table {
+  width: 100%;
+  margin-bottom: 15px;
+  border-collapse: collapse;
+}
+
+th.mat-header-cell {
+  background-color: #2e74be;
+  color: white;
   font-weight: 500;
-  position: fixed; /* Fija la barra de navegación */
-  top: 0; /* La coloca en la parte superior */
-  left: 0; /* Asegura que esté alineada a la izquierda */
-  width: 100%; /* Ocupa todo el ancho de la ventana */
-  z-index: 1000; /* Asegura que esté por encima de otros elementos */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más suave */
-  padding: 0 20px; /* Ajusta el espaciado para que no esté demasiado pegado a los bordes */
+  padding: 12px 16px;
+  text-align: left;
+}
+
+td.mat-cell {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Botones */
+button.mat-raised-button {
+  margin: 5px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+button[color="primary"] {
+  background-color: #2e74be;
+  color: white;
+}
+
+button[color="accent"] {
+  background-color: #4caf50;
+  color: white;
+}
+
+button[color="warn"] {
+  background-color: #f44336;
+  color: white;
+}
+
+button.mat-button {
+  margin: 0 5px;
+  padding: 6px 12px;
+}
+
+/* Acciones */
+.actions-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stadium-card {
+    padding: 15px;
+  }
+  
+  th.mat-header-cell, td.mat-cell {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  
+  button.mat-raised-button {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+}
+
+.stadium-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.mat-mdc-icon-button{
+  color: white;
 }

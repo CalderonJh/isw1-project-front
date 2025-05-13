@@ -26,6 +26,13 @@ export const routes: Routes = [
     canActivate: [AuthGuard], // Protege esta ruta
   },
   {
+    path: 'favorite',
+    loadComponent: () =>
+      import('./pages/favorite-team-page/favorite-team-page.component').then(
+        (m) => m.FavoriteTeamPageComponent,
+      ),
+  },
+  {
     path: 'estadios',
     loadComponent: () =>
       import('./pages/stadium-page/stadium-page.component').then(
@@ -39,11 +46,23 @@ export const routes: Routes = [
       import(
         './pages/view-ticket-offers-page/view-ticket-offers-page.component'
       ).then((m) => m.ViewTicketOffersPageComponent),
-    loadChildren: () =>
-      import('./pages/view-ticket-offers-page/ticket.routes').then(
-        (m) => m.routes,
+  },
+  {
+    path: 'tickets/create',
+    loadComponent: () =>
+      import(
+        './pages/create-ticket-offers-page/create-ticket-offers-page.component'
+      ).then((m) => m.CreateTicketOffersPageComponent),
+  },
+
+
+  // Aquí se agregan las rutas del administrador
+  {
+    path: 'admin/boletas',
+    loadComponent: () =>
+      import('./pages/view-ticket-offers-page/view-ticket-offers-page.component').then(
+        (m) => m.ViewTicketOffersPageComponent
       ),
-    canActivate: [AuthGuard], // Protege esta ruta
   },
   {
     path: 'abonos',

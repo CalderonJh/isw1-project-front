@@ -1,1 +1,85 @@
-<p>stadium-page ESTADIOS Y TRIBUNAS </p>
+<hr class="divider" />
+
+<mat-toolbar color="primary">
+  <span>Bienvenido ADMIN</span>
+  <div class="toolbar-actions">
+    <button mat-icon-button (click)="navigateToHome()" matTooltip="Inicio">
+      <mat-icon>home</mat-icon>
+    </button>
+    <button mat-icon-button (click)="logout()" matTooltip="Cerrar sesión">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<div class="stadium-container">
+  <div class="header-section">
+    <h2 class="section-title">Estadios</h2>
+    <button mat-raised-button color="primary" (click)="openAddStadiumDialog()">
+      <mat-icon>add</mat-icon> Agregar Estadio
+    </button>
+  </div>
+
+  <div *ngFor="let stadium of stadiums" class="stadium-list">
+    <mat-card class="stadium-card">
+      <div class="stadium-header">
+        <div class="stadium-info">
+          <mat-form-field appearance="outline">
+            <input matInput [(ngModel)]="stadium.name" placeholder="Nombre del estadio" />
+          </mat-form-field>
+          <div class="stadium-actions">
+            <button mat-raised-button color="accent" (click)="updateStadium(stadium)">
+              <mat-icon>edit</mat-icon> Guardar Cambios
+            </button>
+            <input type="file" accept="image/*" (change)="onImageSelected($event, stadium.id)" />
+            <button mat-raised-button color="warn" (click)="deleteStadium(stadium)">
+              <mat-icon>delete</mat-icon> Eliminar Estadio
+            </button>
+          </div>
+        </div>
+
+        <!-- Imagen en la parte derecha -->
+        <div class="stadium-image-container">
+          <img *ngIf="stadium.imageUrl" [src]="stadium.imageUrl" [alt]="stadium.name" class="stadium-image" />
+        </div>
+      </div>
+
+      <div class="tribunas-section">
+        <div class="tribunas-header">
+          <h4>Tribunas</h4>
+          <button mat-raised-button color="accent" (click)="openAddTribunaDialog(stadium)">
+            <mat-icon>add</mat-icon> Agregar Tribuna
+          </button>
+        </div>
+
+        <table mat-table [dataSource]="stadium.stands" class="tribunas-table">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let tribuna">{{ tribuna.name }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="capacity">
+            <th mat-header-cell *matHeaderCellDef>Capacidad</th>
+            <td mat-cell *matCellDef="let tribuna">{{ tribuna.capacity | number }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let tribuna">
+              <button mat-button (click)="editTribunaDialog(stadium, tribuna)">
+                <mat-icon>edit</mat-icon> Editar
+              </button>
+
+              <button mat-button color="warn" (click)="deleteTribuna(stadium, tribuna)">
+                <mat-icon>delete</mat-icon> Eliminar
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['name', 'capacity', 'acciones']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['name', 'capacity', 'acciones'];"></tr>
+        </table>
+      </div>
+    </mat-card>
+  </div>
+</div>

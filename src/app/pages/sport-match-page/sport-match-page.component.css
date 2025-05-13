@@ -1,14 +1,10 @@
+/* Estilos generales */
 :host {
   display: block;
   min-height: 100vh;
   color: #bbbec3;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 20px;
-}
-
-/* Para evitar que el contenido quede detrás de la barra de navegación */
-body {
-  padding-top: 80px;
 }
 
 /* Barra de navegación */
@@ -20,80 +16,142 @@ mat-toolbar {
   align-items: center;
   font-family: 'Roboto', sans-serif;
   font-weight: 500;
-  position: fixed; /* Fija la barra de navegación */
-  top: 0; /* La coloca en la parte superior */
-  left: 0; /* Asegura que esté alineada a la izquierda */
-  width: 100%; /* Ocupa todo el ancho de la ventana */
-  z-index: 1000; /* Asegura que esté por encima de otros elementos */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más suave */
-  padding: 0 20px; /* Ajusta el espaciado para que no esté demasiado pegado a los bordes */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 0 20px;
 }
 
-/* Contenedor de la sección de "Partidos" */
+/* Contenedor de título */
 .header-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px; /* Evita que se superponga con la barra de navegación */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Alinea el título al centro */
+  margin-top: 100px; /* Ajusta el espacio desde la barra de navegación */
   padding: 20px 0;
 }
 
-/* Título de la sección */
+/* Título */
 .section-title {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 600;
-  color: #333;
+  color: #2e74be;
   margin: 0;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  margin-bottom: 20px;
 }
 
-/* Estilo para el botón "Nuevo Partido" */
-button.mat-raised-button {
-  margin-left: 10px;
-  padding: 10px 20px;
+/* Ajuste para el botón "Nuevo Partido" */
+.create-match-button {
+  padding: 12px 30px;
+  background-color: #ffffff;
+  color: #2e74be;
+  border-radius: 8px;
+  font-size: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  align-self: flex-end; /* Alinea el botón a la derecha */
+  margin-top: 20px;
+  border: 2px solid #2e74be; /* Añade borde */
+}
+
+/* Botón hover */
+.create-match-button:hover {
   background-color: #2e74be;
   color: white;
-  border-radius: 5px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
 }
 
-button.mat-raised-button:hover {
-  background-color: #1f5b8c; /* Cambio de color al pasar el mouse */
+/* Estilos de la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
 
-/* Estilos para los íconos en la barra de navegación */
-.toolbar-actions button {
-  margin-left: 10px;
+th, td {
+  padding: 12px 15px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #555;
+}
+
+td {
+  background-color: #fff;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Para cuando no hay partidos */
+.no-partidos-message {
+  text-align: center;
+  font-size: 18px;
+  color: #aaa;
+  margin-top: 20px;
+}
+
+/* Estilos responsivos */
+@media (max-width: 600px) {
+  .section-title {
+    font-size: 22px;
+  }
+
+  .create-match-button {
+    font-size: 14px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+}
+
+/* Iconos en la barra de navegación */
+.mat-mdc-icon-button {
   color: white;
 }
 
-/* Divider */
-.divider {
-  margin: 20px 0;
-  border: 0;
-  border-top: 1px solid #ccc;
+/* Ajustes en el dialog (si es necesario) */
+::ng-deep .mat-dialog-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #2e74be;
+  margin-bottom: 20px;
+  text-align: center; /* Centra el título del dialog */
 }
 
-/* Ajustes para la tabla */
-table {
+::ng-deep .mat-form-field {
   width: 100%;
+  margin-bottom: 20px;
 }
 
-th.mat-sort-header-sorted {
-  color: black;
+::ng-deep .mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px;
+  background-color: #f9f9f9;
 }
 
-/* Estilo para los encabezados de tabla */
-th.mat-sort-header {
-  cursor: pointer;
+::ng-deep button.mat-button {
+  font-size: 16px;
+  background-color: #ffffff;
+  color: #2e74be;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 2px solid #2e74be; /* Añadir borde */
 }
 
-/* Estilo para las filas de la tabla */
-.mat-header-row, .mat-row {
-  text-align: center;
-}
-
-/* Ajustes para la responsividad */
-@media (max-width: 600px) {
-  .mat-header-row, .mat-row {
-    font-size: 14px;
-  }
+::ng-deep button.mat-button:hover {
+  background-color: #2e74be;
+  color: white;
 }

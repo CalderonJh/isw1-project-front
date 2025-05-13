@@ -14,32 +14,36 @@
 
 <div class="header-container">
   <h2 class="section-title">Partidos</h2>
-  <button mat-raised-button color="primary" (click)="openDialog()">Nuevo Partido</button>
+  <button mat-raised-button color="primary" (click)="openDialog()" class="create-match-button">Nuevo Partido</button>
 </div>
-<table mat-table [dataSource]="partidos">
+
+<!-- Mostrar solo si hay partidos -->
+<table mat-table [dataSource]="partidos" *ngIf="partidos.length > 0" class="matches-table">
   <ng-container matColumnDef="visitante">
     <th mat-header-cell *matHeaderCellDef> Visitante </th>
-    <td mat-cell *matCellDef="let partido"> {{ partido.visitante }} </td>
+    <td mat-cell *matCellDef="let partido">{{ partido.visitante }}</td>
   </ng-container>
 
   <ng-container matColumnDef="estadio">
     <th mat-header-cell *matHeaderCellDef> Estadio </th>
-    <td mat-cell *matCellDef="let partido"> {{ partido.estadio }} </td>
+    <td mat-cell *matCellDef="let partido">{{ partido.estadio }}</td>
   </ng-container>
 
   <ng-container matColumnDef="temporada">
     <th mat-header-cell *matHeaderCellDef> Temporada </th>
-    <td mat-cell *matCellDef="let partido">
-      {{ partido.temporada }}  <!-- Formato: "Año - Temporada" -->
-    </td>
+    <td mat-cell *matCellDef="let partido">{{ partido.temporada }}</td>
   </ng-container>
 
   <ng-container matColumnDef="fecha">
     <th mat-header-cell *matHeaderCellDef> Fecha </th>
-    <td mat-cell *matCellDef="let partido"> {{ partido.fecha }} </td>
+    <td mat-cell *matCellDef="let partido">{{ partido.fecha }}</td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 
+<!-- Mensaje cuando no haya partidos -->
+<div *ngIf="partidos.length === 0" class="no-partidos-message">
+  <p>No hay partidos para mostrar.</p>
+</div>
