@@ -4,7 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
 @Component({
   selector: 'sport-match-dialog',
@@ -55,42 +55,39 @@ import { MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/mat
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
-  ],
+    ],
 })
 
-export class DialogOverviewExampleDialog {
+export class SportMatchDialog {
   equipoVisitante: string = '';
   estadio: string = '';
-  temporadaAnio: string = '';  // Corregido: 'temporalAnio' -> 'temporadaAnio'
-  temporadaPeriodo: string = '';  // Corregido: 'temporalPeriodo' -> 'temporadaPeriodo'
+  temporadaAnio: string = '';  
+  temporadaPeriodo: string = '';  
   fecha: string = '';
   hora: string = '';
 
-  readonly dialogRef = inject(MatDialogRef<DialogOverviewExampleDialog>);
+  readonly dialogRef = inject(MatDialogRef<SportMatchDialog>);
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   onSave(): void {
-  if (!this.equipoVisitante || !this.estadio || !this.temporadaAnio || !this.temporadaPeriodo || !this.fecha || !this.hora) {
-    alert('Por favor, complete todos los campos');
-    return;
-  }
-
-  // Asignación de datos desde el formulario
-  const partido = {
-    awayClubId: parseInt(this.equipoVisitante, 10),  // Convertimos 'equipoVisitante' a número
-    estadioId: parseInt(this.estadio, 10),  // Convertimos 'estadio' a número
-    year: this.temporadaAnio,  // Año de la temporada
-    season: this.temporadaPeriodo,  // Temporada
-    matchDate: new Date(this.fecha + 'T' + this.hora).toISOString(),  // Concatenamos fecha y hora
-  };
-  
-  // Verifica que los datos estén correctos antes de cerrar el diálogo
-  console.log('Datos del partido:', partido);
-
-  this.dialogRef.close(partido); // Cerrar el dialogo y pasar el objeto partido
+    if (!this.equipoVisitante || !this.estadio || !this.temporadaAnio || !this.temporadaPeriodo || !this.fecha || !this.hora) {
+      alert('Por favor, complete todos los campos');
+      return;
     }
-    
+
+    const partido = {
+      awayClubId: parseInt(this.equipoVisitante, 10),
+      estadioId: parseInt(this.estadio, 10),
+      year: this.temporadaAnio,
+      season: this.temporadaPeriodo,
+      matchDate: new Date(this.fecha + 'T' + this.hora).toISOString(),
+    };
+
+    console.log('Datos del partido:', partido);
+
+    this.dialogRef.close(partido);
+  }
 }

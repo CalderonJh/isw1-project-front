@@ -1,37 +1,85 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable, catchError } from 'rxjs';
 import { AuthService } from './login.user.service';  // Importa el servicio de autenticación
-import { Partido } from '..//pages/sport-match-page/partido.interface';  
+
+export interface Partido {
+  awayClubId: number;  // ID del equipo visitante
+  estadioId: number;   // ID del estadio
+  year: string;        // Año de la temporada
+  season: string;      // Temporada
+  matchDate: string;   // Fecha y hora del partido
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class SportsMatchesService {
   private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/match';  // URL de la API de partidos
+  private clubsUrl = 'http://100.26.187.163/fpc/api/su/club';  // URL de la API para obtener detalles del club
+  private stadiumsUrl = 'http://100.26.187.163/fpc/api/club-admin/stadium';  // URL de la API para obtener detalles del estadio
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   // Método para obtener todos los partidos (usando la interfaz Partido)
   getSportsMatches(): Observable<Partido[]> {
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.authService.getToken()}`, // Asegúrate de que tu AuthService tenga el método getToken()
+      'Authorization': `Bearer ${this.authService.getToken()}`,
     });
-    return this.http.get<Partido[]>(`${this.apiUrl}/all`, { headers });
+    return this.http.get<Partido[]>(`${this.apiUrl}/all`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error fetching sports matches:', error);
+        throw error;
+      })
+    );
+  }
+
+  // Método para obtener el nombre del club por su ID
+  getClubNameById(clubId: number): Observable<string> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`,
+    });
+    
+    // Obtener la lista de todos los clubes
+    return this.http.get<any[]>(`${this.clubsUrl}/list`, { headers }).pipe(
+      map((response: any[]) => {
+        // Buscar el club cuyo ID coincida con el `clubId`
+        const club = response.find(c => c.id === clubId);
+        return club ? club.name : 'Club no encontrado';  // Si no se encuentra el club, devolver un mensaje adecuado
+      }),
+      catchError(error => {
+        console.error('Error fetching club name:', error);
+        throw error;
+      })
+    );
+  }
+
+  // Método para obtener el nombre del estadio por su ID
+  getStadiumNameById(estadioId: number): Observable<string> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`,
+    });
+    return this.http.get<any>(`${this.stadiumsUrl}/${estadioId}`, { headers }).pipe(
+      map((response: any) => response.name),
+      catchError(error => {
+        console.error('Error fetching stadium name:', error);
+        throw error;
+      })
+    );
   }
 
   // Método para crear un partido
   createSportsMatch(partido: any): Observable<any> {
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${this.authService.getToken()}`, // Asegúrate de que tu AuthService tenga el método getToken()
-  });
-  return this.http.post<any>(`${this.apiUrl}/save`, partido, { headers });
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`,
+    });
+    return this.http.post<any>(`${this.apiUrl}/save`, partido, { headers });
   }
-  
+
   // Método para actualizar un partido
   updateSportsMatch(id: number, partido: Partido): Observable<Partido> {
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.authService.getToken()}`, // Asegúrate de que tu AuthService tenga el método getToken()
+      'Authorization': `Bearer ${this.authService.getToken()}`,
     });
     return this.http.put<Partido>(`${this.apiUrl}/update/${id}`, partido, { headers });
   }
@@ -39,8 +87,8 @@ export class SportsMatchesService {
   // Método para eliminar un partido
   deleteSportsMatch(id: number): Observable<void> {
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.authService.getToken()}`, // Asegúrate de que tu AuthService tenga el método getToken()
+      'Authorization': `Bearer ${this.authService.getToken()}`,
     });
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`, { headers });
   }
-}
+} 

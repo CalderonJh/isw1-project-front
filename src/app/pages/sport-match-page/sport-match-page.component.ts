@@ -8,9 +8,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { SportsMatchesService } from '../../services/sports-matches.service'; 
-import { DialogOverviewExampleDialog } from './dialog-overview-example-dialog.component';
-import { Partido } from './partido.interface';  // Asegúrate de que la ruta sea correcta
+import { SportsMatchesService } from '../../services/sports-matches.service';
+import { SportMatchDialog } from './sport-match-dialog.component';
+import { Partido } from '../../services/sports-matches.service';
+import { forkJoin, map } from 'rxjs';
+
 
 @Component({
   selector: 'app-sport-match-page',
@@ -30,7 +32,7 @@ import { Partido } from './partido.interface';  // Asegúrate de que la ruta sea
 
 export class SportMatchPageComponent {
   partidoForm: FormGroup;
-  partidos: [] = [];
+  partidos: Partido[] = [];
   displayedColumns: string[] = ['visitante', 'estadio', 'temporada', 'fecha'];
   apiUrl = 'http://100.26.187.163/fpc/api/club-admin/match/all';
 
@@ -50,61 +52,55 @@ export class SportMatchPageComponent {
     });
   }
 
-  ngOnInit(): void {
-    this.loadPartidos(); // Cargar partidos cuando se inicia el componente
-  }
-  
   loadPartidos() {
-  this.sportsMatchesService.getSportsMatches().subscribe((data: any) => {
-    console.log('Datos recibidos:', data);
-    // Asegúrate de que cada partido tenga un valor válido en 'matchDate'
-    this.partidos = data.map((partido: any) => ({
-      ...partido,
-      visitante: partido.awayClubId,  // Mostrar el ID del equipo visitante
-      estadio: partido.estadioId,      // Mostrar el ID del estadio
-      temporada: `${partido.year} - ${partido.season}`,  // Mostrar la temporada
-      fecha: partido.matchDate ? partido.matchDate.split('T')[0] : 'Fecha no disponible',  // Extraer solo la fecha
-    }));
-  });
-  }
+    this.sportsMatchesService.getSportsMatches().subscribe((data: Partido[]) => {
+      console.log('Datos recibidos:', data);
 
+      const partidoObservables = data.map((partido: Partido) => {
+        const visitante$ = this.sportsMatchesService.getClubNameById(partido.awayClubId);
+        const estadio$ = this.sportsMatchesService.getStadiumNameById(partido.estadioId);
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialog);
+        return forkJoin([visitante$, estadio$]).pipe(
+          map(([clubName, stadiumName]) => ({
+            ...partido,
+            visitante: clubName,  // Asignar el nombre del club
+            estadio: stadiumName, // Asignar el nombre del estadio
+            temporada: `${partido.year} - ${partido.season}`,
+            fecha: partido.matchDate ? new Date(partido.matchDate).toLocaleDateString() : 'Fecha no disponible',
+          }))
+        );
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('El dialogo fue cerrado');
-      if (result) {
-        this.createPartido(result); // Crear el partido después de cerrar el dialog
-      }
+      // Espera a que todos los observables terminen antes de actualizar la lista de partidos
+      forkJoin(partidoObservables).subscribe((partidosConNombre) => {
+        this.partidos = partidosConNombre;
+      });
     });
   }
-}
 
-@Component({
-  selector: 'dialog-overview-example-dialog',
-  templateUrl: './ dialog-overview-example-dialog.html',
-  imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatButtonModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-  ],
-  standalone: true,
-})
-export class DialogOverviewExampleDialog {
-  readonly dialogRef = inject(MatDialogRef<DialogOverviewExampleDialog>);
-  readonly data = inject<DialogData>(MAT_DIALOG_DATA);
-
-  onNoClick(): void {
-    this.dialogRef.close();
+  navigateToHome(): void {
+    this.router.navigate(['/home']);
   }
 
   logout(): void {
-    this.router.navigate(['']);
+    this.router.navigate(['/login']);
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(SportMatchDialog);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.createPartido(result);
+      }
+    });
+  }
+
+  createPartido(partido: any): void {
+    console.log('Nuevo partido creado:', partido);
+  }
+
+  ngOnInit(): void {
+    this.loadPartidos();
   }
 }
