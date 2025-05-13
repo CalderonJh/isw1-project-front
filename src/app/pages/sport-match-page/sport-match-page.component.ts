@@ -29,7 +29,6 @@ import { forkJoin, map, of } from 'rxjs';
   ],
   templateUrl: './sport-match-page.component.html',
   styleUrls: ['./sport-match-page.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class SportMatchPageComponent {
@@ -60,37 +59,37 @@ export class SportMatchPageComponent {
 
 
   loadPartidos() {
-    this.sportsMatchesService.getSportsMatches().subscribe((data: Partido[]) => {
-      console.log('Datos recibidos:', data);
+  this.sportsMatchesService.getSportsMatches().subscribe((data: Partido[]) => {
+    console.log('Datos recibidos:', data);
 
-      const partidoObservables = data.map((partido: Partido) => {
-        const visitante$ = this.sportsMatchesService.getClubNameById(partido.awayClubId);
+    const partidoObservables = data.map((partido: Partido) => {
+      const visitante$ = this.sportsMatchesService.getClubNameById(partido.awayClubId);
 
-        // Verificar si estadioId está definido antes de hacer la llamada
-        const estadio$ = partido.stadiumId
-          ? this.sportsMatchesService.getStadiumNameById(partido.stadiumId)
-          : of('Estadio no disponible');
+      // Verificar si estadioId está definido antes de hacer la llamada
+      const estadio$ = partido.stadiumId
+        ? this.sportsMatchesService.getStadiumNameById(partido.stadiumId)
+        : of('Estadio no disponible');
 
-        return forkJoin([visitante$, estadio$]).pipe(
-          map(([clubName, stadiumName]) => ({
-            ...partido,
-            visitante: clubName,
-            estadio: stadiumName,
-            temporada: `${partido.year} - ${partido.season}`,
-            // Asegurarse de que la fecha no sea nula
-            fecha: partido.matchDate
-              ? new Date(partido.matchDate).toLocaleDateString()
-              : 'Fecha no disponible',
-          }))
-        );
-      });
-
-      forkJoin(partidoObservables).subscribe((partidosConNombre) => {
-        this.partidos = partidosConNombre;
-        console.log('Partidos cargados:', this.partidos);  // Verifica si los partidos están bien cargados
-      });
+      return forkJoin([visitante$, estadio$]).pipe(
+        map(([clubName, stadiumName]) => ({
+          ...partido,
+          visitante: clubName,
+          estadio: stadiumName,
+          temporada: `${partido.year} - ${partido.season}`,
+          // Asegurarse de que la fecha no sea nula
+          fecha: partido.matchDate
+            ? new Date(partido.matchDate).toLocaleDateString()
+            : 'Fecha no disponible',
+        }))
+      );
     });
-  }
+
+    forkJoin(partidoObservables).subscribe((partidosConNombre) => {
+      this.partidos = partidosConNombre;
+      console.log('Partidos cargados:', this.partidos);  // Verifica si los partidos están bien cargados
+    });
+  });
+}
 
 
   navigateToHome(): void {
