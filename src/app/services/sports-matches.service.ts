@@ -91,8 +91,4 @@ export class SportsMatchesService {
     });
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`, { headers });
   }
-<<<<<<< HEAD
 }
-=======
-} 
->>>>>>> origin/develop_Cristian
