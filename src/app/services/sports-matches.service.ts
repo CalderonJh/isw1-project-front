@@ -14,6 +14,7 @@ export interface Partido {
 @Injectable({
   providedIn: 'root',
 })
+
 export class SportsMatchesService {
   private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/match';  // URL de la API de partidos
   private clubsUrl = 'http://100.26.187.163/fpc/api/su/club';  // URL de la API para obtener detalles del club

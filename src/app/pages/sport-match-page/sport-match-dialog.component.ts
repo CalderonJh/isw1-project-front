@@ -48,9 +48,8 @@ import { MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } fr
 <mat-dialog-actions class="dialog-actions flex justify-end p-4 bg-[#f9f9f9]">
   <button mat-button class="mat-button bg-[#2e74be] text-white px-4 py-2 rounded hover:bg-[#1f5b8c]" (click)="onNoClick()">Cancelar</button>
   <button mat-button class="mat-button bg-[#2e74be] text-white px-4 py-2 rounded hover:bg-[#1f5b8c]" (click)="onSave()">Guardar</button>
-</mat-dialog-actions>
+</mat-dialog-actions>`,
 
-  `,
   imports: [
     MatFormFieldModule,
     MatInputModule,
