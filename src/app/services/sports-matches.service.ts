@@ -35,8 +35,8 @@ export class SportsMatchesService {
         return of([]);
       })
     );
-  } 
-
+  }
+  
   createSportsMatch(partido: Partido): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/save`, partido, { headers: this.getHeaders() });
   }

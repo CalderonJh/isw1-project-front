@@ -45,42 +45,26 @@ export class SportMatchPageComponent {
   }
 
   loadPartidos() {
-    this.sportsMatchesService.getSportsMatches().subscribe((data: any[]) => {
-      if (!data || data.length === 0) {
-        this.partidos = [];
-        return;
-      }
+  this.sportsMatchesService.getSportsMatches().subscribe((data: any[]) => {
+    if (!data || data.length === 0) {
+      this.partidos = [];
+      return;
+    }
 
-      const partidoObservables = data.map((partido: any) => {
-        const awayClubId = partido.awayClub?.id;
-        const stadiumId = partido.stadium?.id;
-
-        const visitante$ = awayClubId
-          ? this.sportsMatchesService.getClubNameById(awayClubId)
-          : of('Club no encontrado');
-
-        const estadio$ = stadiumId
-          ? this.sportsMatchesService.getStadiumNameById(stadiumId)
-          : of('Estadio no disponible');
-
-        return forkJoin([visitante$, estadio$]).pipe(
-          map(([clubName, stadiumName]) => ({
-            ...partido,
-            visitante: clubName,
-            estadio: stadiumName,
-            temporada: `${partido.year} - ${partido.season}`,
-            fecha: partido.matchDate
-              ? new Date(partido.matchDate).toLocaleDateString()
-              : 'Fecha no disponible',
-          }))
-        );
-      });
-
-      forkJoin(partidoObservables).subscribe((partidosConNombre) => {
-        this.partidos = partidosConNombre;
-      });
+    // Procesamos los partidos y asignamos directamente los valores de nombre del club y estadio
+    this.partidos = data.map((partido: any) => {
+      return {
+        ...partido,
+        visitante: partido.awayClub?.description || 'Club no encontrado', // Usar directamente la descripción
+        estadio: partido.stadium?.description || 'Estadio no disponible', // Usar directamente la descripción
+        temporada: `${partido.year} - ${partido.season}`,
+        fecha: partido.matchDate
+          ? new Date(partido.matchDate).toLocaleDateString()
+          : 'Fecha no disponible',
+      };
     });
-  }
+  });
+}
 
   navigateToHome(): void {
     this.router.navigate(['/home']);
@@ -152,21 +136,32 @@ export class SportMatchPageComponent {
   }
 
 
-
   updatePartido(partido: any): void {
-    const partidoToUpdate: Partido = {
-      awayClubId: parseInt(partido.awayClubId, 10),
-      stadiumId: parseInt(partido.stadiumId, 10),
-      year: parseInt(partido.year, 10),
-      season: parseInt(partido.season, 10),
-      matchDate: partido.matchDate,
-    };
+  // Verificar si el partido tiene matchId, si no, se genera uno provisional
+  const matchId = partido.matchId || this.generateProvisionalMatchId();  // Si no tiene matchId, se genera uno provisional
 
-    this.sportsMatchesService.updateSportsMatch(partido.matchId, partidoToUpdate).subscribe(
-      () => this.loadPartidos(),
-      (error) => console.error('Error al actualizar el partido:', error)
-    );
-  }
+  const partidoToUpdate: Partido = {
+    matchId,  // Ahora incluye el matchId en el objeto
+    awayClubId: parseInt(partido.awayClubId, 10),
+    stadiumId: parseInt(partido.stadiumId, 10),
+    year: parseInt(partido.year, 10),
+    season: parseInt(partido.season, 10),
+    matchDate: partido.matchDate,
+  };
+
+  console.log('Datos a enviar:', partidoToUpdate); // Verifica en consola los datos que se enviarán
+
+  this.sportsMatchesService.updateSportsMatch(matchId, partidoToUpdate).subscribe(
+    () => this.loadPartidos(),
+    (error) => {
+      console.error('Error al actualizar el partido:', error);
+      if (error.error && error.error.errors) {
+        console.error('Detalles del error:', error.error.errors);
+      }
+      alert('Error al actualizar el partido. Revisa consola para detalles.');
+    }
+  );
+}
 
   deletePartido(matchId: number): void {
     if (!confirm('¿Estás seguro que deseas eliminar este partido?')) return;
