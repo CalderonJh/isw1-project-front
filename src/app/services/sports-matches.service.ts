@@ -48,4 +48,24 @@ export class SportsMatchesService {
   deleteSportsMatch(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`, { headers: this.getHeaders() });
   }
+
+   // Obtener lista de clubes
+  getClubs(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.clubsUrl}/list`, { headers: this.getHeaders() }).pipe(
+      catchError((error) => {
+        console.error('Error fetching clubs:', error);
+        return of([]);
+      })
+    );
+  }
+
+  // Obtener lista de estadios
+  getStadiums(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.stadiumsUrl}/all`, { headers: this.getHeaders() }).pipe(
+      catchError((error) => {
+        console.error('Error fetching stadiums:', error);
+        return of([]);
+      })
+    );
+  }
 }
