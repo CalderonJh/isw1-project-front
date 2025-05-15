@@ -49,8 +49,6 @@ export class SportsMatchesService {
   deleteSportsMatch(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`, { headers: this.getHeaders() });
   }
-<<<<<<< HEAD
-=======
 
    // Obtener lista de clubes
   getClubs(): Observable<any[]> {
@@ -71,5 +69,4 @@ export class SportsMatchesService {
       })
     );
   }
->>>>>>> origin/develop_Cristian
 }

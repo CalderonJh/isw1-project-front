@@ -30,7 +30,7 @@ mat-toolbar {
   padding: 10px;
 }
 
-/* Estilo para el título de "Creación de Partidos" */
+/* Estilo para el título de "Seleccion de Partidos" */
 .section-title {
   font-size: 24px;
   font-weight: bold;
@@ -38,7 +38,18 @@ mat-toolbar {
   margin-bottom: 10px; /* Un pequeño margen debajo del título */
 }
 
-button {
-  margin-left: 20px;
+.boton-centro {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem; /* o el espacio que necesites */
 }
 
+.divider {
+  margin-top: 40px; /* para que el hr quede justo después de la toolbar */
+  border: none;
+}
+
+button mat-icon {
+  font-size: 25px; /* Tamaño ajustado del icono */
+  color: white;
+}
