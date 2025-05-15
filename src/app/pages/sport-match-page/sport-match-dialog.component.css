@@ -1,0 +1,15 @@
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px; /* Espacio entre las columnas */
+}
+
+.form-field {
+  flex: 1;
+  min-width: 200px; /* Asegura que cada campo tenga un tamaño mínimo */
+}
+
+.mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+}

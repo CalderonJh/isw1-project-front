@@ -25,56 +25,63 @@ import { Observable, of } from 'rxjs';
     MatOptionModule      // Para mat-option
   ],
   template: `
-    <h2 mat-dialog-title class="text-center text-xl font-semibold text-[#2e74be] mb-5">
-      {{ data ? 'Editar Partido' : 'Nuevo Partido' }}
-    </h2>
-    <mat-dialog-content class="dialog-content p-5">
-      
-      <mat-form-field appearance="outline" class="form-field w-full mb-5">
-  <mat-label>Equipo Visitante</mat-label>
-  <mat-select [(ngModel)]="awayClubId" required>
-    <mat-option *ngFor="let club of clubs$ | async" [value]="club.id">
-      {{ club.shortName }} <!-- Cambia description a shortName -->
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+<h2 mat-dialog-title class="text-center text-xl font-semibold text-[#2e74be] mb-5">
+  {{ data ? 'Editar Partido' : 'Nuevo Partido' }}
+</h2>
 
-<mat-form-field appearance="outline" class="form-field w-full mb-5">
-  <mat-label>Estadio</mat-label>
-  <mat-select [(ngModel)]="stadiumId" required>
-    <mat-option *ngFor="let stadium of stadiums$ | async" [value]="stadium.id">
-      {{ stadium.name }} <!-- Cambia description a name -->
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+<mat-dialog-content class="dialog-content p-5">
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="form-field mb-5">
+      <mat-label>Equipo Visitante</mat-label>
+      <mat-select [(ngModel)]="awayClubId" required>
+        <mat-option *ngFor="let club of clubs$ | async" [value]="club.id">
+          {{ club.shortName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-      <mat-form-field appearance="outline" class="form-field w-full mb-5">
-        <mat-label>Año</mat-label>
-        <input matInput [(ngModel)]="year" required type="number" />
-      </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field mb-5">
+      <mat-label>Estadio</mat-label>
+      <mat-select [(ngModel)]="stadiumId" required>
+        <mat-option *ngFor="let stadium of stadiums$ | async" [value]="stadium.id">
+          {{ stadium.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
-      <mat-form-field appearance="outline" class="form-field w-full mb-5">
-        <mat-label>Temporada (periodo)</mat-label>
-        <input matInput [(ngModel)]="season" required type="number" />
-      </mat-form-field>
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="form-field mb-5">
+      <mat-label>Año</mat-label>
+      <input matInput [(ngModel)]="year" required type="number" />
+    </mat-form-field>
 
-      <mat-form-field appearance="outline" class="form-field w-full mb-5">
-        <mat-label>Fecha</mat-label>
-        <input matInput [(ngModel)]="fecha" type="date" />
-      </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field mb-5">
+      <mat-label>Temporada (periodo)</mat-label>
+      <input matInput [(ngModel)]="season" required type="number" />
+    </mat-form-field>
+  </div>
 
-      <mat-form-field appearance="outline" class="form-field w-full mb-5">
-        <mat-label>Hora</mat-label>
-        <input matInput [(ngModel)]="hora" type="time" />
-      </mat-form-field>
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="form-field mb-5">
+      <mat-label>Fecha</mat-label>
+      <input matInput [(ngModel)]="fecha" type="date" />
+    </mat-form-field>
 
-    </mat-dialog-content>
+    <mat-form-field appearance="outline" class="form-field mb-5">
+      <mat-label>Hora</mat-label>
+      <input matInput [(ngModel)]="hora" type="time" />
+    </mat-form-field>
+  </div>
 
-    <mat-dialog-actions class="flex justify-end p-4 bg-[#f9f9f9]">
-      <button mat-button (click)="onNoClick()">Cancelar</button>
-      <button mat-button color="primary" (click)="onSave()">Guardar</button>
-    </mat-dialog-actions>
+</mat-dialog-content>
+
+<mat-dialog-actions class="flex justify-end p-4 bg-[#f9f9f9]">
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button color="primary" (click)="onSave()">Guardar</button>
+</mat-dialog-actions>
   `,
+  styleUrls: ['./sport-match-dialog.component.css'],  
 })
 export class SportMatchDialog implements OnInit {
   clubs$: Observable<any[]> = of([]);  // Observable para los clubes

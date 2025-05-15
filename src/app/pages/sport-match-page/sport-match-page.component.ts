@@ -76,7 +76,8 @@ export class SportMatchPageComponent {
 
   openDialog(partidoToEdit?: any): void {
     const dialogRef = this.dialog.open(SportMatchDialog, {
-      width: '400px',
+      width: '600px',  // Ajusta el tamaño del ancho
+      height: 'auto',  // Ajusta la altura automáticamente
       data: partidoToEdit ? { ...partidoToEdit } : null,
     });
 

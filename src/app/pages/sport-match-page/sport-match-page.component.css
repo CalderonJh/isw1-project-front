@@ -150,39 +150,3 @@ button mat-icon {
   font-size: 18px; /* Tamaño ajustado del icono */
   color: white;
 }
-
-
-/* Ajustes en el dialog (si es necesario) */
-::ng-deep .mat-dialog-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: #2e74be;
-  margin-bottom: 20px;
-  text-align: center; /* Centra el título del dialog */
-}
-
-::ng-deep .mat-form-field {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-::ng-deep .mat-dialog-actions {
-  display: flex;
-  justify-content: flex-end;
-  padding: 15px;
-  background-color: #f9f9f9;
-}
-
-::ng-deep button.mat-button {
-  font-size: 16px;
-  background-color: #ffffff;
-  color: #2e74be;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: 2px solid #2e74be; /* Añadir borde */
-}
-
-::ng-deep button.mat-button:hover {
-  background-color: #2e74be;
-  color: white;
-}
