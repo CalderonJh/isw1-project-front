@@ -24,6 +24,11 @@ mat-toolbar {
   padding: 0 20px; /* Ajusta el espaciado para que no esté demasiado pegado a los bordes */
 }
 
+button mat-icon {
+  font-size: 25px; /* Tamaño ajustado del icono */
+  color: white;
+}
+
 /* Contenedor principal */
 .content-container {
   margin-top: 80px; /* Ajusta para que el contenido no quede debajo de la barra de navegación */
