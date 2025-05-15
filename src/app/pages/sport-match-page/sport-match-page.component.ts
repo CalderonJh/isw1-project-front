@@ -1,19 +1,18 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Importar CommonModule
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { SportsMatchesService } from '../../services/sports-matches.service';
+import { SportsMatchesService, Partido } from '../../services/sports-matches.service';
 import { SportMatchDialog } from './sport-match-dialog.component';
-import { Partido } from '../../services/sports-matches.service';
 import { forkJoin, map, of } from 'rxjs';
-
 
 @Component({
   selector: 'app-sport-match-page',
@@ -22,6 +21,7 @@ import { forkJoin, map, of } from 'rxjs';
     MatTableModule,
     MatIconModule,
     MatButtonModule,
+    MatDialogModule,
     MatToolbarModule,
     MatFormFieldModule,
     MatInputModule,
@@ -30,67 +30,57 @@ import { forkJoin, map, of } from 'rxjs';
   templateUrl: './sport-match-page.component.html',
   styleUrls: ['./sport-match-page.component.css'],
 })
-
 export class SportMatchPageComponent {
-  partidoForm: FormGroup;
-  partidos: Partido[] = [];
-  displayedColumns: string[] = ['visitante', 'estadio', 'temporada', 'fecha'];
-  apiUrl = 'http://100.26.187.163/fpc/api/club-admin/match/all';
+  partidos: any[] = [];
+  displayedColumns: string[] = ['visitante', 'estadio', 'temporada', 'fecha', 'acciones'];
 
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private fb: FormBuilder,
-    private sportsMatchesService: SportsMatchesService // Inyectamos el servicio de partidos
-  ) {
-    this.partidoForm = this.fb.group({
-      equipoVisitante: [''],
-      estadio: [''],
-      inicio: this.fb.group({
-        fecha: [''],
-        hora: [''],
-      }),
-    });
-  }
+    private sportsMatchesService: SportsMatchesService
+  ) { }
 
   ngOnInit(): void {
     this.loadPartidos();
   }
 
-
   loadPartidos() {
-  this.sportsMatchesService.getSportsMatches().subscribe((data: Partido[]) => {
-    console.log('Datos recibidos:', data);
+    this.sportsMatchesService.getSportsMatches().subscribe((data: any[]) => {
+      if (!data || data.length === 0) {
+        this.partidos = [];
+        return;
+      }
 
-    const partidoObservables = data.map((partido: Partido) => {
-      const visitante$ = this.sportsMatchesService.getClubNameById(partido.awayClubId);
+      const partidoObservables = data.map((partido: any) => {
+        const awayClubId = partido.awayClub?.id;
+        const stadiumId = partido.stadium?.id;
 
-      // Verificar si estadioId está definido antes de hacer la llamada
-      const estadio$ = partido.stadiumId
-        ? this.sportsMatchesService.getStadiumNameById(partido.stadiumId)
-        : of('Estadio no disponible');
+        const visitante$ = awayClubId
+          ? this.sportsMatchesService.getClubNameById(awayClubId)
+          : of('Club no encontrado');
 
-      return forkJoin([visitante$, estadio$]).pipe(
-        map(([clubName, stadiumName]) => ({
-          ...partido,
-          visitante: clubName,
-          estadio: stadiumName,
-          temporada: `${partido.year} - ${partido.season}`,
-          // Asegurarse de que la fecha no sea nula
-          fecha: partido.matchDate
-            ? new Date(partido.matchDate).toLocaleDateString()
-            : 'Fecha no disponible',
-        }))
-      );
+        const estadio$ = stadiumId
+          ? this.sportsMatchesService.getStadiumNameById(stadiumId)
+          : of('Estadio no disponible');
+
+        return forkJoin([visitante$, estadio$]).pipe(
+          map(([clubName, stadiumName]) => ({
+            ...partido,
+            visitante: clubName,
+            estadio: stadiumName,
+            temporada: `${partido.year} - ${partido.season}`,
+            fecha: partido.matchDate
+              ? new Date(partido.matchDate).toLocaleDateString()
+              : 'Fecha no disponible',
+          }))
+        );
+      });
+
+      forkJoin(partidoObservables).subscribe((partidosConNombre) => {
+        this.partidos = partidosConNombre;
+      });
     });
-
-    forkJoin(partidoObservables).subscribe((partidosConNombre) => {
-      this.partidos = partidosConNombre;
-      console.log('Partidos cargados:', this.partidos);  // Verifica si los partidos están bien cargados
-    });
-  });
-}
-
+  }
 
   navigateToHome(): void {
     this.router.navigate(['/home']);
@@ -100,40 +90,90 @@ export class SportMatchPageComponent {
     this.router.navigate(['']);
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(SportMatchDialog);
+  openDialog(partidoToEdit?: any): void {
+    const dialogRef = this.dialog.open(SportMatchDialog, {
+      width: '400px',
+      data: partidoToEdit ? { ...partidoToEdit } : null,
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
-
       if (result) {
-        this.createPartido(result);  // Llamar al método para guardar el partido
+        if (result.matchId) {
+          this.updatePartido(result);
+        } else {
+          this.createPartido(result);
+        }
       }
     });
   }
 
-  createPartido(partidos: any): void {
+  createPartido(partido: any): void {
+    const awayClubId = Number(partido.awayClubId);
+    const stadiumId = Number(partido.stadiumId);
+    const year = Number(partido.year);
+    const season = Number(partido.season);
+    const matchDate = partido.matchDate;
 
-    // Modificar el objeto para que coincida con el formato esperado
+    if (!awayClubId || !stadiumId || !year || !season) {
+      alert('Por favor complete todos los campos obligatorios correctamente');
+      return;
+    }
+
+    // Generar un matchId provisional si no existe
+    const provisionalMatchId = this.generateProvisionalMatchId();
+
     const partidoToSave = {
-      awayClubId: parseInt(partidos.awayClubId, 10),
-      stadiumId: parseInt(partidos.estadioId, 10),
-      year: partidos.year,
-      season: partidos.season,
-      // Usamos directamente el toISOString() que ya incluye la zona horaria y los milisegundos
-      matchDate: new Date(partidos.matchDate).toISOString(),
+      matchId: provisionalMatchId,  // aquí agregas el matchId que se requiere
+      awayClubId,
+      stadiumId,
+      year,
+      season,
+      matchDate,
     };
 
-    console.log('Datos del partido listos para guardar:', partidoToSave);
+    console.log('Payload a enviar:', partidoToSave);
 
-    // Llamada al servicio para guardar el partido
     this.sportsMatchesService.createSportsMatch(partidoToSave).subscribe(
-      (response) => {
-        console.log('Partido guardado exitosamente:', response);
-        this.loadPartidos();  // Recargar los partidos
-      },
+      () => this.loadPartidos(),
       (error) => {
         console.error('Error al guardar el partido:', error);
+        if (error.error && error.error.errors) {
+          console.error('Detalles del error:', error.error.errors);
+        }
+        alert('Error al guardar partido. Revisa consola para detalles.');
       }
+    );
+  }
+
+  // Método para generar un ID provisional (ejemplo simple)
+  generateProvisionalMatchId(): number {
+    // Puedes usar timestamp o un contador local (según tu lógica)
+    return Date.now();  // número único basado en timestamp
+  }
+
+
+
+  updatePartido(partido: any): void {
+    const partidoToUpdate: Partido = {
+      awayClubId: parseInt(partido.awayClubId, 10),
+      stadiumId: parseInt(partido.stadiumId, 10),
+      year: parseInt(partido.year, 10),
+      season: parseInt(partido.season, 10),
+      matchDate: partido.matchDate,
+    };
+
+    this.sportsMatchesService.updateSportsMatch(partido.matchId, partidoToUpdate).subscribe(
+      () => this.loadPartidos(),
+      (error) => console.error('Error al actualizar el partido:', error)
+    );
+  }
+
+  deletePartido(matchId: number): void {
+    if (!confirm('¿Estás seguro que deseas eliminar este partido?')) return;
+
+    this.sportsMatchesService.deleteSportsMatch(matchId).subscribe(
+      () => this.loadPartidos(),
+      (error) => console.error('Error al eliminar el partido:', error)
     );
   }
 }
