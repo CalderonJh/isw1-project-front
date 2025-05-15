@@ -6,8 +6,11 @@ import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';  // Agregar MatSelectModule
 import { MatOptionModule } from '@angular/material/core';  // Agregar MatOptionModule
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, NativeDateAdapter, DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS  } from '@angular/material/core';
 import { SportsMatchesService } from '../../services/sports-matches.service';
 import { Observable, of } from 'rxjs';
 
@@ -15,14 +18,22 @@ import { Observable, of } from 'rxjs';
   selector: 'sport-match-dialog',
   standalone: true,
   imports: [
+    MatSnackBarModule,
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
     MatButtonModule,
     MatDialogModule,
-    CommonModule,         // Importa CommonModule 
-    MatSelectModule,      // Para mat-select
-    MatOptionModule      // Para mat-option
+    CommonModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+  ],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+    { provide: DateAdapter, useClass: NativeDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS },
   ],
   template: `
 <h2 mat-dialog-title class="text-center text-xl font-semibold text-[#2e74be] mb-5">
@@ -65,8 +76,11 @@ import { Observable, of } from 'rxjs';
   <div class="form-row">
     <mat-form-field appearance="outline" class="form-field mb-5">
       <mat-label>Fecha</mat-label>
-      <input matInput [(ngModel)]="fecha" type="date" />
+      <input matInput [matDatepicker]="picker" [(ngModel)]="fecha" [min]="minDate" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
+
 
     <mat-form-field appearance="outline" class="form-field mb-5">
       <mat-label>Hora</mat-label>
@@ -81,23 +95,25 @@ import { Observable, of } from 'rxjs';
   <button mat-button color="primary" (click)="onSave()">Guardar</button>
 </mat-dialog-actions>
   `,
-  styleUrls: ['./sport-match-dialog.component.css'],  
+  styleUrls: ['./sport-match-dialog.component.css'],
 })
 export class SportMatchDialog implements OnInit {
   clubs$: Observable<any[]> = of([]);  // Observable para los clubes
   stadiums$: Observable<any[]> = of([]); // Observable para los estadios
+  minDate: Date = new Date();
 
   awayClubId!: number;
   stadiumId!: number;
   year!: number;
   season!: number;
-  fecha: string = '';
+  fecha: Date | null = null;
   hora: string = '';
 
   constructor(
     public dialogRef: MatDialogRef<SportMatchDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private sportsMatchesService: SportsMatchesService  // Servicio para obtener clubes y estadios
+    private sportsMatchesService: SportsMatchesService,  // Servicio para obtener clubes y estadios
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -122,8 +138,8 @@ export class SportMatchDialog implements OnInit {
       this.season = this.data.season;
 
       if (this.data.matchDate) {
-        const dt = new Date(this.data.matchDate);
-        this.fecha = dt.toISOString().slice(0, 10);
+        this.fecha = new Date(this.data.matchDate);
+        const dt = this.fecha;
         this.hora = dt.toISOString().slice(11, 16);
       }
     }
@@ -135,14 +151,22 @@ export class SportMatchDialog implements OnInit {
 
   onSave(): void {
     if (!this.awayClubId || !this.stadiumId || !this.year || !this.season) {
-      alert('Por favor, complete todos los campos obligatorios.');
-      return;
-    }
+    this.snackBar.open('Por favor, complete todos los campos obligatorios.', 'Cerrar', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['snackbar-error'] // Puedes personalizar el estilo con esta clase
+    });
+    return;
+  }
 
     let matchDateISO: string | null = null;
     if (this.fecha) {
+      const year = this.fecha.getFullYear();
+      const month = String(this.fecha.getMonth() + 1).padStart(2, '0');
+      const day = String(this.fecha.getDate()).padStart(2, '0');
       const horaParte = this.hora ? this.hora : '00:00';
-      matchDateISO = `${this.fecha}T${horaParte}:00`;  // Sin toISOString ni Z
+      matchDateISO = `${year}-${month}-${day}T${horaParte}:00`;
     }
 
     const partidoToReturn = {
