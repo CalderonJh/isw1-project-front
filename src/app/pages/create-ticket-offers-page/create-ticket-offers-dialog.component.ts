@@ -29,29 +29,28 @@ import { CreateTicketOffersService } from '../../services/create-ticket-offers.s
       Selecciona Partido
     </h2>
 
-    <mat-dialog-content class="dialog-content p-5">
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field mb-5 w-full">
-          <mat-label>Partido</mat-label>
-          <mat-select [(ngModel)]="matchId" required>
-            <mat-option *ngFor="let match of matches$ | async" [value]="match.id">
-              {{ match.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+    <mat-dialog-content class="dialog-content p-5" style="display: flex; justify-content: center;">
+      <mat-form-field appearance="outline" style="width: 100%; max-width: 600px;">
+        <mat-label>Partido</mat-label>
+        <mat-select [(ngModel)]="matchId" required>
+          <mat-option *ngFor="let match of matches$ | async" [value]="match.matchId">
+            Partido #{{ match.matchId }} - Fecha: {{ match.matchDate | date:'short' }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </mat-dialog-content>
 
     <mat-dialog-actions class="flex justify-end p-4 bg-[#f9f9f9]">
       <button mat-button (click)="onNoClick()">Cancelar</button>
       <button mat-button color="primary" [disabled]="!matchId" (click)="onSave()">Guardar</button>
     </mat-dialog-actions>
+
   `,
   styleUrls: ['./create-ticket-offers-dialog.component.css'],
 })
 export class CreateTicketOffersDialog implements OnInit {
+  
   matches$: Observable<any[]> = of([]);
-
   matchId!: number;
 
   constructor(
@@ -61,7 +60,8 @@ export class CreateTicketOffersDialog implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.matches$ = this.createTicketOffersService.getTickets();   // Partidos ya creados
+    this.matches$ = this.createTicketOffersService.getAllMatches();   // Partidos ya creados
+    this.matches$.subscribe(data => console.log('Partidos:', data));
   }
 
   onNoClick(): void {
@@ -69,8 +69,7 @@ export class CreateTicketOffersDialog implements OnInit {
   }
 
   onSave(): void {
-    this.dialogRef.close({
-      matchId: this.matchId,
-    });
-  }
+  console.log('Seleccionado matchId:', this.matchId);
+  this.dialogRef.close({ matchId: this.matchId });
+}
 }

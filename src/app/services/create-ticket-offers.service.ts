@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, Observable, catchError, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { AuthService } from './login.user.service';
 
 export interface Partido {
-  matchId?: number;    // Opcional para crear
+  matchId?: number;
   awayClubId: number;
   stadiumId: number;
   year: number;
@@ -12,53 +13,60 @@ export interface Partido {
   matchDate: string;
 }
 
-
+export interface Club {
+  clubId: number;
+  name: string;
+  // otros campos
+}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
+export class CreateTicketOffersService {
+  private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/match';
+  
 
-export class CreateTicketOffersService{
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/';
-  private clubsUrl = 'http://localhost:4200/fpc/club-admin/match/all';
-
-  constructor(private http: HttpClient, private authService: AuthService) { }
-
-  private getHeaders() {
+  private getHeaders(): HttpHeaders {
     return new HttpHeaders({
       Authorization: `Bearer ${this.authService.getToken()}`,
+      'Content-Type': 'application/json',
+    });
+  }
+
+  getAllMatches(): Observable<Partido[]> {
+    return this.http
+      .get<Partido[]>(`${this.apiUrl}/all`, { headers: this.getHeaders() })
+      .pipe(
+        catchError((error) => {
+          console.error('Error fetching matches:', error);
+          return of([]);
+        })
+      );
+  }
+
+  getClubs(): Observable<Club[]> {
+      return this.http.get<Club[]>('http://.../club-admin/club/list', { headers: this.getHeaders() });
+  }
+
+  createMatch(match: Partido): Observable<Partido> {
+    return this.http.post<Partido>(`${this.apiUrl}/save`, match, {
+      headers: this.getHeaders(),
+    });
+  }
+
+  updateMatch(id: number, match: Partido): Observable<Partido> {
+    return this.http.put<Partido>(`${this.apiUrl}/update/${id}`, match, {
+      headers: this.getHeaders(),
+    });
+  }
+
+  deleteMatch(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/delete/${id}`, {
+      headers: this.getHeaders(),
     });
   }
   
-  getTickets(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
-  }
-
-  createTicket(ticket: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, ticket);
-  }
-
-  updateTicket(id: number, ticket: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, ticket);
-  }
-
-  deleteTicket(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
-  }
-
-
   // Obtener lista de clubes
-  getClubs(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.clubsUrl}/list`, { headers: this.getHeaders() }).pipe(
-      catchError((error) => {
-        console.error('Error fetching clubs:', error);
-        return of([]);
-      })
-    );
-  }
-
-
 }
-
-

@@ -12,13 +12,24 @@
 
 <hr class="divider" />
 
-<h2 class="text-2xl font-semibold my-6 text-center text-primary-700">
+<h2 class="text-2xl font-semibold my-6 text-primary" style="text-align: center;">
   Crear Oferta
 </h2>
 
 <div class="boton-centro">
-  <button mat-raised-button color="primary" (click)="openDialog()">
+  <button mat-raised-button class="custom-primary-btn" (click)="openDialog()">
     Seleccionar Partidos Creados
   </button>
 </div>
 
+
+<!-- Mostrar detalles del partido seleccionado -->
+<div *ngIf="partidoSeleccionado" class="partido-detalles" style="margin: 20px; padding: 16px; border: 1px solid #ccc; border-radius: 8px;">
+  <h3>Partido Seleccionado</h3>
+  <p><strong>ID:</strong> {{ partidoSeleccionado.matchId }}</p>
+  <p><strong>Club Visitante:</strong> {{ partidoSeleccionado.awayClubId }}</p>
+  <p><strong>Estadio:</strong> {{ partidoSeleccionado.stadiumId }}</p>
+  <p><strong>Año:</strong> {{ partidoSeleccionado.year }}</p>
+  <p><strong>Temporada:</strong> {{ partidoSeleccionado.season }}</p>
+  <p><strong>Fecha:</strong> {{ partidoSeleccionado.matchDate | date:'medium' }}</p>
+</div>

@@ -1,17 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
 import { CreateTicketOffersDialog } from './create-ticket-offers-dialog.component';
-import { CreateTicketOffersService } from '../../services/create-ticket-offers.service';
+import { CreateTicketOffersService, Partido } from '../../services/create-ticket-offers.service';
+import { Club } from '../../services/create-ticket-offers.service';
+
 
 @Component({
   selector: 'app-create-ticket-offers-page',
   standalone: true,
   imports: [
+    CommonModule,
     MatTableModule,
     MatIconModule,
     MatButtonModule,
@@ -20,9 +24,11 @@ import { CreateTicketOffersService } from '../../services/create-ticket-offers.s
   templateUrl: './create-ticket-offers-page.component.html',
   styleUrls: ['./create-ticket-offers-page.component.css'],
 })
-export class CreateTicketOffersPageComponent {
-  partidoSeleccionadoId?: number;
-  estadioSeleccionadoId?: number;
+
+export class CreateTicketOffersPageComponent implements OnInit {
+  partidos: Partido[] = [];
+  clubs: Club[] = [];
+  partidoSeleccionado?: Partido;
 
   constructor(
     private router: Router,
@@ -30,25 +36,53 @@ export class CreateTicketOffersPageComponent {
     private crea: CreateTicketOffersService
   ) {}
 
+  ngOnInit(): void {
+    this.loadMatches();
+    this.loadClubs();
+  }
+
+  loadMatches(): void {
+    this.crea.getAllMatches().subscribe({
+      next: (data) => {
+        this.partidos = data;
+      },
+      error: (err) => {
+        console.error('Error cargando partidos', err);
+      }
+    });
+  }
+
+  loadClubs(): void {
+  this.crea.getClubs().subscribe({
+    next: data => this.clubs = data,
+    error: err => console.error('Error cargando clubes', err)
+  });
+  }
+
+  getClubName(id: number): string {
+  const club = this.clubs.find(c => c.clubId === id);
+  return club ? club.name : 'Desconocido';
+  }
+
+  openDialog(): void {
+  const dialogRef = this.dialog.open(CreateTicketOffersDialog, {
+    width: '700px',  // más ancho para que se vea mejor
+    maxWidth: '90vw', // para que no se salga en pantallas pequeñas
+    data: null
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result && result.matchId) {
+      this.partidoSeleccionado = this.partidos.find(p => p.matchId === result.matchId);
+    }
+  });
+  }
+
   navigateToHome(): void {
     this.router.navigate(['/home']);
   }
 
   logout(): void {
     this.router.navigate(['']);
-  }
-
-  /** Abre el diálogo de selección */
-  openDialog(): void {
-    const dialogRef = this.dialog.open(CreateTicketOffersDialog, {
-      width: '600px',
-      data: null
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.partidoSeleccionadoId = result.matchId;
-      }
-    });
   }
 }
