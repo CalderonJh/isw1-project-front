@@ -58,6 +58,38 @@ button mat-icon {
   color: var(--mat-primary-default, #1976d2); /* fallback azul material */
 }
 
-.partido-detalles {
-  color: #222222; /* gris muy oscuro casi negro */
+
+/* Parte de Programacion de las Boletas*/
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px; /* espacio entre campos */
+  max-width: 320px; /* limita ancho máximo */
+  margin: 0 auto; /* centra horizontalmente */
+}
+
+.custom-form-field .mat-form-field-wrapper {
+  border-radius: 20px; /* bordes suaves */
+  border: 1px solid #ccc; /* borde gris claro */
+  padding: 4px 12px;
+}
+
+.custom-form-field .mat-form-field-outline {
+  border-color: transparent !important; /* oculta borde default para evitar doble borde */
+}
+
+.custom-form-field .mat-form-field-flex {
+  padding: 0; /* quita padding extra para más limpio */
+}
+
+/* Opcional: cambia color focus para bordes */
+.custom-form-field.mat-focused .mat-form-field-wrapper {
+  border-color: #1976d2 !important; /* azul material al enfocar */
+  box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
+}
+
+.boletas-config-container, 
+.boletas-config-container * {
+  color: #222 !important; /* texto negro oscuro */
 }

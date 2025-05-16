@@ -9,6 +9,12 @@ import { CommonModule } from '@angular/common';
 import { CreateTicketOffersDialog } from './create-ticket-offers-dialog.component';
 import { CreateTicketOffersService, Partido } from '../../services/create-ticket-offers.service';
 import { Club } from '../../services/create-ticket-offers.service';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core'
 
 
 @Component({
@@ -20,6 +26,13 @@ import { Club } from '../../services/create-ticket-offers.service';
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
+
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   templateUrl: './create-ticket-offers-page.component.html',
   styleUrls: ['./create-ticket-offers-page.component.css'],
@@ -85,4 +98,8 @@ export class CreateTicketOffersPageComponent implements OnInit {
   logout(): void {
     this.router.navigate(['']);
   }
+  boletasActivadas: boolean = true;
+  fechaProgramada: Date | null = null;
+  horaProgramada: string = '';
+
 }
