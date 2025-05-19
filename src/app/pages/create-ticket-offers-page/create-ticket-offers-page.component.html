@@ -1,21 +1,60 @@
 <mat-toolbar color="primary">
-    <span>Bienvenido ADMIN</span>
-    <div class="toolbar-actions">
-      <button mat-icon-button (click)="navigateToHome()">
-        <mat-icon>home</mat-icon>
-      </button>
-      <button mat-icon-button (click)="logout()">
-        <mat-icon>logout</mat-icon>
-      </button>
-    </div>
-  </mat-toolbar>
-
-
-  <hr class="divider" />
-
-  <!-- Título y botón "Nuevo Partido" -->
-  <div class="header-container">
-    <h2 class="section-title">Creacion Ofertas Boletas <button mat-raised-button color="primary" >Nuevo Partido</button> </h2>
+  <span>Bienvenido ADMIN</span>
+  <div class="toolbar-actions">
+    <button mat-icon-button (click)="navigateToHome()">
+      <mat-icon>home</mat-icon>
+    </button>
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
   </div>
-  
-<p>create-ticket-offers-page CREAR LAS OFERTAS DE LAS boletas!</p>
+</mat-toolbar>
+
+<hr class="divider" />
+
+<h2 class="text-2xl font-semibold my-6 text-primary" style="text-align: center;">
+  Crear Oferta
+</h2>
+
+<div class="boton-centro">
+  <button mat-raised-button class="custom-primary-btn" (click)="openDialog()">
+    Seleccionar Partidos Creados
+  </button>
+</div>
+
+
+<!-- Mostrar detalles del partido seleccionado -->
+<div *ngIf="partidoSeleccionado" class="boletas-config-container">
+  <!-- Detalles del partido seleccionado -->
+  <h3>Partido Seleccionado</h3>
+  <p><strong>ID:</strong> {{ partidoSeleccionado.matchId }}</p>
+  <p><strong>Club Visitante:</strong> {{ partidoSeleccionado.awayClubId}}</p>
+  <p><strong>Estadio:</strong> {{ partidoSeleccionado.stadiumId }}</p>
+  <p><strong>Año:</strong> {{ partidoSeleccionado.year }}</p>
+  <p><strong>Temporada:</strong> {{ partidoSeleccionado.season }}</p>
+  <p><strong>Fecha:</strong> {{ partidoSeleccionado.matchDate | date:'medium' }}</p>
+
+  <!-- Sección para boletas y programación --> 
+  <div *ngIf="partidoSeleccionado" class="boletas-config-container" style="color: #222 !important;"></div>
+    <h4 style="color: #222; font-weight: 600; margin-bottom: 12px;">Programación De Boletas</h4>
+    <mat-form-field appearance="fill" class="custom-form-field" style="width: 300px; margin-bottom: 20px;">
+      <mat-label>Estado de Boletas</mat-label>
+      <mat-select [(value)]="boletasActivadas">
+        <mat-option [value]="true">Activar Boletas</mat-option>
+        <mat-option [value]="false">Desactivar Boletas</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="custom-form-field" style="width: 300px; margin-bottom: 20px;">
+      <mat-label>Fecha Programada</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="fechaProgramada" placeholder="Selecciona fecha" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="custom-form-field" style="width: 300px;">
+      <mat-label>Hora Programada</mat-label>
+      <input matInput type="time" [(ngModel)]="horaProgramada" />
+    </mat-form-field>
+</div>
+

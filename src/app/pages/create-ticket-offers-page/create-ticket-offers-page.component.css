@@ -24,21 +24,72 @@ mat-toolbar {
   padding: 0 20px; /* Ajusta el espaciado para que no esté demasiado pegado a los bordes */
 }
 
+button mat-icon {
+  font-size: 25px; /* Tamaño ajustado del icono */
+  color: white;
+}
+
 /* Estilo para el contenedor del título y el botón */
 .header-container {
   margin-top: 20px; /* Este margen empuja el título hacia abajo */
   padding: 10px;
 }
 
-/* Estilo para el título de "Creación de Partidos" */
-.section-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #1e5ea8; /* Cambié el color a un azul más destacado */
-  margin-bottom: 10px; /* Un pequeño margen debajo del título */
+.boton-centro {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem; /* o el espacio que necesites */
 }
 
-button {
-  margin-left: 20px;
+.custom-primary-btn {
+  background-color: #1976d2 !important;
+  color: white !important;
+  font-weight:500;
+  font-size: 1rem;
+  padding: 8px 24px;
+  border-radius: 15px;
+
+}
+.divider {
+  margin-top: 40px; /* para que el hr quede justo después de la toolbar */
+  border: none;
+}
+.text-primary {
+  color: var(--mat-primary-default, #1976d2); /* fallback azul material */
 }
 
+
+/* Parte de Programacion de las Boletas*/
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px; /* espacio entre campos */
+  max-width: 320px; /* limita ancho máximo */
+  margin: 0 auto; /* centra horizontalmente */
+}
+
+.custom-form-field .mat-form-field-wrapper {
+  border-radius: 20px; /* bordes suaves */
+  border: 1px solid #ccc; /* borde gris claro */
+  padding: 4px 12px;
+}
+
+.custom-form-field .mat-form-field-outline {
+  border-color: transparent !important; /* oculta borde default para evitar doble borde */
+}
+
+.custom-form-field .mat-form-field-flex {
+  padding: 0; /* quita padding extra para más limpio */
+}
+
+/* Opcional: cambia color focus para bordes */
+.custom-form-field.mat-focused .mat-form-field-wrapper {
+  border-color: #1976d2 !important; /* azul material al enfocar */
+  box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
+}
+
+.boletas-config-container, 
+.boletas-config-container * {
+  color: #222 !important; /* texto negro oscuro */
+}
