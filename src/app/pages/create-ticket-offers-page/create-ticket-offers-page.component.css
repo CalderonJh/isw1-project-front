@@ -75,10 +75,6 @@ button mat-icon {
   padding: 4px 12px;
 }
 
-.custom-form-field .mat-form-field-outline {
-  border-color: transparent !important; /* oculta borde default para evitar doble borde */
-}
-
 .custom-form-field .mat-form-field-flex {
   padding: 0; /* quita padding extra para más limpio */
 }
