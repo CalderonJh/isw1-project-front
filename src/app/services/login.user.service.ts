@@ -3,14 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
+import { UserToken } from '../Models/UserToken.model'; // Asegúrate de que la ruta sea correcta
 
-export interface UserToken {
-  sub: string;       // ID/email
-  name?: string;     // Nombre completo
-  documentId?: string;
-  roles: string[];   // Roles del usuario
-  exp: number;       // Fecha expiración
-}
 @Injectable({
   providedIn: 'root'
 })

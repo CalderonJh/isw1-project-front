@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { CreateTicketOffersDialog } from './create-ticket-offers-dialog.component';
 import { CreateTicketOffersService } from '../../services/create-ticket-offers.service';
 import { Partido } from '../../Models/Partido.model';
-import { Club } from '../../services/create-ticket-offers.service';
+import { Club } from '../../Models/Club.model';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';

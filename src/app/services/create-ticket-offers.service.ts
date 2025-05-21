@@ -4,12 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from './login.user.service';
 import { Partido } from '../Models/Partido.model';
-
-export interface Club {
-  clubId: number;
-  name: string;
-  // otros campos
-}
+import { Club } from '../Models/Club.model';
 
 @Injectable({
   providedIn: 'root',
