@@ -10,7 +10,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { SportsMatchesService, Partido } from '../../services/sports-matches.service';
+import { SportsMatchesService } from '../../services/sports-matches.service';
+import { Partido } from '../../Models/Partido.model';
 import { SportMatchDialog } from './sport-match-dialog.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 

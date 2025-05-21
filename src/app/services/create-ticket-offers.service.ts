@@ -3,15 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from './login.user.service';
-
-export interface Partido {
-  matchId?: number;
-  awayClubId: number;
-  stadiumId: number;
-  year: number;
-  season: number;
-  matchDate: string;
-}
+import { Partido } from '../Models/Partido.model';
 
 export interface Club {
   clubId: number;

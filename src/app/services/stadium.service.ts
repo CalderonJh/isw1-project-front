@@ -4,22 +4,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable, of, forkJoin } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { AuthService } from './login.user.service';
-
-export interface Stand {
-    name: string;
-    capacity: number;
-}
-
-export interface Stadium {
-    id: number;
-    name: string;
-    stands: Stand[];
-    imageId: string;           // Public ID
-}
-
-export interface StadiumWithImage extends Stadium {
-    imageUrl: SafeUrl;       // Sanitized URL
-}
+import { Stadium, StadiumWithImage } from '../Models/Stadium.model';
 
 @Injectable({
     providedIn: 'root'

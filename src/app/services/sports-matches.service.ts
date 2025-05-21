@@ -1,16 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { AuthService } from './login.user.service';
-
-export interface Partido {
-  matchId?: number;    // Opcional para crear
-  awayClubId: number;
-  stadiumId: number;
-  year: number;
-  season: number;
-  matchDate: string;
-}
+import { Partido } from '../Models/Partido.model';
 
 @Injectable({
   providedIn: 'root',

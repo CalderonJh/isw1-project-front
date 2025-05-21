@@ -11,8 +11,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
-
-import { StadiumService, Stadium, Stand, StadiumWithImage} from '../../services/stadium.service';
+import { Stadium, StadiumWithImage } from '../../Models/Stadium.model';
+import { Stand } from '../../Models/Stand.model';
+import { StadiumService} from '../../services/stadium.service';
 import { StadiumDialog } from './stadium-dialog.component';
 import { TribunaDialog } from './tribuna-dialog.component';
 
