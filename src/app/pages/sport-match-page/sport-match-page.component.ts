@@ -10,9 +10,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { SportsMatchesService, Partido } from '../../services/sports-matches.service';
+import { SportsMatchesService } from '../../services/sports-matches.service';
+import { Partido } from '../../Models/Partido.model';
 import { SportMatchDialog } from './sport-match-dialog.component';
-import { forkJoin, map, of } from 'rxjs';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-sport-match-page',
@@ -25,6 +26,7 @@ import { forkJoin, map, of } from 'rxjs';
     MatToolbarModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSnackBarModule,
     FormsModule,
   ],
   templateUrl: './sport-match-page.component.html',
@@ -37,7 +39,8 @@ export class SportMatchPageComponent {
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private sportsMatchesService: SportsMatchesService
+    private sportsMatchesService: SportsMatchesService,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -45,26 +48,26 @@ export class SportMatchPageComponent {
   }
 
   loadPartidos() {
-  this.sportsMatchesService.getSportsMatches().subscribe((data: any[]) => {
-    if (!data || data.length === 0) {
-      this.partidos = [];
-      return;
-    }
+    this.sportsMatchesService.getSportsMatches().subscribe((data: any[]) => {
+      if (!data || data.length === 0) {
+        this.partidos = [];
+        return;
+      }
 
-    // Procesamos los partidos y asignamos directamente los valores de nombre del club y estadio
-    this.partidos = data.map((partido: any) => {
-      return {
-        ...partido,
-        visitante: partido.awayClub?.description || 'Club no encontrado', // Usar directamente la descripción
-        estadio: partido.stadium?.description || 'Estadio no disponible', // Usar directamente la descripción
-        temporada: `${partido.year} - ${partido.season}`,
-        fecha: partido.matchDate
-          ? new Date(partido.matchDate).toLocaleDateString()
-          : 'Fecha no disponible',
-      };
+      // Procesamos los partidos y asignamos directamente los valores de nombre del club y estadio
+      this.partidos = data.map((partido: any) => {
+        return {
+          ...partido,
+          visitante: partido.awayClub?.description || 'Club no encontrado', // Usar directamente la descripción
+          estadio: partido.stadium?.description || 'Estadio no disponible', // Usar directamente la descripción
+          temporada: `${partido.year} - ${partido.season}`,
+          fecha: partido.matchDate
+            ? new Date(partido.matchDate).toLocaleDateString()
+            : 'Fecha no disponible',
+        };
+      });
     });
-  });
-}
+  }
 
   navigateToHome(): void {
     this.router.navigate(['/home']);
@@ -99,11 +102,6 @@ export class SportMatchPageComponent {
     const season = Number(partido.season);
     const matchDate = partido.matchDate;
 
-    if (!awayClubId || !stadiumId || !year || !season) {
-      alert('Por favor complete todos los campos obligatorios correctamente');
-      return;
-    }
-
     // Generar un matchId provisional si no existe
     const provisionalMatchId = this.generateProvisionalMatchId();
 
@@ -125,7 +123,12 @@ export class SportMatchPageComponent {
         if (error.error && error.error.errors) {
           console.error('Detalles del error:', error.error.errors);
         }
-        alert('Error al guardar partido. Revisa consola para detalles.');
+        this.snackBar.open('Error al guardar partido. Revisa consola para detalles.', 'Cerrar', {
+          duration: 5000,  // Duración en milisegundos
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['snackbar-error'] // clase CSS para personalizar el color
+        });
       }
     );
   }
@@ -138,38 +141,59 @@ export class SportMatchPageComponent {
 
 
   updatePartido(partido: any): void {
-  // Verificar si el partido tiene matchId, si no, se genera uno provisional
-  const matchId = partido.matchId || this.generateProvisionalMatchId();  // Si no tiene matchId, se genera uno provisional
+    // Verificar si el partido tiene matchId, si no, se genera uno provisional
+    const matchId = partido.matchId || this.generateProvisionalMatchId();  // Si no tiene matchId, se genera uno provisional
 
-  const partidoToUpdate: Partido = {
-    matchId,  // Ahora incluye el matchId en el objeto
-    awayClubId: parseInt(partido.awayClubId, 10),
-    stadiumId: parseInt(partido.stadiumId, 10),
-    year: parseInt(partido.year, 10),
-    season: parseInt(partido.season, 10),
-    matchDate: partido.matchDate,
-  };
+    const partidoToUpdate: Partido = {
+      matchId,  // Ahora incluye el matchId en el objeto
+      awayClubId: parseInt(partido.awayClubId, 10),
+      stadiumId: parseInt(partido.stadiumId, 10),
+      year: parseInt(partido.year, 10),
+      season: parseInt(partido.season, 10),
+      matchDate: partido.matchDate,
+    };
 
-  console.log('Datos a enviar:', partidoToUpdate); // Verifica en consola los datos que se enviarán
+    console.log('Datos a enviar:', partidoToUpdate); // Verifica en consola los datos que se enviarán
 
-  this.sportsMatchesService.updateSportsMatch(matchId, partidoToUpdate).subscribe(
-    () => this.loadPartidos(),
-    (error) => {
-      console.error('Error al actualizar el partido:', error);
-      if (error.error && error.error.errors) {
-        console.error('Detalles del error:', error.error.errors);
+    this.sportsMatchesService.updateSportsMatch(matchId, partidoToUpdate).subscribe(
+      () => this.loadPartidos(),
+      (error) => {
+        console.error('Error al actualizar el partido:', error);
+        if (error.error && error.error.errors) {
+          console.error('Detalles del error:', error.error.errors);
+        }
+        this.snackBar.open('Error al actualizar el partido. Revisa consola para detalles.', 'Cerrar', {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['snackbar-error']
+        });
       }
-      alert('Error al actualizar el partido. Revisa consola para detalles.');
-    }
-  );
-}
+    );
+  }
 
   deletePartido(matchId: number): void {
     if (!confirm('¿Estás seguro que deseas eliminar este partido?')) return;
 
     this.sportsMatchesService.deleteSportsMatch(matchId).subscribe(
-      () => this.loadPartidos(),
-      (error) => console.error('Error al eliminar el partido:', error)
+      () => {
+        this.loadPartidos();
+        this.snackBar.open('Partido eliminado exitosamente.', 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['snackbar-success']
+        });
+      },
+      (error) => {
+        console.error('Error al eliminar el partido:', error);
+        this.snackBar.open('Error al eliminar el partido. Revisa consola para detalles.', 'Cerrar', {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['snackbar-error']
+        });
+      }
     );
   }
 }

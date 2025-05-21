@@ -23,6 +23,30 @@ mat-toolbar {
   height: 64px;
 }
 
+/* Estilos para el botón logout (y también para el botón home si quieres) */
+.toolbar-actions button.mat-icon-button {
+  background: transparent; /* Fondo transparente */
+  color: white;            /* Color del icono */
+  border: none;            /* Sin borde */
+  display: flex;           /* Flex para centrar */
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 8px;
+}
+
+.toolbar-actions button.mat-icon-button mat-icon {
+  margin: 0; /* Sin margen, ya que solo es icono */
+  font-size: 24px; /* Tamaño del icono */
+}
+
+/* Si quieres agregar margen derecha para logout cuando tiene texto */
+.logout i {
+  margin-right: 8px; /* Solo si tienes icono + texto */
+}
+
+
 .toolbar-actions {
   display: flex;
   gap: 10px;
