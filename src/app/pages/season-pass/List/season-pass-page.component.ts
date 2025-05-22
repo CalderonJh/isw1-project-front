@@ -1,24 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { CommonModule } from '@angular/common'; // <-- Para ngIf, ngFor, pipe date
+import { MatToolbarModule } from '@angular/material/toolbar'; // <-- Para mat-toolbar
+import { MatIconModule } from '@angular/material/icon'; // <-- Para mat-icon
+import { MatButtonModule } from '@angular/material/button'; // <-- Para botones material
 import { SeasonPassService } from '../../../services/season-pass.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-season-pass-page',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatIconModule, MatButtonModule, MatToolbarModule],  // Necesario para *ngFor
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule
+  ], // <--- Importa aquí los módulos que usa el template
   templateUrl: './season-pass-page.component.html',
   styleUrls: ['./season-pass-page.component.css']
 })
 export class SeasonPassPageComponent implements OnInit {
-  seasonPasses: any[] = [];  // Aquí almacenamos todos los abonos disponibles
+  seasonPasses: any[] = [];
 
   constructor(
-    private seasonPassService: SeasonPassService,  // Servicio que interactúa con el backend
+    private seasonPassService: SeasonPassService,
     private router: Router
   ) {}
 
@@ -26,11 +30,10 @@ export class SeasonPassPageComponent implements OnInit {
     this.loadSeasonPasses();
   }
 
-  // Cargar los abonos desde el servicio
   loadSeasonPasses(): void {
     this.seasonPassService.getAllSeasonPasses().subscribe(
       (data) => {
-        this.seasonPasses = data;  // Almacena los abonos obtenidos en seasonPasses
+        this.seasonPasses = data;
       },
       (error) => {
         console.error('Error al cargar los abonos', error);
@@ -38,32 +41,22 @@ export class SeasonPassPageComponent implements OnInit {
     );
   }
 
-  // Redirige a la página de creación de un nuevo abono
   createNewSeasonPass(): void {
-    this.router.navigate(['create-season-pass']);  // Redirige a la ruta de creación de abono
+    this.router.navigate(['create-season-pass']);
   }
-  
-  // Método para cambiar el estado de un abono (activar/desactivar)
+
   toggleStatus(id: string): void {
     this.seasonPassService.toggleStatus(id).subscribe(
-      (response) => {
-        console.log('Estado actualizado', response);
-        this.loadSeasonPasses();  // Recargar los abonos para reflejar el cambio
-      },
-      (error) => {
-        console.error('Error cambiando el estado', error);
-      }
+      () => this.loadSeasonPasses(),
+      (error) => console.error('Error cambiando el estado', error)
     );
   }
 
-  // Función para redirigir a la página de inicio (adminhome)
   navigateToHome(): void {
     this.router.navigate(['home']);
   }
 
-  // Función para cerrar sesión (Logout)
   logout(): void {
     this.router.navigate(['']);
-  }  
-
+  }
 }

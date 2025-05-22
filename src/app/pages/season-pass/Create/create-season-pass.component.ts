@@ -15,7 +15,7 @@ import { SeasonPassService } from '../../../services/season-pass.service';
 @Component({
   selector: 'app-create-season-pass-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTableModule, MatIconModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatInputModule],  // Asegúrate de que todos los módulos estén importados
+  imports: [CommonModule, FormsModule, MatTableModule, MatIconModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatInputModule],
   templateUrl: './create-season-pass-page.component.html',
   styleUrls: ['./create-season-pass-page.component.css']
 })
@@ -28,7 +28,6 @@ export class CreateSeasonPassPageComponent {
     selectedMatches: [] as number[]
   };
 
-  // Propiedades para los partidos y fechas
   partidoSeleccionado: any = null;
   saleStartDate: Date | null = null;
   saleEndDate: Date | null = null;
@@ -45,7 +44,6 @@ export class CreateSeasonPassPageComponent {
     private router: Router
   ) { }
 
-  // Maneja la selección de partidos
   onMatchSelect(event: any): void {
     const matchId = event.target.value;
     if (event.target.checked) {
@@ -64,20 +62,22 @@ export class CreateSeasonPassPageComponent {
   }
 
   guardarOferta(): void {
-    // Lógica para guardar la oferta
     console.log('Oferta guardada');
-    // Llamar a un servicio o realizar alguna acción aquí
   }
 
   cancelarOferta(): void {
-    // Lógica para cancelar la oferta
     console.log('Oferta cancelada');
-    // Resetear o redirigir a alguna página, si es necesario
   }
 
-  // Crea el nuevo abono
   createSeasonPass(): void {
-    this.seasonPassService.createSeasonPass(this.seasonPassData).subscribe(
+    const formData = new FormData();
+    formData.append('price', this.seasonPassData.price.toString());
+    formData.append('startDate', this.seasonPassData.startDate);
+    formData.append('endDate', this.seasonPassData.endDate);
+    formData.append('image', this.seasonPassData.image);
+    formData.append('selectedMatches', JSON.stringify(this.seasonPassData.selectedMatches));
+
+    this.seasonPassService.createSeasonPass(formData).subscribe(
       (response) => {
         console.log('Abono creado con éxito', response);
         this.router.navigate(['/season-pass']);
@@ -88,12 +88,10 @@ export class CreateSeasonPassPageComponent {
     );
   }
 
-  // Redirige a la página de inicio (adminhome)
   navigateToHome(): void {
     this.router.navigate(['home']);
   }
 
-  // Cierra sesión
   logout(): void {
     this.router.navigate(['']);
   }

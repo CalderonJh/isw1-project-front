@@ -9,7 +9,7 @@
 /* Barra de navegación */
 mat-toolbar {
   background-color: #2e74be;
-  color: rgb(255, 255, 255);
+  color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -20,11 +20,11 @@ mat-toolbar {
   left: 0;
   width: 100%;
   z-index: 1000;
-  box-shadow: 0 4px 10px rgb(255, 255, 255);
+  box-shadow: 0 4px 10px #fff;
   padding: 0 20px;
 }
 
-/* Estilo para los botones */
+/* Botones ícono */
 button mat-icon {
   font-size: 25px;
   color: white;
@@ -36,9 +36,10 @@ button mat-icon {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
-/* Contenedor para el botón de "Crear abono" */
+/* Cabecera y botón crear abono */
 .header-container {
   display: flex;
   justify-content: space-between;
@@ -59,14 +60,14 @@ button mat-icon {
   background-color: #a3b3c6;
 }
 
-/* Estilo para el título de "Abonos Disponibles" */
+/* Título */
 .section-title {
   font-size: 24px;
   font-weight: bold;
   color: #1e5ea8;
 }
 
-/* Contenedor de las tarjetas de los abonos */
+/* Tarjetas de abonos */
 .abonos-container {
   display: flex;
   justify-content: space-between;
@@ -104,7 +105,7 @@ button mat-icon {
   color: #888;
 }
 
-.abono-card .abono-details {
+.abono-details {
   margin-top: 10px;
 }
 
