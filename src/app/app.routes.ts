@@ -37,8 +37,8 @@ export const routes: Routes = [
     path: 'boletas',
     loadComponent: () =>
       import(
-        './pages/view-ticket-offers-page/view-ticket-offers-page.component'
-      ).then((m) => m.ViewTicketOffersPageComponent),
+        './pages/view-ticket-page/view-ticket-offers-page.component' // Cambia la ruta según tu estructura de carpetas
+      ).then((m) => m.ViewTicketPageComponent),
   },
   {
     path: 'tickets/create',
@@ -53,8 +53,8 @@ export const routes: Routes = [
   {
     path: 'admin/boletas',
     loadComponent: () =>
-      import('./pages/view-ticket-offers-page/view-ticket-offers-page.component').then(
-        (m) => m.ViewTicketOffersPageComponent
+      import('./pages/view-ticket-page/view-ticket-offers-page.component').then(
+        (m) => m.ViewTicketPageComponent
       ),
   },
   {

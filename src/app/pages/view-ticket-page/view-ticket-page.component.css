@@ -98,3 +98,58 @@ button mat-icon {
   font-size: 18px; /* Aumenté el tamaño del texto de las ofertas */
   color: #386599; /* Cambié el color de la letra a un azul que resalta más */
 }
+
+
+
+
+
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.2rem;
+  border: 1px solid #e0e0e0;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.card h3 {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.card p {
+  margin: 0.25rem 0;
+  color: #444;
+}
+
+.card .activa {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.card .pausada {
+  color: #c62828;
+  font-weight: 600;
+}
