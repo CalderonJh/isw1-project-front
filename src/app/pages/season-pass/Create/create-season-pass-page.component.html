@@ -1,26 +1,53 @@
-<div class="create-season-pass-form">
-  <h2>Crear Nuevo Abono</h2>
-  <form (ngSubmit)="createSeasonPass()">
-    <label for="price">Precio</label>
-    <input type="number" id="price" [(ngModel)]="seasonPassData.price" name="price" required>
+<mat-toolbar color="primary">
+  <span>Bienvenido ADMIN</span>
+  <div class="toolbar-actions">
+    <button mat-icon-button (click)="navigateToHome()">
+      <mat-icon>home</mat-icon>
+    </button>
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
 
-    <label for="startDate">Fecha de Inicio</label>
-    <input type="date" id="startDate" [(ngModel)]="seasonPassData.startDate" name="startDate" required>
+<!-- Sección de Crear Nuevo Abono -->
+<div class="content-container">
+  <div class="header-container">
+    <h1 class="section-title">Crear Nuevo Abono</h1>
+  </div>
 
-    <label for="endDate">Fecha de Fin</label>
-    <input type="date" id="endDate" [(ngModel)]="seasonPassData.endDate" name="endDate" required>
-
-    <label for="image">Imagen</label>
-    <input type="file" id="image" [(ngModel)]="seasonPassData.image" name="image">
-
-    <!-- Selección de partidos -->
-    <div class="match-selection">
-      <label>Selecciona los partidos:</label>
-      <div *ngFor="let match of availableMatches">
-        <input type="checkbox" [value]="match.id" (change)="onMatchSelect($event)"> {{ match.name }}
+  <!-- Formulario para Crear Abono -->
+  <div class="create-season-pass-form">
+    <form (ngSubmit)="createSeasonPass()">
+      <div class="form-field">
+        <label for="price">Precio</label>
+        <input type="number" id="price" [(ngModel)]="seasonPassData.price" name="price" required>
       </div>
-    </div>
 
-    <button type="submit">Crear Abono</button>
-  </form>
+      <div class="form-field">
+        <label for="startDate">Fecha de Inicio</label>
+        <input type="date" id="startDate" [(ngModel)]="seasonPassData.startDate" name="startDate" required>
+      </div>
+
+      <div class="form-field">
+        <label for="endDate">Fecha de Fin</label>
+        <input type="date" id="endDate" [(ngModel)]="seasonPassData.endDate" name="endDate" required>
+      </div>
+
+      <div class="form-field">
+        <label for="image">Imagen</label>
+        <input type="file" id="image" [(ngModel)]="seasonPassData.image" name="image">
+      </div>
+
+      <!-- Selección de partidos -->
+      <div class="match-selection">
+        <label>Selecciona los partidos:</label>
+        <div *ngFor="let match of availableMatches">
+          <input type="checkbox" [value]="match.id" (change)="onMatchSelect($event)"> {{ match.name }}
+        </div>
+      </div>
+
+      <button type="submit" class="submit-button">Crear Abono</button>
+    </form>
+  </div>
 </div>

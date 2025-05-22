@@ -1,0 +1,128 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  color: #bbbec3;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+}
+
+/* Barra de navegación */
+mat-toolbar {
+  background-color: #2e74be;
+  color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgb(255, 255, 255);
+  padding: 0 20px;
+}
+
+/* Estilo para los botones */
+button mat-icon {
+  font-size: 25px;
+  color: white;
+}
+
+/* Contenedor principal */
+.content-container {
+  margin-top: 100px; /* Ajuste para que el contenido no quede debajo de la barra de navegación */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Contenedor para el botón de "Crear Abono" */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Estilo para el título de "Crear Nuevo Abono" */
+.section-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1e5ea8;
+}
+
+/* Estilos para el formulario de Crear Abono */
+.create-season-pass-form {
+  background-color: #f9f9f9;
+  padding: 30px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Campo de formulario */
+.form-field {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+}
+
+input[type="number"],
+input[type="date"],
+input[type="file"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #fff;
+  margin-top: 5px;
+  transition: border-color 0.3s ease;
+}
+
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="file"]:focus {
+  border-color: #2e74be; /* Resalta el borde cuando el campo está en foco */
+  outline: none;
+}
+
+/* Estilos para el botón de envío */
+.submit-button {
+  background-color: #2e74be;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #1e5ea8;
+}
+
+/* Estilos para la selección de partidos */
+.match-selection {
+  margin-bottom: 20px;
+}
+
+.match-selection label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.match-selection input[type="checkbox"] {
+  margin-right: 10px;
+}

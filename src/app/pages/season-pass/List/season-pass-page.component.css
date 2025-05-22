@@ -5,3 +5,116 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 20px;
 }
+
+/* Barra de navegación */
+mat-toolbar {
+  background-color: #2e74be;
+  color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgb(255, 255, 255);
+  padding: 0 20px;
+}
+
+/* Estilo para los botones */
+button mat-icon {
+  font-size: 25px;
+  color: white;
+}
+
+/* Contenedor principal */
+.content-container {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Contenedor para el botón de "Crear abono" */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.crear-abono-btn {
+  margin-left: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.crear-abono-btn:hover {
+  background-color: #a3b3c6;
+}
+
+/* Estilo para el título de "Abonos Disponibles" */
+.section-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1e5ea8;
+}
+
+/* Contenedor de las tarjetas de los abonos */
+.abonos-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.abono-card {
+  background-color: #e2eaee;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 22%;
+  text-align: center;
+  font-size: 18px;
+  border: 2px solid #1e5ea8;
+  transition: box-shadow 0.3s;
+  color: #333;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+}
+
+.abono-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.abono-card .abono-title {
+  font-size: 20px;
+  color: #1e5ea8;
+}
+
+.abono-card .abono-status {
+  font-size: 14px;
+  color: #888;
+}
+
+.abono-card .abono-details {
+  margin-top: 10px;
+}
+
+.abono-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.abono-card p {
+  font-size: 18px;
+  color: #386599;
+}

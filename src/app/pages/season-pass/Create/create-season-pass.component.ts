@@ -2,12 +2,16 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';  // Necesario para *ngFor
 import { FormsModule } from '@angular/forms';  // Necesario para ngModel
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { SeasonPassService } from '../../../services/season-pass.service';
 
 @Component({
   selector: 'app-create-season-pass-page',
   standalone: true,  // Esto hace que el componente sea standalone
-  imports: [CommonModule, FormsModule],  // Importa los módulos necesarios
+  imports: [CommonModule, FormsModule, MatTableModule, MatIconModule, MatButtonModule, MatToolbarModule],  // Importa los módulos necesarios
   templateUrl: './create-season-pass-page.component.html',
   styleUrls: ['./create-season-pass-page.component.css']
 })
@@ -57,4 +61,15 @@ export class CreateSeasonPassPageComponent {
       }
     );
   }
+
+  // Función para redirigir a la página de inicio (adminhome)
+  navigateToHome(): void {
+    this.router.navigate(['home']);
+  }
+
+  // Función para cerrar sesión (Logout)
+  logout(): void {
+    this.router.navigate(['']);
+  }  
+
 }
