@@ -41,11 +41,12 @@ export class CreateTicketOffersPageComponent implements OnInit {
   partidos: Partido[] = [];
   partidoSeleccionado: Partido | null = null;
 
-  boletasActivadas: boolean = true;
-  fechaProgramada: Date | null = null;
-  horaProgramada: string = '';
+  standId: number | null = null;
+  price: number | null = null;
+  saleStartDate: Date | null = null;
+  saleEndDate: Date | null = null;
 
-  fileSeleccionado: File | null = null; // Para guardar el archivo seleccionado
+  fileSeleccionado: File | null = null;
 
   constructor(
     private router: Router,
@@ -90,47 +91,70 @@ export class CreateTicketOffersPageComponent implements OnInit {
   }
 
   guardarOferta() {
-  if (!this.partidoSeleccionado) {
-    alert('Por favor seleccione un partido antes de guardar');
-    return;
-  }
-  if (!this.fileSeleccionado) {
-    alert('Por favor seleccione un archivo para la oferta');
-    return;
-  }
-
-  // No envíes matchId en el cuerpo, solo en la URL
-  const offer = {
-    awayClubDescription: this.partidoSeleccionado.visitante,
-    matchDate: this.partidoSeleccionado.matchDate,
-    fecha: this.fechaProgramada,
-    hora: this.horaProgramada,
-    activa: this.boletasActivadas,
-  };
-
-  const formData = new FormData();
-  formData.append('offer', new Blob([JSON.stringify(offer)], { type: 'application/json' }));
-  formData.append('file', this.fileSeleccionado);
-
-  this.crea.createTicketOffer(this.partidoSeleccionado.matchId!, formData).subscribe({
-    next: () => {
-      alert('Oferta creada exitosamente');
-      this.partidoSeleccionado = null;
-      this.fechaProgramada = null;
-      this.horaProgramada = '';
-      this.fileSeleccionado = null;
-    },
-    error: (error) => {
-      console.error('Error creando oferta:', error);
-      alert('Hubo un error al crear la oferta');
+    if (!this.partidoSeleccionado) {
+      alert('Por favor seleccione un partido antes de guardar');
+      return;
     }
-  });
+    if (!this.fileSeleccionado) {
+      alert('Por favor seleccione un archivo para la oferta');
+      return;
+    }
+    if (this.standId === null) {
+      alert('Por favor ingrese el Stand ID');
+      return;
+    }
+    if (this.price === null) {
+      alert('Por favor ingrese el precio');
+      return;
+    }
+    if (!this.saleStartDate) {
+      alert('Por favor ingrese la fecha de inicio de venta');
+      return;
+    }
+    if (!this.saleEndDate) {
+      alert('Por favor ingrese la fecha de fin de venta');
+      return;
+    }
+
+    const offer = {
+      standPrices: [
+        {
+          standId: this.standId,
+          price: this.price,
+          isDisabled: true,
+        }
+      ],
+      saleStartDate: this.saleStartDate.toISOString(),
+      saleEndDate: this.saleEndDate.toISOString(),
+    };
+
+    const formData = new FormData();
+    formData.append('offer', new Blob([JSON.stringify(offer)], { type: 'application/json' }));
+    formData.append('file', this.fileSeleccionado);
+
+    this.crea.createTicketOffer(this.partidoSeleccionado.matchId!, formData).subscribe({
+      next: () => {
+        alert('Oferta creada exitosamente');
+        this.partidoSeleccionado = null;
+        this.standId = null;
+        this.price = null;
+        this.saleStartDate = null;
+        this.saleEndDate = null;
+        this.fileSeleccionado = null;
+      },
+      error: (error) => {
+        console.error('Error creando oferta:', error);
+        alert('Hubo un error al crear la oferta');
+      }
+    });
   }
 
   cancelarOferta() {
     this.partidoSeleccionado = null;
-    this.fechaProgramada = null;
-    this.horaProgramada = '';
+    this.standId = null;
+    this.price = null;
+    this.saleStartDate = null;
+    this.saleEndDate = null;
     this.fileSeleccionado = null;
   }
 

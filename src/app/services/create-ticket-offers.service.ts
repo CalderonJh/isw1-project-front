@@ -60,7 +60,10 @@ export class CreateTicketOffersService {
   createTicketOffer(matchId: number, formData: FormData): Observable<any> {
   const url = `${this.apiUrlCreateTicket}?matchId=${matchId}`;
   return this.http.post<any>(url, formData, {
-    headers: this.getHeadersFormData(),
+    headers: new HttpHeaders({
+      Authorization: `Bearer ${this.authService.getToken()}`,
+      // NO Content-Type para que Angular lo maneje solo
+    }),
   });
   }
 

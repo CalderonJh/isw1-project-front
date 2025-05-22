@@ -23,7 +23,6 @@
 </div>
 
 
-<!-- Detalles del partido seleccionado -->
 <div *ngIf="partidoSeleccionado" class="boletas-config-container">
   <h3>Partido Seleccionado</h3>
   <p><strong>ID:</strong> {{ partidoSeleccionado.matchId }}</p>
@@ -33,7 +32,30 @@
   <p><strong>Temporada:</strong> {{ partidoSeleccionado.season }}</p>
   <p><strong>Fecha:</strong> {{ partidoSeleccionado.matchDate | date:'medium' }}</p>
 
-  <!-- Label + input file sin mat-form-field -->
+  <mat-form-field appearance="fill" style="width: 100%; margin-top: 1rem;">
+    <mat-label>Stand ID (Tribuna)</mat-label>
+    <input matInput type="number" [(ngModel)]="standId" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width: 100%; margin-top: 1rem;">
+    <mat-label>Precio</mat-label>
+    <input matInput type="number" [(ngModel)]="price" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width: 100%; margin-top: 1rem;">
+    <mat-label>Fecha Inicio Venta</mat-label>
+    <input matInput [matDatepicker]="startPicker" [(ngModel)]="saleStartDate" />
+    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+    <mat-datepicker #startPicker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width: 100%; margin-top: 1rem;">
+    <mat-label>Fecha Fin Venta</mat-label>
+    <input matInput [matDatepicker]="endPicker" [(ngModel)]="saleEndDate" />
+    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+    <mat-datepicker #endPicker></mat-datepicker>
+  </mat-form-field>
+
   <label for="fileInput" style="display: block; margin-top: 1rem; margin-bottom: 0.5rem;">
     Seleccione archivo
   </label>
