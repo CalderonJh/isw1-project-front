@@ -69,15 +69,6 @@ button mat-icon {
   margin: 0 auto; /* centra horizontalmente */
 }
 
-.custom-form-field .mat-form-field-wrapper {
-  border-radius: 20px; /* bordes suaves */
-  border: 1px solid #ccc; /* borde gris claro */
-  padding: 4px 12px;
-}
-
-.custom-form-field .mat-form-field-flex {
-  padding: 0; /* quita padding extra para más limpio */
-}
 
 /* Opcional: cambia color focus para bordes */
 .custom-form-field.mat-focused .mat-form-field-wrapper {

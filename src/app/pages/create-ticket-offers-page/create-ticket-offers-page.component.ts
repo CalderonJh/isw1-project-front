@@ -17,7 +17,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core'
 
-
 @Component({
   selector: 'app-create-ticket-offers-page',
   standalone: true,
@@ -27,7 +26,6 @@ import { MatNativeDateModule } from '@angular/material/core'
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
-
     FormsModule,
     MatFormFieldModule,
     MatSelectModule,
@@ -41,8 +39,13 @@ import { MatNativeDateModule } from '@angular/material/core'
 
 export class CreateTicketOffersPageComponent implements OnInit {
   partidos: Partido[] = [];
-  clubs: Club[] = [];
-  partidoSeleccionado?: Partido;
+  partidoSeleccionado: Partido | null = null;
+
+  boletasActivadas: boolean = true;
+  fechaProgramada: Date | null = null;
+  horaProgramada: string = '';
+
+  fileSeleccionado: File | null = null; // Para guardar el archivo seleccionado
 
   constructor(
     private router: Router,
@@ -52,7 +55,6 @@ export class CreateTicketOffersPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMatches();
-    this.loadClubs();
   }
 
   loadMatches(): void {
@@ -66,30 +68,70 @@ export class CreateTicketOffersPageComponent implements OnInit {
     });
   }
 
-  loadClubs(): void {
-  this.crea.getClubs().subscribe({
-    next: data => this.clubs = data,
-    error: err => console.error('Error cargando clubes', err)
-  });
-  }
-
-  getClubName(id: number): string {
-  const club = this.clubs.find(c => c.clubId === id);
-  return club ? club.name : 'Desconocido';
-  }
-
   openDialog(): void {
-  const dialogRef = this.dialog.open(CreateTicketOffersDialog, {
-    width: '700px',  // más ancho para que se vea mejor
-    maxWidth: '90vw', // para que no se salga en pantallas pequeñas
-    data: null
-  });
+    const dialogRef = this.dialog.open(CreateTicketOffersDialog, {
+      width: '700px',
+      maxWidth: '90vw',
+      data: null
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result && result.matchId) {
-      this.partidoSeleccionado = this.partidos.find(p => p.matchId === result.matchId);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.matchId) {
+        this.partidoSeleccionado = this.partidos.find(p => p.matchId === result.matchId) || null;
+      }
+    });
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.fileSeleccionado = file;
+    }
+  }
+
+  guardarOferta() {
+  if (!this.partidoSeleccionado) {
+    alert('Por favor seleccione un partido antes de guardar');
+    return;
+  }
+  if (!this.fileSeleccionado) {
+    alert('Por favor seleccione un archivo para la oferta');
+    return;
+  }
+
+  // No envíes matchId en el cuerpo, solo en la URL
+  const offer = {
+    awayClubDescription: this.partidoSeleccionado.visitante,
+    matchDate: this.partidoSeleccionado.matchDate,
+    fecha: this.fechaProgramada,
+    hora: this.horaProgramada,
+    activa: this.boletasActivadas,
+  };
+
+  const formData = new FormData();
+  formData.append('offer', new Blob([JSON.stringify(offer)], { type: 'application/json' }));
+  formData.append('file', this.fileSeleccionado);
+
+  this.crea.createTicketOffer(this.partidoSeleccionado.matchId!, formData).subscribe({
+    next: () => {
+      alert('Oferta creada exitosamente');
+      this.partidoSeleccionado = null;
+      this.fechaProgramada = null;
+      this.horaProgramada = '';
+      this.fileSeleccionado = null;
+    },
+    error: (error) => {
+      console.error('Error creando oferta:', error);
+      alert('Hubo un error al crear la oferta');
     }
   });
+  }
+
+  cancelarOferta() {
+    this.partidoSeleccionado = null;
+    this.fechaProgramada = null;
+    this.horaProgramada = '';
+    this.fileSeleccionado = null;
   }
 
   navigateToHome(): void {
@@ -99,8 +141,4 @@ export class CreateTicketOffersPageComponent implements OnInit {
   logout(): void {
     this.router.navigate(['']);
   }
-  boletasActivadas: boolean = true;
-  fechaProgramada: Date | null = null;
-  horaProgramada: string = '';
-
 }

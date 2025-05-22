@@ -23,38 +23,28 @@
 </div>
 
 
-<!-- Mostrar detalles del partido seleccionado -->
+<!-- Detalles del partido seleccionado -->
 <div *ngIf="partidoSeleccionado" class="boletas-config-container">
-  <!-- Detalles del partido seleccionado -->
   <h3>Partido Seleccionado</h3>
   <p><strong>ID:</strong> {{ partidoSeleccionado.matchId }}</p>
-  <p><strong>Club Visitante:</strong> {{ partidoSeleccionado.awayClubId}}</p>
-  <p><strong>Estadio:</strong> {{ partidoSeleccionado.stadiumId }}</p>
+  <p><strong>Club Visitante:</strong> {{ partidoSeleccionado.visitante || 'No disponible' }}</p>
+  <p><strong>Estadio:</strong> {{ partidoSeleccionado.estadio || 'No disponible' }}</p>
   <p><strong>Año:</strong> {{ partidoSeleccionado.year }}</p>
   <p><strong>Temporada:</strong> {{ partidoSeleccionado.season }}</p>
   <p><strong>Fecha:</strong> {{ partidoSeleccionado.matchDate | date:'medium' }}</p>
 
-  <!-- Sección para boletas y programación --> 
-  <div *ngIf="partidoSeleccionado" class="boletas-config-container" style="color: #222 !important;"></div>
-    <h4 style="color: #222; font-weight: 600; margin-bottom: 12px;">Programación De Boletas</h4>
-    <mat-form-field appearance="fill" class="custom-form-field" style="width: 300px; margin-bottom: 20px;">
-      <mat-label>Estado de Boletas</mat-label>
-      <mat-select [(value)]="boletasActivadas">
-        <mat-option [value]="true">Activar Boletas</mat-option>
-        <mat-option [value]="false">Desactivar Boletas</mat-option>
-      </mat-select>
-    </mat-form-field>
+  <!-- Label + input file sin mat-form-field -->
+  <label for="fileInput" style="display: block; margin-top: 1rem; margin-bottom: 0.5rem;">
+    Seleccione archivo
+  </label>
+  <input id="fileInput" type="file" (change)="onFileSelected($event)" />
 
-    <mat-form-field appearance="fill" class="custom-form-field" style="width: 300px; margin-bottom: 20px;">
-      <mat-label>Fecha Programada</mat-label>
-      <input matInput [matDatepicker]="picker" [(ngModel)]="fechaProgramada" placeholder="Selecciona fecha" />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="custom-form-field" style="width: 300px;">
-      <mat-label>Hora Programada</mat-label>
-      <input matInput type="time" [(ngModel)]="horaProgramada" />
-    </mat-form-field>
+  <div class="actions-container" style="text-align: center; margin-top: 1.5rem;">
+    <button mat-raised-button color="primary" (click)="guardarOferta()" class="mr-4">
+      Guardar
+    </button>
+    <button mat-raised-button color="warn" (click)="cancelarOferta()">
+      Cancelar
+    </button>
+  </div>
 </div>
-

@@ -5,4 +5,9 @@ export interface Partido {
   year: number;
   season: number;
   matchDate: string;
+
+  visitante?: string;
+  estadio?: string;
+  temporada?: string;
+  fecha?: string;
 }
