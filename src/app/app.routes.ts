@@ -60,9 +60,16 @@ export const routes: Routes = [
   {
     path: 'abonos',
     loadComponent: () =>
-      import('./pages/abono-page/abono-page.component').then(
-        (m) => m.AbonoPageComponent,
+      import('./pages/season-pass/List/season-pass-page.component').then(
+        (m) => m.SeasonPassPageComponent,
       ),
     canActivate: [AuthGuard], // Protege esta ruta
+  },
+  {
+    path: 'create-season-pass',  // Agregamos esta ruta para crear un nuevo abono
+    loadComponent: () =>
+      import('./pages/season-pass/Create/create-season-pass.component').then(
+        (m) => m.CreateSeasonPassPageComponent,
+      ),
   },
 ];

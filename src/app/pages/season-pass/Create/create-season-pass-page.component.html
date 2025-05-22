@@ -1,0 +1,26 @@
+<div class="create-season-pass-form">
+  <h2>Crear Nuevo Abono</h2>
+  <form (ngSubmit)="createSeasonPass()">
+    <label for="price">Precio</label>
+    <input type="number" id="price" [(ngModel)]="seasonPassData.price" name="price" required>
+
+    <label for="startDate">Fecha de Inicio</label>
+    <input type="date" id="startDate" [(ngModel)]="seasonPassData.startDate" name="startDate" required>
+
+    <label for="endDate">Fecha de Fin</label>
+    <input type="date" id="endDate" [(ngModel)]="seasonPassData.endDate" name="endDate" required>
+
+    <label for="image">Imagen</label>
+    <input type="file" id="image" [(ngModel)]="seasonPassData.image" name="image">
+
+    <!-- Selección de partidos -->
+    <div class="match-selection">
+      <label>Selecciona los partidos:</label>
+      <div *ngFor="let match of availableMatches">
+        <input type="checkbox" [value]="match.id" (change)="onMatchSelect($event)"> {{ match.name }}
+      </div>
+    </div>
+
+    <button type="submit">Crear Abono</button>
+  </form>
+</div>

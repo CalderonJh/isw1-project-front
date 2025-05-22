@@ -1,0 +1,38 @@
+<mat-toolbar color="primary">
+  <span>Bienvenido ADMIN</span>
+  <div class="toolbar-actions">
+    <button mat-icon-button (click)="navigateToHome()">
+      <mat-icon>home</mat-icon>
+    </button>
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<!-- Sección de Abonos -->
+<div class="content-container">
+  <div class="header-container">
+    <h1 class="section-title">Abonos Disponibles</h1>
+    <button mat-raised-button color="primary" class="crear-abono-btn" (click)="createNewSeasonPass()">Crear Nuevo Abono</button>
+  </div>
+
+  <!-- Contenedor de las tarjetas de los abonos -->
+  <div class="abonos-container">
+    <div *ngFor="let pass of seasonPasses" class="abono-card">
+      <div class="abono-card-header">
+        <p class="abono-title">Abono: {{ pass.id }}</p>
+        <p class="abono-status">{{ pass.status ? 'Activo' : 'Inactivo' }}</p>
+      </div>
+      <div class="abono-details">
+        <p><strong>Precio:</strong> ${{ pass.price }}</p>
+        <p><strong>Fechas:</strong> {{ pass.startDate }} - {{ pass.endDate }}</p>
+      </div>
+      <div class="abono-actions">
+        <button mat-raised-button color="accent" (click)="toggleStatus(pass.id)">
+          {{ pass.status ? 'Desactivar' : 'Activar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
