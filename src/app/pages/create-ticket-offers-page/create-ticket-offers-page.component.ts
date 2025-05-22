@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core'
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-create-ticket-offers-page',
@@ -32,6 +33,7 @@ import { MatNativeDateModule } from '@angular/material/core'
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './create-ticket-offers-page.component.html',
   styleUrls: ['./create-ticket-offers-page.component.css'],
@@ -41,11 +43,15 @@ export class CreateTicketOffersPageComponent implements OnInit {
   partidos: Partido[] = [];
   partidoSeleccionado: Partido | null = null;
 
-  standId: number | null = null;
-  price: number | null = null;
+  standPrices: { standId: number; price: number; isDisabled: boolean }[] = [
+  { standId: 0, price: 0, isDisabled: true },
+  { standId: 1, price: 0, isDisabled: true },
+  { standId: 2, price: 0, isDisabled: true },
+  { standId: 3, price: 0, isDisabled: true },
+  ];
+  
   saleStartDate: Date | null = null;
   saleEndDate: Date | null = null;
-
   fileSeleccionado: File | null = null;
 
   constructor(
@@ -99,14 +105,6 @@ export class CreateTicketOffersPageComponent implements OnInit {
       alert('Por favor seleccione un archivo para la oferta');
       return;
     }
-    if (this.standId === null) {
-      alert('Por favor ingrese el Stand ID');
-      return;
-    }
-    if (this.price === null) {
-      alert('Por favor ingrese el precio');
-      return;
-    }
     if (!this.saleStartDate) {
       alert('Por favor ingrese la fecha de inicio de venta');
       return;
@@ -116,14 +114,14 @@ export class CreateTicketOffersPageComponent implements OnInit {
       return;
     }
 
+    const validStands = this.standPrices.filter(sp => sp.standId >= 0 && sp.price > 0);
+    if (validStands.length === 0) {
+      alert('Por favor configure al menos un stand con ID y precio válidos');
+      return;
+    }
+
     const offer = {
-      standPrices: [
-        {
-          standId: this.standId,
-          price: this.price,
-          isDisabled: true,
-        }
-      ],
+      standPrices: validStands,
       saleStartDate: this.saleStartDate.toISOString(),
       saleEndDate: this.saleEndDate.toISOString(),
     };
@@ -135,12 +133,7 @@ export class CreateTicketOffersPageComponent implements OnInit {
     this.crea.createTicketOffer(this.partidoSeleccionado.matchId!, formData).subscribe({
       next: () => {
         alert('Oferta creada exitosamente');
-        this.partidoSeleccionado = null;
-        this.standId = null;
-        this.price = null;
-        this.saleStartDate = null;
-        this.saleEndDate = null;
-        this.fileSeleccionado = null;
+        this.resetForm();
       },
       error: (error) => {
         console.error('Error creando oferta:', error);
@@ -150,12 +143,20 @@ export class CreateTicketOffersPageComponent implements OnInit {
   }
 
   cancelarOferta() {
+    this.resetForm();
+  }
+
+  private resetForm() {
     this.partidoSeleccionado = null;
-    this.standId = null;
-    this.price = null;
     this.saleStartDate = null;
     this.saleEndDate = null;
     this.fileSeleccionado = null;
+    this.standPrices = [
+      { standId: 0, price: 0, isDisabled: true },
+      { standId: 1, price: 0, isDisabled: true },
+      { standId: 2, price: 0, isDisabled: true },
+      { standId: 3, price: 0, isDisabled: true },
+    ];
   }
 
   navigateToHome(): void {

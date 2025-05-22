@@ -32,15 +32,25 @@
   <p><strong>Temporada:</strong> {{ partidoSeleccionado.season }}</p>
   <p><strong>Fecha:</strong> {{ partidoSeleccionado.matchDate | date:'medium' }}</p>
 
-  <mat-form-field appearance="fill" style="width: 100%; margin-top: 1rem;">
-    <mat-label>Stand ID (Tribuna)</mat-label>
-    <input matInput type="number" [(ngModel)]="standId" />
-  </mat-form-field>
+  <div *ngFor="let stand of standPrices; let i = index" style="margin-top: 1rem; border-bottom: 1px solid #ddd; padding-bottom: 1rem;">
+    <h4>Tribuna {{ i }}</h4>
 
-  <mat-form-field appearance="fill" style="width: 100%; margin-top: 1rem;">
-    <mat-label>Precio</mat-label>
-    <input matInput type="number" [(ngModel)]="price" />
-  </mat-form-field>
+    <mat-form-field appearance="fill" style="width: 100%;">
+      <mat-label>Stand ID</mat-label>
+      <input matInput type="number" [(ngModel)]="stand.standId" name="standId{{i}}" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width: 100%;">
+      <mat-label>Precio</mat-label>
+      <input matInput type="number" [(ngModel)]="stand.price" name="price{{i}}" />
+    </mat-form-field>
+
+  </div>
+
+  <label for="fileInput" style="display: block; margin-top: 1rem; margin-bottom: 0.5rem;">
+    Seleccione archivo
+  </label>
+  <input id="fileInput" type="file" (change)="onFileSelected($event)" />
 
   <mat-form-field appearance="fill" style="width: 100%; margin-top: 1rem;">
     <mat-label>Fecha Inicio Venta</mat-label>
@@ -55,11 +65,6 @@
     <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
     <mat-datepicker #endPicker></mat-datepicker>
   </mat-form-field>
-
-  <label for="fileInput" style="display: block; margin-top: 1rem; margin-bottom: 0.5rem;">
-    Seleccione archivo
-  </label>
-  <input id="fileInput" type="file" (change)="onFileSelected($event)" />
 
   <div class="actions-container" style="text-align: center; margin-top: 1.5rem;">
     <button mat-raised-button color="primary" (click)="guardarOferta()" class="mr-4">
