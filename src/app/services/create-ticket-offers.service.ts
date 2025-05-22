@@ -37,8 +37,8 @@ export class CreateTicketOffersService {
 
           return data.map((partido: any) => ({
             matchId: partido.matchId,
-            awayClubId: partido.awayClubId,
-            stadiumId: partido.stadiumId,
+            awayClubId: partido.awayClub?.id,
+            stadiumId: partido.stadium?.id,
             year: partido.year,
             season: partido.season,
             matchDate: partido.matchDate,

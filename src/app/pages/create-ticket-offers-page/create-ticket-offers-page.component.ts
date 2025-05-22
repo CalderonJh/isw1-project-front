@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
 import { CreateTicketOffersDialog } from './create-ticket-offers-dialog.component';
 import { CreateTicketOffersService } from '../../services/create-ticket-offers.service';
 import { Partido } from '../../Models/Partido.model';
-import { Club } from '../../Models/Club.model';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -17,6 +16,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core'
 import { ReactiveFormsModule } from '@angular/forms';
+import { Stadium } from '../../Models/Stadium.model';
+import { StadiumService } from '../../services/stadium.service';  // import correcto
 
 @Component({
   selector: 'app-create-ticket-offers-page',
@@ -49,7 +50,7 @@ export class CreateTicketOffersPageComponent implements OnInit {
   { standId: 2, price: 0, isDisabled: true },
   { standId: 3, price: 0, isDisabled: true },
   ];
-  
+
   saleStartDate: Date | null = null;
   saleEndDate: Date | null = null;
   fileSeleccionado: File | null = null;
