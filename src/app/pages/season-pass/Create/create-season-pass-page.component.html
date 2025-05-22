@@ -10,44 +10,64 @@
   </div>
 </mat-toolbar>
 
-<!-- Sección de Crear Nuevo Abono -->
+<hr class="divider" />
+
+<h2 class="text-2xl font-semibold my-6 text-primary" style="text-align: center;">
+  Crear Nuevo Abono
+</h2>
+
 <div class="content-container">
   <div class="header-container">
-    <h1 class="section-title">Crear Nuevo Abono</h1>
+    <h3 class="section-title">Información del Abono</h3>
   </div>
 
-  <!-- Formulario para Crear Abono -->
   <div class="create-season-pass-form">
     <form (ngSubmit)="createSeasonPass()">
+      <!-- Precio del abono -->
       <div class="form-field">
         <label for="price">Precio</label>
-        <input type="number" id="price" [(ngModel)]="seasonPassData.price" name="price" required>
+        <input type="number" id="price" [(ngModel)]="seasonPassData.price" name="price" required placeholder="Ej. 100">
       </div>
 
+      <!-- Fecha de inicio con MatDatepicker -->
       <div class="form-field">
-        <label for="startDate">Fecha de Inicio</label>
-        <input type="date" id="startDate" [(ngModel)]="seasonPassData.startDate" name="startDate" required>
+        <mat-form-field appearance="fill" style="width: 100%; margin-top: 1rem;">
+          <mat-label>Fecha de Inicio</mat-label>
+          <input matInput [matDatepicker]="startPicker" [(ngModel)]="seasonPassData.startDate" name="startDate" required>
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
       </div>
 
+      <!-- Fecha de fin con MatDatepicker -->
       <div class="form-field">
-        <label for="endDate">Fecha de Fin</label>
-        <input type="date" id="endDate" [(ngModel)]="seasonPassData.endDate" name="endDate" required>
-      </div>
-
-      <div class="form-field">
-        <label for="image">Imagen</label>
-        <input type="file" id="image" [(ngModel)]="seasonPassData.image" name="image">
+        <mat-form-field appearance="fill" style="width: 100%; margin-top: 1rem;">
+          <mat-label>Fecha de Fin</mat-label>
+          <input matInput [matDatepicker]="endPicker" [(ngModel)]="seasonPassData.endDate" name="endDate" required>
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
       </div>
 
       <!-- Selección de partidos -->
-      <div class="match-selection">
-        <label>Selecciona los partidos:</label>
+      <div class="form-field">
+        <label for="matches">Selecciona los partidos:</label>
         <div *ngFor="let match of availableMatches">
           <input type="checkbox" [value]="match.id" (change)="onMatchSelect($event)"> {{ match.name }}
         </div>
       </div>
 
-      <button type="submit" class="submit-button">Crear Abono</button>
+      <!-- Cargar imagen -->
+      <div class="form-field">
+        <label for="fileInput">Selecciona archivo</label>
+        <input id="fileInput" type="file" (change)="onFileSelected($event)">
+      </div>
+
+      <!-- Botones para guardar y cancelar -->
+      <div class="actions-container">
+        <button mat-raised-button color="primary" type="submit">Guardar</button>
+        <button mat-raised-button color="warn" (click)="cancelarOferta()">Cancelar</button>
+      </div>
     </form>
   </div>
 </div>

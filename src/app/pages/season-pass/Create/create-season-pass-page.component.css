@@ -1,67 +1,68 @@
 :host {
   display: block;
   min-height: 100vh;
-  color: #bbbec3;
+  background-color: #f9fafb;
+  color: #222;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 20px;
+  padding: 80px 20px 40px;
+  box-sizing: border-box;
 }
 
 /* Barra de navegación */
 mat-toolbar {
   background-color: #2e74be;
-  color: rgb(255, 255, 255);
+  color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: 'Roboto', sans-serif;
-  font-weight: 500;
+  font-weight: 600;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
-  box-shadow: 0 4px 10px rgb(255, 255, 255);
-  padding: 0 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 0 24px;
+  height: 56px;
 }
 
-/* Estilo para los botones */
-button mat-icon {
-  font-size: 25px;
+.toolbar-actions button mat-icon {
+  font-size: 24px;
   color: white;
+  transition: color 0.3s ease;
+}
+
+.toolbar-actions button:hover mat-icon {
+  color: #a8c0e5;
+}
+
+
+/* Título principal */
+h2.text-primary {
+  text-align: center;
+  font-weight: 700;
+  color: #1976d2;
+  margin-bottom: 2rem;
 }
 
 /* Contenedor principal */
 .content-container {
-  margin-top: 100px; /* Ajuste para que el contenido no quede debajo de la barra de navegación */
+  margin-top: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Contenedor para el botón de "Crear Abono" */
-.header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-/* Estilo para el título de "Crear Nuevo Abono" */
-.section-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #1e5ea8;
-}
-
 /* Estilos para el formulario de Crear Abono */
 .create-season-pass-form {
-  background-color: #f9f9f9;
-  padding: 30px;
-  border-radius: 8px;
+  background-color: #ffffff;
+  padding: 24px 32px;
+  border-radius: 12px;
   width: 100%;
   max-width: 600px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
 }
 
 /* Campo de formulario */
@@ -70,38 +71,44 @@ button mat-icon {
 }
 
 label {
-  font-weight: bold;
+  font-weight: 600;
   display: block;
   margin-bottom: 8px;
+  color: #333;
+  font-size: 1rem;
 }
 
-input[type="number"],
-input[type="date"],
-input[type="file"] {
+input.mat-input-element {
+  font-size: 1rem;
+  padding: 12px 12px;
+  color: #222;
+  border-radius: 6px;
+  background-color: #f5f7fa;
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  background-color: #fff;
-  margin-top: 5px;
-  transition: border-color 0.3s ease;
 }
 
-input[type="number"]:focus,
-input[type="date"]:focus,
-input[type="file"]:focus {
-  border-color: #2e74be; /* Resalta el borde cuando el campo está en foco */
-  outline: none;
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #f5f7fa;
 }
 
-/* Estilos para el botón de envío */
+/* Estilo para los campos de fecha */
+mat-form-field {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.mat-datepicker-toggle.mat-suffix {
+  font-size: 1.25rem;
+  color: #1976d2;
+}
+
+/* Estilo para el botón de enviar */
 .submit-button {
   background-color: #2e74be;
   color: white;
   padding: 12px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: 16px;
   width: 100%;
   cursor: pointer;
@@ -125,4 +132,22 @@ input[type="file"]:focus {
 
 .match-selection input[type="checkbox"] {
   margin-right: 10px;
+}
+
+.actions-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.actions-container button {
+  min-width: 140px;
+  font-weight: 600;
+  padding: 12px 0;
+  border-radius: 24px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.actions-container button:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
