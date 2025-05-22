@@ -22,7 +22,6 @@
   </button>
 </div>
 
-
 <div *ngIf="partidoSeleccionado" class="boletas-config-container">
   <h3>Partido Seleccionado</h3>
   <p><strong>ID:</strong> {{ partidoSeleccionado.matchId }}</p>
@@ -33,18 +32,17 @@
   <p><strong>Fecha:</strong> {{ partidoSeleccionado.matchDate | date:'medium' }}</p>
 
   <div *ngFor="let stand of standPrices; let i = index" style="margin-top: 1rem; border-bottom: 1px solid #ddd; padding-bottom: 1rem;">
-    <h4>Tribuna {{ i }}</h4>
+    <h4>{{ stand.standName }}</h4>
 
     <mat-form-field appearance="fill" style="width: 100%;">
       <mat-label>Stand ID</mat-label>
-      <input matInput type="number" [(ngModel)]="stand.standId" name="standId{{i}}" />
+      <input matInput type="number" [(ngModel)]="stand.standId" name="standId{{i}}" readonly />
     </mat-form-field>
 
     <mat-form-field appearance="fill" style="width: 100%;">
       <mat-label>Precio</mat-label>
       <input matInput type="number" [(ngModel)]="stand.price" name="price{{i}}" />
     </mat-form-field>
-
   </div>
 
   <label for="fileInput" style="display: block; margin-top: 1rem; margin-bottom: 0.5rem;">

@@ -17,7 +17,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core'
 import { ReactiveFormsModule } from '@angular/forms';
 import { Stadium } from '../../Models/Stadium.model';
-import { StadiumService } from '../../services/stadium.service';  // import correcto
+import { StadiumService } from '../../services/stadium.service';
 
 @Component({
   selector: 'app-create-ticket-offers-page',
@@ -39,17 +39,12 @@ import { StadiumService } from '../../services/stadium.service';  // import corr
   templateUrl: './create-ticket-offers-page.component.html',
   styleUrls: ['./create-ticket-offers-page.component.css'],
 })
-
 export class CreateTicketOffersPageComponent implements OnInit {
   partidos: Partido[] = [];
+  stadiums: Stadium[] = [];
   partidoSeleccionado: Partido | null = null;
 
-  standPrices: { standId: number; price: number; isDisabled: boolean }[] = [
-  { standId: 0, price: 0, isDisabled: true },
-  { standId: 1, price: 0, isDisabled: true },
-  { standId: 2, price: 0, isDisabled: true },
-  { standId: 3, price: 0, isDisabled: true },
-  ];
+  standPrices: { standId: number; standName: string; price: number; isDisabled: boolean }[] = [];
 
   saleStartDate: Date | null = null;
   saleEndDate: Date | null = null;
@@ -58,11 +53,13 @@ export class CreateTicketOffersPageComponent implements OnInit {
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private crea: CreateTicketOffersService
+    private crea: CreateTicketOffersService,
+    private stadiumService: StadiumService
   ) {}
 
   ngOnInit(): void {
     this.loadMatches();
+    this.loadStadiums();
   }
 
   loadMatches(): void {
@@ -72,6 +69,17 @@ export class CreateTicketOffersPageComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando partidos', err);
+      }
+    });
+  }
+
+  loadStadiums(): void {
+    this.stadiumService.getAllStadiums().subscribe({
+      next: (data) => {
+        this.stadiums = data;
+      },
+      error: (err) => {
+        console.error('Error cargando estadios', err);
       }
     });
   }
@@ -86,6 +94,20 @@ export class CreateTicketOffersPageComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.matchId) {
         this.partidoSeleccionado = this.partidos.find(p => p.matchId === result.matchId) || null;
+
+        if (this.partidoSeleccionado) {
+          const stadium = this.stadiums.find(s => s.id === this.partidoSeleccionado!.stadiumId);
+          if (stadium) {
+            this.standPrices = stadium.stands.map((stand, index) => ({
+              standId: index,
+              standName: stand.name,
+              price: 0,
+              isDisabled: false,
+            }));
+          } else {
+            this.standPrices = [];
+          }
+        }
       }
     });
   }
@@ -115,9 +137,9 @@ export class CreateTicketOffersPageComponent implements OnInit {
       return;
     }
 
-    const validStands = this.standPrices.filter(sp => sp.standId >= 0 && sp.price > 0);
+    const validStands = this.standPrices.filter(sp => sp.price > 0);
     if (validStands.length === 0) {
-      alert('Por favor configure al menos un stand con ID y precio válidos');
+      alert('Por favor configure al menos un stand con precio válido');
       return;
     }
 
@@ -135,6 +157,8 @@ export class CreateTicketOffersPageComponent implements OnInit {
       next: () => {
         alert('Oferta creada exitosamente');
         this.resetForm();
+        // Aquí redireccionas a la ruta deseada
+        this.router.navigate(['']);
       },
       error: (error) => {
         console.error('Error creando oferta:', error);
@@ -152,12 +176,7 @@ export class CreateTicketOffersPageComponent implements OnInit {
     this.saleStartDate = null;
     this.saleEndDate = null;
     this.fileSeleccionado = null;
-    this.standPrices = [
-      { standId: 0, price: 0, isDisabled: true },
-      { standId: 1, price: 0, isDisabled: true },
-      { standId: 2, price: 0, isDisabled: true },
-      { standId: 3, price: 0, isDisabled: true },
-    ];
+    this.standPrices = [];
   }
 
   navigateToHome(): void {
