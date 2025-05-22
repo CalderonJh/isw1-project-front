@@ -1,95 +1,191 @@
 :host {
   display: block;
   min-height: 100vh;
-  color: #bbbec3;
+  background-color: #f9fafb;
+  color: #222;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 20px;
+  padding: 80px 20px 40px; /* padding top para dejar espacio a toolbar fija */
+  box-sizing: border-box;
 }
 
 /* Barra de navegación */
 mat-toolbar {
   background-color: #2e74be;
-  color: rgb(255, 255, 255);
+  color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  position: fixed; /* Fija la barra de navegación */
-  top: 0; /* La coloca en la parte superior */
-  left: 0; /* Asegura que esté alineada a la izquierda */
-  width: 100%; /* Ocupa todo el ancho de la ventana */
-  z-index: 1000; /* Asegura que esté por encima de otros elementos */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más suave */
-  padding: 0 20px; /* Ajusta el espaciado para que no esté demasiado pegado a los bordes */
+  font-weight: 600;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 0 24px;
+  height: 56px;
 }
 
-button mat-icon {
-  font-size: 25px; /* Tamaño ajustado del icono */
+.divider {
+  border: none;
+  height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+
+.toolbar-actions button mat-icon {
+  font-size: 24px;
   color: white;
+  transition: color 0.3s ease;
 }
 
-/* Estilo para el contenedor del título y el botón */
-.header-container {
-  margin-top: 20px; /* Este margen empuja el título hacia abajo */
-  padding: 10px;
+.toolbar-actions button:hover mat-icon {
+  color: #a8c0e5;
 }
 
+/* Título principal */
+h2.text-primary {
+  text-align: center;
+  font-weight: 700;
+  color: #1976d2;
+  margin-bottom: 2rem;
+}
+
+/* Botón central */
 .boton-centro {
   display: flex;
   justify-content: center;
-  margin-top: 1rem; /* o el espacio que necesites */
+  margin-bottom: 2rem;
 }
 
 .custom-primary-btn {
   background-color: #1976d2 !important;
   color: white !important;
-  font-weight:500;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 10px 28px;
+  border-radius: 24px;
+  box-shadow: 0 3px 8px rgba(25, 118, 210, 0.4);
+  transition: background-color 0.3s ease;
+}
+
+.custom-primary-btn:hover {
+  background-color: #145ea8 !important;
+  box-shadow: 0 5px 15px rgba(20, 94, 168, 0.6);
+}
+
+/* Contenedor de la oferta */
+.boletas-config-container {
+  background: #ffffff;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+  padding: 24px 32px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
+}
+
+/* Título sección partido */
+.boletas-config-container h3 {
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #333;
+  border-bottom: 2px solid #1976d2;
+  padding-bottom: 8px;
+}
+
+/* Datos del partido */
+.boletas-config-container p {
+  margin: 6px 0;
   font-size: 1rem;
-  padding: 8px 24px;
-  border-radius: 15px;
-
-}
-.divider {
-  margin-top: 40px; /* para que el hr quede justo después de la toolbar */
-  border: none;
-}
-.text-primary {
-  color: var(--mat-primary-default, #1976d2); /* fallback azul material */
+  color: #444;
 }
 
-
-/* Parte de Programacion de las Boletas*/
-.form-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px; /* espacio entre campos */
-  max-width: 320px; /* limita ancho máximo */
-  margin: 0 auto; /* centra horizontalmente */
+/* Cada tribuna */
+.boletas-config-container > div[ng-reflect-ng-for-of] > div {
+  margin-top: 1.5rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1.5rem;
 }
 
-.custom-form-field .mat-form-field-wrapper {
-  border-radius: 20px; /* bordes suaves */
-  border: 1px solid #ccc; /* borde gris claro */
-  padding: 4px 12px;
+/* Encabezado tribuna */
+.boletas-config-container h4 {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #555;
 }
 
-.custom-form-field .mat-form-field-outline {
-  border-color: transparent !important; /* oculta borde default para evitar doble borde */
+/* Formularios Angular Material */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 1.25rem;
 }
 
-.custom-form-field .mat-form-field-flex {
-  padding: 0; /* quita padding extra para más limpio */
+mat-form-field.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #f5f7fa;
+  border-radius: 6px;
 }
 
-/* Opcional: cambia color focus para bordes */
-.custom-form-field.mat-focused .mat-form-field-wrapper {
-  border-color: #1976d2 !important; /* azul material al enfocar */
-  box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
+mat-form-field .mat-form-field-label {
+  color: #666;
+  font-weight: 600;
 }
 
-.boletas-config-container, 
-.boletas-config-container * {
-  color: #222 !important; /* texto negro oscuro */
+input.mat-input-element {
+  font-size: 1rem;
+  padding: 10px 12px;
+  color: #222;
+}
+
+/* Archivo selector */
+label[for="fileInput"] {
+  font-weight: 600;
+  color: #444;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* Botones acciones */
+.actions-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.actions-container button {
+  min-width: 140px;
+  font-weight: 600;
+  padding: 12px 0;
+  border-radius: 24px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.actions-container button:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilo para botón cancelar */
+.actions-container button[color="warn"] {
+  background-color: #d32f2f;
+  color: white;
+}
+
+.actions-container button[color="warn"]:hover {
+  background-color: #b71c1c;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .boletas-config-container {
+    padding: 16px 20px;
+  }
+
+  .custom-primary-btn {
+    font-size: 1rem;
+    padding: 8px 20px;
+  }
 }
