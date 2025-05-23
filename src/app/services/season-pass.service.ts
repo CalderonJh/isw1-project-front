@@ -8,7 +8,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class SeasonPassService {
-  private baseUrl = 'http://100.26.187.163/fpc/api/club-admin/season-pass'; 
+  private baseUrl = 'http://100.26.187.163/fpc/api/club-admin'; 
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -30,42 +30,42 @@ export class SeasonPassService {
   // Obtener todos los abonos
   getAllSeasonPasses(): Observable<any> {
     return this.http
-      .get<any>(`${this.baseUrl}/all`, { headers: this.getHeadersJson() })
+      .get<any>(`${this.baseUrl}/season-pass/all`, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));
   }
 
   // Crear un nuevo abono
   createSeasonPass(data: any): Observable<any> {
     return this.http
-      .post<any>(`${this.baseUrl}/create`, data, { headers: this.getHeadersJson() })
+      .post<any>(`${this.baseUrl}/season-pass/create`, data, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));
   }
 
   // Actualizar el precio de un abono
   updatePrice(id: string, price: number): Observable<any> {
     return this.http
-      .put<any>(`${this.baseUrl}/${id}/update/price`, { price }, { headers: this.getHeadersJson() })
+      .put<any>(`${this.baseUrl}/season-pass/${id}/update/price`, { price }, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));
   }
 
   // Actualizar la imagen de un abono
   updateImage(id: string, image: string): Observable<any> {
     return this.http
-      .put<any>(`${this.baseUrl}/${id}/update/image`, { image }, { headers: this.getHeadersJson() })
+      .put<any>(`${this.baseUrl}/season-pass/${id}/update/image`, { image }, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));
   }
 
   // Actualizar las fechas de un abono
   updateDates(id: string, startDate: string, endDate: string): Observable<any> {
     return this.http
-      .put<any>(`${this.baseUrl}/${id}/update/dates`, { startDate, endDate }, { headers: this.getHeadersJson() })
+      .put<any>(`${this.baseUrl}/season-pass/${id}/update/dates`, { startDate, endDate }, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));
   }
 
   // Cambiar el estado de un abono
   toggleStatus(id: string): Observable<any> {
     return this.http
-      .put<any>(`${this.baseUrl}/${id}/toggle-status`, {}, { headers: this.getHeadersJson() })
+      .put<any>(`${this.baseUrl}/season-pass/${id}/toggle-status`, {}, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));
   }
 

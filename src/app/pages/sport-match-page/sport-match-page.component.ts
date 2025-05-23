@@ -46,7 +46,7 @@ export class SportMatchPageComponent implements OnInit {
   dataSource = new MatTableDataSource<any>(this.partidos);
   pageSize = 10; // Número de partidos por página
 
-   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
+  @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
 
   constructor(
@@ -54,7 +54,7 @@ export class SportMatchPageComponent implements OnInit {
     private dialog: MatDialog,
     private sportsMatchesService: SportsMatchesService,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadPartidos();
@@ -120,10 +120,14 @@ export class SportMatchPageComponent implements OnInit {
 
     const provisionalMatchId = this.generateProvisionalMatchId();
 
-    const partidoToSave = {
+    // Crear los objetos awayClub y stadium
+    const awayClub = { id: awayClubId, description: 'Descripción del club' }; // Aquí deberías obtener la descripción real
+    const stadium = { id: stadiumId, description: 'Descripción del estadio' }; // Aquí deberías obtener la descripción real
+
+    const partidoToSave: Partido = {
       matchId: provisionalMatchId,
-      awayClubId,
-      stadiumId,
+      awayClub,   // Usar el objeto completo
+      stadium,    // Usar el objeto completo
       year,
       season,
       matchDate,
@@ -145,6 +149,7 @@ export class SportMatchPageComponent implements OnInit {
     );
   }
 
+
   generateProvisionalMatchId(): number {
     return Date.now();
   }
@@ -152,13 +157,23 @@ export class SportMatchPageComponent implements OnInit {
   updatePartido(partido: any): void {
     const matchId = partido.matchId || this.generateProvisionalMatchId();
 
+    const awayClubId = parseInt(partido.awayClubId, 10);
+    const stadiumId = parseInt(partido.stadiumId, 10);
+    const year = parseInt(partido.year, 10);
+    const season = parseInt(partido.season, 10);
+    const matchDate = partido.matchDate;
+
+    // Crear los objetos awayClub y stadium
+    const awayClub = { id: awayClubId, description: 'Descripción del club' }; // Aquí deberías obtener la descripción real
+    const stadium = { id: stadiumId, description: 'Descripción del estadio' }; // Aquí deberías obtener la descripción real
+
     const partidoToUpdate: Partido = {
       matchId,
-      awayClubId: parseInt(partido.awayClubId, 10),
-      stadiumId: parseInt(partido.stadiumId, 10),
-      year: parseInt(partido.year, 10),
-      season: parseInt(partido.season, 10),
-      matchDate: partido.matchDate,
+      awayClub,   // Usar el objeto completo
+      stadium,    // Usar el objeto completo
+      year,
+      season,
+      matchDate,
     };
 
     console.log('Datos a enviar:', partidoToUpdate);

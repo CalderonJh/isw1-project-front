@@ -55,7 +55,7 @@ export class CreateTicketOffersPageComponent implements OnInit {
     private dialog: MatDialog,
     private crea: CreateTicketOffersService,
     private stadiumService: StadiumService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadMatches();
@@ -96,7 +96,8 @@ export class CreateTicketOffersPageComponent implements OnInit {
         this.partidoSeleccionado = this.partidos.find(p => p.matchId === result.matchId) || null;
 
         if (this.partidoSeleccionado) {
-          const stadium = this.stadiums.find(s => s.id === this.partidoSeleccionado!.stadiumId);
+          // Cambiar stadiumId a stadium.id
+          const stadium = this.stadiums.find(s => s.id === this.partidoSeleccionado!.stadium.id); // Cambié aquí
           if (stadium) {
             this.standPrices = stadium.stands.map((stand, index) => ({
               standId: index,
@@ -111,6 +112,7 @@ export class CreateTicketOffersPageComponent implements OnInit {
       }
     });
   }
+
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];

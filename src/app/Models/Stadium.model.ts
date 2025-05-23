@@ -11,3 +11,8 @@ export interface Stadium {
 export interface StadiumWithImage extends Stadium {
     imageUrl: SafeUrl;       // Sanitized URL
 }
+
+export interface StadiumMatch {
+  id : number;
+  description : string;
+}

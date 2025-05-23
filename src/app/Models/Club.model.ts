@@ -4,3 +4,8 @@ export interface Club {
   shortName: string;
   imageId: string;
 }
+
+export interface ClubMatch {
+  id : number;
+  description : string;
+}
