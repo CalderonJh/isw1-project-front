@@ -69,7 +69,7 @@ export const routes: Routes = [
     path: 'create-season-pass',  // Agregamos esta ruta para crear un nuevo abono
     loadComponent: () =>
       import('./pages/season-pass/Create/create-season-pass.component').then(
-        (m) => m.CreateSeasonPassPageComponent,
+        (m) => m.CreateSeasonPassComponent,
       ),
   },
 ];

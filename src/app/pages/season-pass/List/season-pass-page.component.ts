@@ -24,7 +24,7 @@ export class SeasonPassPageComponent implements OnInit {
   constructor(
     private seasonPassService: SeasonPassService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadSeasonPasses();
@@ -32,13 +32,14 @@ export class SeasonPassPageComponent implements OnInit {
 
   loadSeasonPasses(): void {
     this.seasonPassService.getAllSeasonPasses().subscribe(
-      (data) => {
-        this.seasonPasses = data;
+      (data: any[]) => {  // Cambia `any[]` por el tipo adecuado
+        console.log(data);
       },
-      (error) => {
-        console.error('Error al cargar los abonos', error);
+      (error: any) => { // También puedes especificar el tipo aquí
+        console.error(error);
       }
     );
+
   }
 
   createNewSeasonPass(): void {

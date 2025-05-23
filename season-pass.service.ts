@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthService } from './login.user.service';
+import { AuthService } from './src/app/services/login.user.service'; 
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SeasonPassService {
-  private baseUrl = 'http://100.26.187.163/fpc/api/club-admin';
+  private baseUrl = 'http://100.26.187.163/fpc/api/club-admin'; 
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   // Método para obtener los headers con token
   private getHeadersJson(): HttpHeaders {
@@ -34,22 +34,11 @@ export class SeasonPassService {
       .pipe(catchError(this.handleError));
   }
 
-  
-  getMatches(stadiumId: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/match/all?stadium=${stadiumId}&toOffer=season`);
-  }
-
-  getStands(stadiumId: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/stand/all?stadium=${stadiumId}`);
-  }
-  
   // Crear un nuevo abono
-  createOffer(offerData: any, image: File): Observable<any> {
-    const formData: FormData = new FormData();
-    formData.append('offer', JSON.stringify(offerData));
-    formData.append('file', image, image.name);
-
-    return this.http.post<any>(`${this.baseUrl}/season-pass/create`, formData);
+  createSeasonPass(data: any): Observable<any> {
+    return this.http
+      .post<any>(`${this.baseUrl}/season-pass/create`, data, { headers: this.getHeadersJson() })
+      .pipe(catchError(this.handleError));
   }
 
   // Actualizar el precio de un abono

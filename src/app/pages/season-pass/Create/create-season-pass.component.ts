@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -9,81 +9,119 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { StadiumService } from '../../../services/stadium.service';
 import { SeasonPassService } from '../../../services/season-pass.service';
+import { Stadium } from '../../../Models/Stadium.model';
+import { Partido } from '../../../Models/Partido.model';
+import { StandPrice } from '../../../Models/Stand.model';
 
 @Component({
   selector: 'app-create-season-pass-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTableModule, MatIconModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatInputModule],
+  imports: [CommonModule, FormsModule, MatTableModule, MatSelectModule, MatOptionModule, MatIconModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatInputModule],
   templateUrl: './create-season-pass-page.component.html',
   styleUrls: ['./create-season-pass-page.component.css']
 })
-export class CreateSeasonPassPageComponent {
-  seasonPassData = {
-    price: 0,
-    image: '',
-    startDate: '',
-    endDate: '',
-    selectedMatches: [] as number[]
-  };
+export class CreateSeasonPassComponent implements OnInit {
+  stadiums: Stadium[] = [];
+  matches: Partido[] = [];
+  stands: StandPrice[] = [];
+  selectedStadium: number | undefined;
+  selectedMatch: number | undefined;
+  selectedStand: number | undefined;
+  standPrice: number | undefined;
+  startDateValue: Date | undefined;
+  endDateValue: Date | undefined;
+  selectedImage: File | undefined;
 
-  partidoSeleccionado: any = null;
-  saleStartDate: Date | null = null;
-  saleEndDate: Date | null = null;
-  standPrices: any[] = [];
-
-  availableMatches = [
-    { id: 1, name: 'Partido 1' },
-    { id: 2, name: 'Partido 2' },
-    { id: 3, name: 'Partido 3' }
-  ];
 
   constructor(
     private seasonPassService: SeasonPassService,
+    private stadiumService: StadiumService,
+    private snackBar: MatSnackBar,
     private router: Router
   ) { }
 
-  onMatchSelect(event: any): void {
-    const matchId = event.target.value;
-    if (event.target.checked) {
-      this.seasonPassData.selectedMatches.push(matchId);
-    } else {
-      this.seasonPassData.selectedMatches = this.seasonPassData.selectedMatches.filter(id => id !== matchId);
-    }
+  ngOnInit() {
+    this.loadStadiums();
   }
 
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.seasonPassData.image = file;
-      console.log('Archivo seleccionado:', file);
-    }
-  }
-
-  guardarOferta(): void {
-    console.log('Oferta guardada');
-  }
-
-  cancelarOferta(): void {
-    console.log('Oferta cancelada');
-  }
-
-  createSeasonPass(): void {
-    const formData = new FormData();
-    formData.append('price', this.seasonPassData.price.toString());
-    formData.append('startDate', this.seasonPassData.startDate);
-    formData.append('endDate', this.seasonPassData.endDate);
-    formData.append('image', this.seasonPassData.image);
-    formData.append('selectedMatches', JSON.stringify(this.seasonPassData.selectedMatches));
-
-    this.seasonPassService.createSeasonPass(formData).subscribe(
-      (response) => {
-        console.log('Abono creado con éxito', response);
-        this.router.navigate(['/season-pass']);
+  loadStadiums() {
+    this.stadiumService.getAllStadiums().subscribe(
+      (data) => {
+        this.stadiums = data;
       },
       (error) => {
-        console.error('Error creando el abono', error);
+        this.snackBar.open('Error al cargar los estadios', '', { duration: 3000 });
+      }
+    );
+  }
+
+  loadMatches() {
+    if (!this.selectedStadium) {
+      return;
+    }
+    this.seasonPassService.getMatches(this.selectedStadium).subscribe(
+      (data) => {
+        this.matches = data;
+      },
+      (error) => {
+        this.snackBar.open('Error al cargar los partidos', '', { duration: 3000 });
+      }
+    );
+
+    this.seasonPassService.getStands(this.selectedStadium).subscribe(
+      (data) => {
+        this.stands = data;
+      },
+      (error) => {
+        this.snackBar.open('Error al cargar los stands', '', { duration: 3000 });
+      }
+    );
+  }
+
+  onImageSelect(event: any) {
+    this.selectedImage = event.target.files[0];
+  }
+
+  submitOffer() {
+    if (!this.selectedMatch || !this.selectedStand || !this.standPrice || !this.startDateValue || !this.endDateValue) {
+      this.snackBar.open('Todos los campos son obligatorios', '', { duration: 3000 });
+      return;
+    }
+
+    const offerData = {
+      description: 'string',
+      year: new Date().getFullYear(),
+      season: 1,
+      matchIds: [this.selectedMatch],
+      standPrices: [
+        {
+          standId: this.selectedStand,
+          price: this.standPrice,
+          isDisabled: false
+        }
+      ],
+      startDate: this.startDateValue.toISOString(),
+      endDate: this.endDateValue.toISOString()
+    };
+
+    if (!this.selectedImage) {
+      this.snackBar.open('Por favor, selecciona una imagen', '', { duration: 3000 });
+      return;
+    }
+
+
+    this.seasonPassService.createOffer(offerData, this.selectedImage).subscribe(
+      (response) => {
+        this.snackBar.open('Abono creado con éxito', '', { duration: 3000 });
+      },
+      (error) => {
+        this.snackBar.open('Error al crear el abono', '', { duration: 3000 });
       }
     );
   }

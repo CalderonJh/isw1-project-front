@@ -3,7 +3,7 @@ export interface Stand {
     capacity: number;
 }
 
-export interface StandPrice {
+export interface StandPrice extends Stand {
   standId: number;
   price: number;
   isDisabled: boolean;
