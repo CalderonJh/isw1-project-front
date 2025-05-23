@@ -1,11 +1,14 @@
-import { ClubMatch } from "./Club.model";
-import { StadiumMatch } from "./Stadium.model";
-
 export interface Partido {
-  matchId?: number;    // Opcional para crear
-  awayClub: ClubMatch;
-  stadium: StadiumMatch;
-  year: number;
-  season: number;
-  matchDate: string;
+    matchId: number;
+    awayClub: { 
+        id: number;
+        description: string;
+    };
+    stadium: { 
+        id: number;
+        description: string;
+    }; 
+    year: number;
+    season: number;
+    matchDate: string;
 }
