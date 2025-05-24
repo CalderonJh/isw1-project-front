@@ -33,23 +33,22 @@ export class SeasonPassService {
       .get<any>(`${this.baseUrl}/season-pass/all`, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));
   }
-
   
-  getMatches(stadiumId: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/match/all?stadium=${stadiumId}&toOffer=season`);
-  }
-
-  getStands(stadiumId: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/stand/all?stadium=${stadiumId}`);
-  }
-  
-  // Crear un nuevo abono
   createOffer(offerData: any, image: File): Observable<any> {
     const formData: FormData = new FormData();
-    formData.append('offer', JSON.stringify(offerData));
-    formData.append('file', image, image.name);
 
-    return this.http.post<any>(`${this.baseUrl}/season-pass/create`, formData);
+    // Agregar los datos de la oferta como objetos, no como cadenas JSON
+    formData.append('offer', JSON.stringify(offerData));  // Mantenerlo en JSON para enviar como campo
+    formData.append('file', image, image.name); // Agregar la imagen de forma separada
+
+    console.log('offerData:', offerData); // Log para ver los datos
+
+    return this.http.post<any>(`${this.baseUrl}/season-pass/create`, formData, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${this.authService.getToken()}`,
+        // NO 'Content-Type' ya que Angular lo maneja con FormData
+      })
+    });
   }
 
   // Actualizar el precio de un abono

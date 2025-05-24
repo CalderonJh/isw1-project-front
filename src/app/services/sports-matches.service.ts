@@ -13,7 +13,7 @@ export class SportsMatchesService {
   private clubsUrl = 'http://100.26.187.163/fpc/api/su/club';
   private stadiumsUrl = 'http://100.26.187.163/fpc/api/club-admin/stadium';
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   private getHeaders() {
     return new HttpHeaders({
@@ -29,7 +29,7 @@ export class SportsMatchesService {
       })
     );
   }
-  
+
   createSportsMatch(partido: Partido): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/save`, partido, { headers: this.getHeaders() });
   }
@@ -42,7 +42,7 @@ export class SportsMatchesService {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`, { headers: this.getHeaders() });
   }
 
-   // Obtener lista de clubes
+  // Obtener lista de clubes
   getClubs(): Observable<any[]> {
     return this.http.get<any[]>(`${this.clubsUrl}/list`, { headers: this.getHeaders() }).pipe(
       catchError((error) => {
@@ -58,6 +58,17 @@ export class SportsMatchesService {
       catchError((error) => {
         console.error('Error fetching stadiums:', error);
         return of([]);
+      })
+    );
+  }
+
+  // Función para obtener los partidos válidos para la creación de un abono (season pass)
+  getMatchesForSeasonOffer(stadiumId: number): Observable<Partido[]> {
+    const url = `${this.apiUrl}/all?stadium=${stadiumId}&toOffer=season`;
+    return this.http.get<Partido[]>(url, { headers: this.getHeaders() }).pipe(
+      catchError((error) => {
+        console.error('Error fetching valid matches for season offer:', error);
+        return of([]); // Retorna un array vacío si hay error
       })
     );
   }
