@@ -77,9 +77,9 @@ export class StadiumPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result?.nombre && result?.capacidad) {
-        const newStandId = stadium.stands.length ? Math.max(...stadium.stands.map(s => s.standId)) + 1 : 1; // Assign a new unique standId
+        const newStandId = stadium.stands.length ? Math.max(...stadium.stands.map(s => s.id)) + 1 : 1; // Assign a new unique standId
         stadium.stands.push({
-          standId: newStandId,
+          id: newStandId,
           name: result.nombre,
           capacity: +result.capacidad
         });
@@ -106,7 +106,7 @@ export class StadiumPageComponent implements OnInit {
   }
 
   openEditTribunaDialog(stadium: Stadium, standId: number): void {
-    const standToEdit = stadium.stands.find(stand => stand.standId === standId); // Buscar el stand por su ID
+    const standToEdit = stadium.stands.find(stand => stand.id === standId); // Buscar el stand por su ID
 
     if (standToEdit) {
       const dialogRef = this.dialog.open(TribunaDialog, {

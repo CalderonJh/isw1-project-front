@@ -1,1 +1,35 @@
-<p>stand-price works!</p>
+<div class="flex flex-wrap justify-center gap-4">
+  <div
+    *ngFor="let tribuna of tribunas"
+    class="w-full md:w-1/2 max-w-[500px]"
+  >
+    <mat-card class="p-4 shadow-lg rounded-xl h-full">
+      <mat-card-title class="text-lg font-semibold">
+        {{ tribuna.name }}
+      </mat-card-title>
+
+      <mat-card-content class="space-y-4">
+        <p class="text-sm text-gray-600">
+          Capacidad: {{ tribuna.capacity }}
+        </p>
+
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Precio</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="tribuna.price"
+            [disabled]="!tribuna.isEnabled"
+          />
+        </mat-form-field>
+
+        <mat-slide-toggle
+          [(ngModel)]="tribuna.isEnabled"
+          (change)="onToggleHabilitada(tribuna)"
+        >
+          Habilitada
+        </mat-slide-toggle>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

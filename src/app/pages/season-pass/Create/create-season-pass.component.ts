@@ -1,29 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatTableModule } from '@angular/material/table';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
-import { MatOptionModule } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { StadiumService } from '../../../services/stadium.service';
 import { SeasonPassService } from '../../../services/season-pass.service';
 import { SportsMatchesService } from '../../../services/sports-matches.service';
-import { Stadium } from '../../../Models/Stadium.model';
+import {Stadium, Stand} from '../../../Models/Stadium.model';
 import { Partido } from '../../../Models/Partido.model';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SelectionModel } from '@angular/cdk/collections';
+import { StandPriceComponent } from '../../../components/stand-price-component/stand-price.component';
+import { CreateSeasonPass } from '../../../Models/Season-pass.model';
 
 @Component({
   selector: 'app-create-season-pass-page',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     MatCardModule,
     MatTableModule,
     MatSelectModule,
@@ -36,24 +45,37 @@ import { Partido } from '../../../Models/Partido.model';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatListModule,
-    MatInputModule],
+    MatInputModule,
+    MatTableModule,
+    MatCheckboxModule,
+    StandPriceComponent,
+  ],
   templateUrl: './create-season-pass-page.component.html',
-  styleUrls: ['./create-season-pass-page.component.css']
+  styleUrls: ['./create-season-pass-page.component.css'],
 })
 export class CreateSeasonPassComponent implements OnInit {
   stadiums: Stadium[] = [];
   matches: Partido[] = [];
   form!: FormGroup;
   selectedImage: File | undefined;
-  stands: any;
+  stands: Stand[] = []; // Inicializar como array vacío
+  displayedColumns: string[] = [
+    'select',
+    'visitante',
+    'temporada',
+    'fecha',
+    'hora',
+  ];
+  dataSource = new MatTableDataSource<Partido>();
+  selection = new SelectionModel<Partido>(true, []);
 
   constructor(
     private fb: FormBuilder,
     private sportsMatchesService: SportsMatchesService,
     private stadiumService: StadiumService,
     private seasonPassService: SeasonPassService,
-    private router: Router
-  ) { }
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.loadStadiums();
@@ -64,11 +86,13 @@ export class CreateSeasonPassComponent implements OnInit {
   initializeForm() {
     this.form = this.fb.group({
       selectedStadium: [null, Validators.required],
-      selectedMatches: this.fb.array([], Validators.required),
-      selectedStands: this.fb.array([], Validators.required),
+      year: [null, Validators.required],
+      season: [null, Validators.required],
+      selectedMatches: [[], Validators.required], // ✅ Array simple, no FormArray
+      selectedStands: [[], Validators.required], // ✅ Array simple, no FormArray
       startDate: [null, Validators.required],
       endDate: [null, Validators.required],
-      selectedImage: [null, Validators.required]
+      selectedImage: [null, Validators.required],
     });
   }
 
@@ -80,84 +104,100 @@ export class CreateSeasonPassComponent implements OnInit {
   }
 
   // Cambiar estadio seleccionado
-  onStadiumChange(stadiumId: number) {
-    this.sportsMatchesService.getMatchesForSeasonOffer(stadiumId).subscribe((data: Partido[]) => {
-      this.matches = data;
-    });
+  onStadiumChange(stadium: any) {
+    console.log(stadium);
+    this.sportsMatchesService
+      .getMatchesForSeasonOffer(stadium.id)
+      .subscribe((data: Partido[]) => {
+        this.matches = data;
+        this.dataSource.data = data;
+      });
+    this.stands = stadium.stands;
   }
 
-  // Seleccionar partidos para el abono
-  onMatchSelectionChange(matchId: number, event: any) {
-    const matchesArray = this.form.get('selectedMatches') as FormArray;
-    if (event.checked) {
-      matchesArray.push(this.fb.control(matchId));
-    } else {
-      const index = matchesArray.controls.findIndex(x => x.value === matchId);
-      if (index !== -1) {
-        matchesArray.removeAt(index);
-      }
-    }
-  }
-
-
-  // Manejar tribunas seleccionadas
-  get selectedStands() {
-    return this.form.get('selectedStands') as FormArray;
-  }
-
-  onStandSelectionChange(standId: number, event: any) {
-    if (event.checked) {
-      this.selectedStands.push(this.fb.control(standId));
-    } else {
-      const index = this.selectedStands.controls.findIndex(x => x.value === standId);
-      this.selectedStands.removeAt(index);
-    }
-  }
+  // ❌ ELIMINAR - Ya no necesitas estos métodos para mat-select multiple
+  // onMatchSelectionChange() y onStandSelectionChange() no son necesarios
 
   // Manejar carga de imagen
   onImageSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input?.files?.length) {
       this.selectedImage = input.files[0];
+      // Actualizar el control del formulario
+      this.form.patchValue({ selectedImage: this.selectedImage });
     }
   }
 
   // Crear el abono
   createSeasonPass() {
-    if (this.form.invalid) {
-      alert('Por favor complete todos los campos.');
+
+    console.log(this.stands)
+    const formValue = this.form.value;
+
+    console.log(this.selection.selected)
+    // Validar que hay partidos seleccionados
+    if (!this.selection.selected || this.selection.selected.length === 0) {
+      alert('Debe seleccionar al menos un partido.');
       return;
     }
 
-    const formValue = this.form.value;
+    const selectedMatches = this.selection.selected;
 
-    const offerData = {
+    const offerData: CreateSeasonPass = {
       description: 'Abono para la temporada',
-      year: this.matches[0].year,  // Año del primer partido seleccionado
-      season: this.matches[0].season,  // Temporada del primer partido seleccionado
-      matchIds: formValue.selectedMatches,  // Los partidos seleccionados
-      standPrices: formValue.selectedStands.map((standId: number) => ({
-        standId: standId,
-        price: 0, // Aquí el precio por defecto que podemos ajustar según lo necesites
-        isDisabled: false
+      year: formValue.year,
+      season: formValue.season,
+      matchIds: selectedMatches.map((m) => m.matchId),
+      standPrices: this.stands.map((stand: Stand) => ({
+        standId: stand.id,
+        price: stand.price ?? 0,
       })),
       startDate: formValue.startDate?.toISOString(),
-      endDate: formValue.endDate?.toISOString()
+      endDate: formValue.endDate?.toISOString(),
     };
 
     // Llamar al servicio para crear la oferta (abono)
     if (this.selectedImage) {
-      this.seasonPassService.createOffer(offerData, this.selectedImage).subscribe(
-        () => {
-          alert('Abono creado exitosamente');
-          this.router.navigate(['season-passes']);
-        },
-        (error) => {
-          alert('Error al crear el abono');
-          console.error(error);
-        }
-      );
+      this.seasonPassService
+        .createOffer(offerData, this.selectedImage)
+        .subscribe({
+          next: () => {
+            alert('Abono creado exitosamente');
+            this.router.navigate(['season-passes']);
+          },
+          error: (error) => {
+            alert('Error al crear el abono');
+            console.error(error);
+          },
+        });
+    } else {
+      alert('Debe seleccionar una imagen.');
     }
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+
+    this.selection.select(...this.dataSource.data);
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: Partido): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.matchId + 1}`;
   }
 
   // Cancelar creación de abono y redirigir
