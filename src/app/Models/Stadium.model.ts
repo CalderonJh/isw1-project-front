@@ -1,10 +1,13 @@
-import { Stand } from './Stand.model';
 import { SafeUrl } from '@angular/platform-browser';
 
 export interface Stadium {
     id: number;
     name: string;
-    stands: Stand[];
+    stands: {
+        standId: number;
+        name: string;
+        capacity: number;
+    }[];
     imageId: string;           // Public ID
 }
 

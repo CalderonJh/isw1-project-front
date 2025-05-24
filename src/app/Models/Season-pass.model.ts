@@ -1,11 +1,13 @@
-import { StandPrice } from './Stand.model';
-
 export interface SeasonPass {
   description: string;
   year: number;
   season: number;
   matchIds: number[];
-  standPrices: StandPrice[];
+  standPrices: {
+        standId: number;
+        price: number;
+        isDisabled: boolean;
+  }[];
   startDate: string;
   endDate: string;
 }

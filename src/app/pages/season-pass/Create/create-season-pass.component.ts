@@ -17,7 +17,6 @@ import { StadiumService } from '../../../services/stadium.service';
 import { SeasonPassService } from '../../../services/season-pass.service';
 import { Stadium } from '../../../Models/Stadium.model';
 import { Partido } from '../../../Models/Partido.model';
-import { StandPrice } from '../../../Models/Stand.model';
 
 @Component({
   selector: 'app-create-season-pass-page',
@@ -29,7 +28,6 @@ import { StandPrice } from '../../../Models/Stand.model';
 export class CreateSeasonPassComponent implements OnInit {
   stadiums: Stadium[] = [];
   matches: Partido[] = [];
-  stands: StandPrice[] = [];
   selectedStadium: number | undefined;
   selectedMatch: number | undefined;
   selectedStand: number | undefined;
@@ -71,15 +69,6 @@ export class CreateSeasonPassComponent implements OnInit {
       },
       (error) => {
         this.snackBar.open('Error al cargar los partidos', '', { duration: 3000 });
-      }
-    );
-
-    this.seasonPassService.getStands(this.selectedStadium).subscribe(
-      (data) => {
-        this.stands = data;
-      },
-      (error) => {
-        this.snackBar.open('Error al cargar los stands', '', { duration: 3000 });
       }
     );
   }
