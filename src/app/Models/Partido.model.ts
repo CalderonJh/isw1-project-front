@@ -12,3 +12,11 @@ export interface Partido {
     season: number;
     matchDate: string;
 }
+
+export interface PartidoSave {
+    awayClubId: number,
+    stadiumId: number,
+    year: number,
+    season: number,
+    matchDate: string
+}

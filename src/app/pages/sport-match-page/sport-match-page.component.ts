@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';  // Asegúrate de importar CommonModule
+import { CommonModule } from '@angular/common'; 
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SportsMatchesService } from '../../services/sports-matches.service';
-import { Partido } from '../../Models/Partido.model';
+import { Partido, PartidoSave } from '../../Models/Partido.model';
 import { SportMatchDialog } from './sport-match-dialog.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
@@ -120,14 +120,9 @@ export class SportMatchPageComponent implements OnInit {
 
     const provisionalMatchId = this.generateProvisionalMatchId();
 
-    // Crear los objetos awayClub y stadium
-    const awayClub = { id: awayClubId, description: 'Descripción del club' }; // Aquí deberías obtener la descripción real
-    const stadium = { id: stadiumId, description: 'Descripción del estadio' }; // Aquí deberías obtener la descripción real
-
-    const partidoToSave: Partido = {
-      matchId: provisionalMatchId,
-      awayClub,   // Usar el objeto completo
-      stadium,    // Usar el objeto completo
+    const partidoToSave: PartidoSave = {
+      awayClubId,   // Usar el objeto completo
+      stadiumId,    // Usar el objeto completo
       year,
       season,
       matchDate,
@@ -155,7 +150,6 @@ export class SportMatchPageComponent implements OnInit {
   }
 
   updatePartido(partido: any): void {
-    const matchId = partido.matchId || this.generateProvisionalMatchId();
 
     const awayClubId = parseInt(partido.awayClubId, 10);
     const stadiumId = parseInt(partido.stadiumId, 10);
@@ -163,14 +157,9 @@ export class SportMatchPageComponent implements OnInit {
     const season = parseInt(partido.season, 10);
     const matchDate = partido.matchDate;
 
-    // Crear los objetos awayClub y stadium
-    const awayClub = { id: awayClubId, description: 'Descripción del club' }; // Aquí deberías obtener la descripción real
-    const stadium = { id: stadiumId, description: 'Descripción del estadio' }; // Aquí deberías obtener la descripción real
-
-    const partidoToUpdate: Partido = {
-      matchId,
-      awayClub,   // Usar el objeto completo
-      stadium,    // Usar el objeto completo
+    const partidoToUpdate: PartidoSave = {
+      awayClubId,   // Usar el objeto completo
+      stadiumId,    // Usar el objeto completo
       year,
       season,
       matchDate,
@@ -178,7 +167,7 @@ export class SportMatchPageComponent implements OnInit {
 
     console.log('Datos a enviar:', partidoToUpdate);
 
-    this.sportsMatchesService.updateSportsMatch(matchId, partidoToUpdate).subscribe(
+    this.sportsMatchesService.updateSportsMatch(partido.matchId, partidoToUpdate).subscribe(
       () => this.loadPartidos(),
       (error) => {
         console.error('Error al actualizar el partido:', error);

@@ -7,7 +7,6 @@ import { MatButtonModule } from '@angular/material/button';  // Para los botones
 import { MatToolbarModule } from '@angular/material/toolbar';  // Para la barra de herramientas
 import { MatIconModule } from '@angular/material/icon';  // Para los íconos
 import { CommonModule } from '@angular/common'; // Importa CommonModule
-import { AuthGuard } from '../../services/auth.guard.service';
 
 
 @Component({

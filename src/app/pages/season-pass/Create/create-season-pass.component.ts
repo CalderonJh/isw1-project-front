@@ -85,6 +85,7 @@ export class CreateSeasonPassComponent implements OnInit {
   // Inicializar el formulario reactivo
   initializeForm() {
     this.form = this.fb.group({
+      description: [null, Validators.required],
       selectedStadium: [null, Validators.required],
       year: [null, Validators.required],
       season: [null, Validators.required],
@@ -144,7 +145,7 @@ export class CreateSeasonPassComponent implements OnInit {
     const selectedMatches = this.selection.selected;
 
     const offerData: CreateSeasonPass = {
-      description: 'Abono para la temporada',
+      description: formValue.description,
       year: formValue.year,
       season: formValue.season,
       matchIds: selectedMatches.map((m) => m.matchId),

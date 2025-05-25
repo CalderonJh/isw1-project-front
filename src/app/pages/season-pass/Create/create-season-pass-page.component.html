@@ -17,6 +17,16 @@
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="createSeasonPass()">
+        
+        <!--Descripción-->
+        <mat-form-field >
+            <mat-label>Descripción</mat-label>
+            <input matInput type="text"
+                   placeholder="Abono para la temporada"
+                   formControlName="description"
+                   required>
+          </mat-form-field>
+
         <!-- Estadio -->
         <div class="flex">
           <mat-form-field appearance="fill">
@@ -29,9 +39,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <div>{{ form.value["selectedStadium"] }}</div>
 
-          <
           <mat-form-field >
             <mat-label>Año</mat-label>
             <input matInput type="number"
@@ -42,10 +50,15 @@
 
           <mat-form-field>
             <mat-label>Temporada</mat-label>
-            <input matInput type="number"
-                   placeholder="Temporada del abono"
-                   formControlName="season"
-                   required>
+            <mat-select formControlName="season"
+                        required>
+              <mat-option value = 1>
+                1
+              </mat-option>
+              <mat-option value = 2>
+                2
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
 
@@ -96,8 +109,6 @@
               (click)="selection.toggle(row)">
           </tr>
         </table>
-        {{ selection.selected | json }}
-        <div class=""> {{ this.stands | json }}</div>
         <div class="">
           <app-stand-price [tribunas]="this.stands"></app-stand-price>
         </div>

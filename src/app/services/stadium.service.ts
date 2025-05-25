@@ -5,7 +5,6 @@ import { Observable, of, forkJoin } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { AuthService } from './login.user.service';
 import { Stadium, StadiumWithImage } from '../Models/Stadium.model';
-import { Partido } from '../Models/Partido.model';
 
 @Injectable({
     providedIn: 'root'
@@ -77,7 +76,7 @@ export class StadiumService {
             map(urlString => {
                 try {
                     const parsed = JSON.parse(urlString);  // Convertimos el string JSON en un objeto
-                    const realUrl = parsed.url || 'assets/img/error.jpg';  // Si no hay URL, usamos una por defecto
+                    const realUrl = parsed.url || 'assets/img/defecto.jpg';  // Si no hay URL, usamos una por defecto
                     return this.sanitizer.bypassSecurityTrustUrl(realUrl);  // Sanitizamos la URL para evitar vulnerabilidades
                 } catch (e) {
                     return this.sanitizer.bypassSecurityTrustUrl('assets/img/error.jpg');  // Usamos una imagen por defecto si falla el parseo

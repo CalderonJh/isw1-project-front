@@ -19,7 +19,6 @@ import { CommonModule } from '@angular/common';
   ],
   templateUrl: './stand-price.component.html',
   standalone: true,
-  styleUrl: './stand-price.component.css',
 })
 export class StandPriceComponent {
   @Input() tribunas: Stand[] = [];

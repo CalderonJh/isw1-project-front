@@ -1,5 +1,3 @@
-import { Stand } from './Stadium.model';
-
 export interface CreateSeasonPass {
   description: string;
   year: number;

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, of } from 'rxjs';
 import { AuthService } from './login.user.service';
-import { Partido } from '../Models/Partido.model';
+import { Partido, PartidoSave } from '../Models/Partido.model';
 
 @Injectable({
   providedIn: 'root',
@@ -30,11 +30,11 @@ export class SportsMatchesService {
     );
   }
 
-  createSportsMatch(partido: Partido): Observable<any> {
+  createSportsMatch(partido: PartidoSave): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/save`, partido, { headers: this.getHeaders() });
   }
 
-  updateSportsMatch(id: number, partido: Partido): Observable<Partido> {
+  updateSportsMatch(id: number, partido: PartidoSave): Observable<Partido> {
     return this.http.put<Partido>(`${this.apiUrl}/update/${id}`, partido, { headers: this.getHeaders() });
   }
 
