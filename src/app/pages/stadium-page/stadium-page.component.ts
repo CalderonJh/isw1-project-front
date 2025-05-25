@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -10,11 +10,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
-import { MatDialogModule } from '@angular/material/dialog';
 import { Stadium, StadiumWithImage } from '../../Models/Stadium.model';
 import { StadiumService } from '../../services/stadium.service';
 import { StadiumDialog } from './stadium-dialog.component';
 import { TribunaDialog } from './tribuna-dialog.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-stadium-page',
@@ -32,6 +32,7 @@ import { TribunaDialog } from './tribuna-dialog.component';
     MatInputModule,
     MatIconModule,
     FormsModule,
+    MatTooltipModule
   ],
 })
 export class StadiumPageComponent implements OnInit {
