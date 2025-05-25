@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon'; // <-- Para mat-icon
 import { MatButtonModule } from '@angular/material/button'; // <-- Para botones material
 import { SeasonPassService } from '../../../services/season-pass.service';
 import { Router } from '@angular/router';
-import { GetSeasonPass } from '../../../Models/Season-pass.model';
+import { SeasonPassWithImage } from '../../../Models/Season-pass.model';
 
 @Component({
   selector: 'app-season-pass-page',
@@ -20,7 +20,7 @@ import { GetSeasonPass } from '../../../Models/Season-pass.model';
   styleUrls: ['./season-pass-page.component.css']
 })
 export class SeasonPassPageComponent implements OnInit {
-  seasonPasses: GetSeasonPass[] = [];
+  seasonPasses: SeasonPassWithImage[] = [];
 
   constructor(
     private seasonPassService: SeasonPassService,
@@ -33,11 +33,11 @@ export class SeasonPassPageComponent implements OnInit {
 
   loadSeasonPasses(): void {
     this.seasonPassService.getAllSeasonPasses().subscribe(
-      (data: GetSeasonPass[]) => { 
+      (data: SeasonPassWithImage[]) => { 
         console.log(data);
         this.seasonPasses = data;
       },
-      (error: GetSeasonPass) => { // También puedes especificar el tipo aquí
+      (error: SeasonPassWithImage) => { // También puedes especificar el tipo aquí
         console.error(error);
       }
     );

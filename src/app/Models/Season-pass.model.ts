@@ -1,3 +1,5 @@
+import { SafeUrl } from '@angular/platform-browser';
+
 export interface CreateSeasonPass {
   description: string;
   year: number;
@@ -29,3 +31,8 @@ export interface GetSeasonPass {
     imageId: string,
     isPaused: boolean
 }
+
+export interface SeasonPassWithImage extends GetSeasonPass {
+  imageUrl: SafeUrl;
+}
+
