@@ -3,17 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AuthService } from './login.user.service';
+import { Ticket } from '../Models/Ticket.model';
+import { tick } from '@angular/core/testing';
 
-export interface TicketOffer {
-  id: number;
-  homeClub: string;
-  awayClub: string;
-  matchDay: string;
-  saleStart: string;
-  saleEnd: string;
-  imageUrl: string;
-  isPaused: boolean;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -31,20 +23,9 @@ export class ViewTicketService {
       'Content-Type': 'application/json',
     });
   }
-  getTicketOffers(): Observable<TicketOffer[]> {
+
+  getTicketOffers(): Observable<any> {
     return this.http.get<any[]>(this.apiUrl, { headers: this.getHeaders() }).pipe(
-      map((data) => {
-        return data.map((item) => ({
-          id: item.id,
-          homeClub: item.homeClub?.description || 'No disponible',
-          awayClub: item.awayClub?.description || 'No disponible',
-          matchDay: item.matchDay,
-          saleStart: item.offerPeriod?.start || '',
-          saleEnd: item.offerPeriod?.end || '',
-          imageUrl: `${this.imageBaseUrl}${item.imageId}.jpg`,
-          isPaused: item.isPaused,
-        }));
-      }),
       catchError((error) => {
         console.error('Error fetching ticket offers:', error);
         return of([]);

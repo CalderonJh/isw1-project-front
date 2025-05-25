@@ -28,17 +28,16 @@
     />
 
     <h3>
-      {{ oferta.homeClub?.description || 'Club local' }}
-      vs
-      {{ oferta.awayClub?.description || 'Visitante' }}
+      {{ oferta.homeClub.description || 'Club local' }} vs {{ oferta.awayClub.description || 'Visitante' }}
     </h3>
 
     <p><strong>Fecha:</strong> {{ oferta.matchDay | date: 'medium' }}</p>
+
     <p>
       <strong>Periodo de venta:</strong>
-      {{ oferta.offerPeriod?.start | date: 'short' }} -
-      {{ oferta.offerPeriod?.end | date: 'short' }}
+      {{ oferta.offerPeriod.start | date: 'short' }} - {{ oferta.offerPeriod.end | date: 'short' }}
     </p>
+
     <p>
       <strong>Estado:</strong>
       <span [ngClass]="{ 'pausada': oferta.isPaused, 'activa': !oferta.isPaused }">

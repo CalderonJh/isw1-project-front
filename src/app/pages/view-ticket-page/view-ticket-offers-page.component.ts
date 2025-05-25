@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ViewTicketService } from '../../services/view-ticket.service';
+import { Ticket } from '../../Models/Ticket.model';
 
 @Component({
   selector: 'view-ticket-offers-page',
@@ -22,7 +23,7 @@ import { ViewTicketService } from '../../services/view-ticket.service';
 })
 
 export class ViewTicketPageComponent implements OnInit {
-  ofertas: any[] = [];
+  ofertas: Ticket[] = [];
 
   constructor(
     private router: Router,
@@ -30,9 +31,15 @@ export class ViewTicketPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.viewService.getTicketOffers().subscribe((data) => {
-      this.ofertas = data;
-    });
+    this.viewService.getAllOffers().subscribe(
+      (response: Ticket[]) => {
+        this.ofertas = response;
+        console.log('Ofertas:', this.ofertas);
+      },
+      (error) => {
+        console.error('Error fetching offers:', error);
+      }
+    );
   }
 
   navigateToHome(): void {
