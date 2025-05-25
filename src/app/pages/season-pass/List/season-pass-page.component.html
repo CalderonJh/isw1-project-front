@@ -1,0 +1,46 @@
+<mat-toolbar color="primary">
+  <span>Bienvenido ADMIN</span>
+  <div class="toolbar-actions">
+    <button mat-icon-button (click)="navigateToHome()">
+      <mat-icon>home</mat-icon>
+    </button>
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<div class="content-container">
+  <div class="header-container">
+    <h1 class="section-title">Abonos Disponibles</h1>
+    <button
+      mat-raised-button
+      color="primary"
+      class="crear-abono-btn"
+      (click)="createNewSeasonPass()"
+    >
+      Crear Nuevo Abono
+    </button>
+  </div>
+
+  <div class="abonos-container" *ngIf="seasonPasses && seasonPasses.length > 0; else noPasses">
+    <div *ngFor="let pass of seasonPasses" class="abono-card">
+      <div class="abono-card-header">
+        <p class="abono-title">Abono: {{ pass.id }}</p>
+        <p class="abono-status">{{ pass.isPaused }}</p>
+      </div>
+      <div class="abono-details">
+        <p><strong>Descripción:</strong> ${{ pass.description }}</p>
+        <p><strong>Fechas:</strong> {{ pass.offerPeriod.start| date }} - {{ pass.offerPeriod.end| date }}</p>
+      </div>
+      <div class="abono-actions">
+        <button mat-raised-button color="accent" (click)="toggleStatus(pass.id)">
+          {{ pass.isPaused }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <ng-template #noPasses>
+    <p>No hay abonos disponibles.</p>
+  </ng-template>
+</div>

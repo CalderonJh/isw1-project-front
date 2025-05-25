@@ -1,1 +1,94 @@
-<p>stand-price works!</p>
+<div class="tribunas-container">
+  <div *ngFor="let tribuna of tribunas" class="tribuna-card">
+    <mat-card class="tribuna-card-body">
+      <mat-card-title class="tribuna-title">
+        {{ tribuna.name }}
+      </mat-card-title>
+
+      <mat-card-content class="tribuna-content">
+        <p class="tribuna-capacidad">
+          Capacidad: {{ tribuna.capacity }}
+        </p>
+
+        <mat-form-field appearance="fill" class="tribuna-form-field">
+          <mat-label>Precio</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="tribuna.price"
+            [disabled]="!tribuna.isEnabled"
+          />
+        </mat-form-field>
+
+        <mat-slide-toggle
+          [(ngModel)]="tribuna.isEnabled"
+          (change)="onToggleHabilitada(tribuna)"
+          class="tribuna-toggle"
+        >
+          Habilitada
+        </mat-slide-toggle>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<style>
+  .tribunas-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px; /* Espacio entre tarjetas */
+  padding: 20px;
+}
+
+.tribuna-card {
+  width: auto;
+  max-width: 200px;
+  padding: 8px;
+}
+
+.tribuna-card-body {
+  padding: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+.tribuna-title {
+  font-size: 0.875rem; /* Tamaño de texto pequeño */
+  font-weight: 600;
+}
+
+.tribuna-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Espaciado entre elementos */
+}
+
+.tribuna-capacidad {
+  font-size: 0.75rem;
+  color: #4b5563; /* Gris oscuro */
+}
+
+.tribuna-form-field {
+  width: 100%;
+}
+
+.tribuna-label {
+  font-size: 0.75rem;
+  color: #4b5563;
+}
+
+.tribuna-input {
+  font-size: 0.875rem;
+  padding: 4px;
+  color: #222;
+  border-radius: 6px;
+  background-color: #f5f7fa;
+  width: 100%;
+}
+
+.tribuna-toggle {
+  font-size: 0.75rem;
+}
+
+</style>

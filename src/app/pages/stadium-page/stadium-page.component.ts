@@ -12,8 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { Stadium, StadiumWithImage } from '../../Models/Stadium.model';
-import { Stand } from '../../Models/Stand.model';
-import { StadiumService} from '../../services/stadium.service';
+import { StadiumService } from '../../services/stadium.service';
 import { StadiumDialog } from './stadium-dialog.component';
 import { TribunaDialog } from './tribuna-dialog.component';
 
@@ -42,7 +41,7 @@ export class StadiumPageComponent implements OnInit {
     private stadiumService: StadiumService,
     private dialog: MatDialog,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadStadiums();
@@ -78,10 +77,20 @@ export class StadiumPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result?.nombre && result?.capacidad) {
-        stadium.stands.push({ name: result.nombre, capacity: +result.capacidad });
+        const newStandId = stadium.stands.length ? Math.max(...stadium.stands.map(s => s.id)) + 1 : 1; // Assign a new unique standId
+        stadium.stands.push({
+          id: newStandId,
+          name: result.nombre,
+          capacity: +result.capacidad
+        });
         this.stadiumService.updateStadium(stadium).subscribe(() => this.loadStadiums());
       }
     });
+  }
+
+  deleteTribuna(stadium: Stadium): void {
+    stadium.stands = stadium.stands.filter(stand => stand.name !== 'Tribuna Principal'); // Ensure you're filtering by stand properties
+    this.updateStadium(stadium);
   }
 
   updateStadium(stadium: Stadium): void {
@@ -96,25 +105,25 @@ export class StadiumPageComponent implements OnInit {
     this.stadiumService.deleteStadium(stadium.id).subscribe(() => this.loadStadiums());
   }
 
-  deleteTribuna(stadium: Stadium, tribuna: Stand): void {
-    stadium.stands = stadium.stands.filter(t => t.name !== tribuna.name);
-    this.updateStadium(stadium);
+  openEditTribunaDialog(stadium: Stadium, standId: number): void {
+    const standToEdit = stadium.stands.find(stand => stand.id === standId); // Buscar el stand por su ID
+
+    if (standToEdit) {
+      const dialogRef = this.dialog.open(TribunaDialog, {
+        width: '400px',
+        data: { nombre: standToEdit.name, capacidad: standToEdit.capacity }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          standToEdit.name = result.nombre;  // Modifica el 'name' del stand
+          standToEdit.capacity = +result.capacidad;  // Modifica el 'capacity' del stand
+          this.updateStadium(stadium);  // Actualiza el estadio
+        }
+      });
+    }
   }
 
-  editTribunaDialog(stadium: Stadium, tribuna: Stand): void {
-    const dialogRef = this.dialog.open(TribunaDialog, {
-      width: '400px',
-      data: { nombre: tribuna.name, capacidad: tribuna.capacity }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        tribuna.name = result.nombre;
-        tribuna.capacity = +result.capacidad;
-        this.updateStadium(stadium);
-      }
-    });
-  }
 
   navigateToHome(): void {
     this.router.navigate(['home']);

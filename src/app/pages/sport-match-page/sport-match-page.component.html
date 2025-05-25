@@ -17,7 +17,7 @@
   <button mat-raised-button color="primary" (click)="openDialog()">Nuevo Partido</button>
 </div>
 
-<table mat-table [dataSource]="partidos" *ngIf="partidos.length > 0" class="matches-table">
+<table mat-table [dataSource]="dataSource" *ngIf="partidos.length > 0" class="matches-table">
   <ng-container matColumnDef="visitante">
     <th mat-header-cell *matHeaderCellDef> Visitante </th>
     <td mat-cell *matCellDef="let partido">{{ partido.visitante }}</td>
@@ -38,7 +38,6 @@
     <td mat-cell *matCellDef="let partido">{{ partido.fecha }}</td>
   </ng-container>
 
-  <!-- Nueva columna acciones -->
   <ng-container matColumnDef="acciones">
     <th mat-header-cell *matHeaderCellDef> Acciones </th>
     <td mat-cell *matCellDef="let partido">
@@ -52,10 +51,12 @@
     </td>
   </ng-container>
 
-
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+
+<mat-paginator [length]="partidos.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]"
+  (page)="pageEvent($event)"></mat-paginator>
 
 <div *ngIf="partidos.length === 0" class="no-partidos-message">
   <p>No hay partidos para mostrar.</p>

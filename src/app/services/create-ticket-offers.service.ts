@@ -12,7 +12,7 @@ export class CreateTicketOffersService {
   private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/match/all';
   private apiUrlCreateTicket = 'http://100.26.187.163/fpc/api/club-admin/ticket/create';
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   private getHeadersJson(): HttpHeaders {
     return new HttpHeaders({
@@ -37,34 +37,33 @@ export class CreateTicketOffersService {
 
           return data.map((partido: any) => ({
             matchId: partido.matchId,
-            awayClubId: partido.awayClub?.id,
-            stadiumId: partido.stadium?.id,
+            // Aquí construimos los objetos completos para awayClub y stadium
+            awayClub: { id: partido.awayClub?.id, description: partido.awayClub?.description || 'Club no encontrado' },
+            stadium: { id: partido.stadium?.id, description: partido.stadium?.description || 'Estadio no disponible' },
             year: partido.year,
             season: partido.season,
             matchDate: partido.matchDate,
-            visitante: partido.awayClub?.description || 'Club no encontrado',
-            estadio: partido.stadium?.description || 'Estadio no disponible',
+            visitante: partido.awayClub?.description || 'Club no encontrado', // También se puede asignar aquí directamente
+            estadio: partido.stadium?.description || 'Estadio no disponible', // Lo mismo para el estadio
             temporada: `${partido.year} - ${partido.season}`,
-            fecha: partido.matchDate
-              ? new Date(partido.matchDate).toLocaleDateString()
-              : 'Fecha no disponible',
+            fecha: partido.matchDate ? new Date(partido.matchDate).toLocaleDateString() : 'Fecha no disponible',
           }));
         }),
         catchError((error) => {
           console.error('Error fetching matches:', error);
-          return of([]);
+          return of([]); // En caso de error, retornamos un array vacío
         })
       );
   }
 
   createTicketOffer(matchId: number, formData: FormData): Observable<any> {
-  const url = `${this.apiUrlCreateTicket}?matchId=${matchId}`;
-  return this.http.post<any>(url, formData, {
-    headers: new HttpHeaders({
-      Authorization: `Bearer ${this.authService.getToken()}`,
-      // NO Content-Type para que Angular lo maneje solo
-    }),
-  });
+    const url = `${this.apiUrlCreateTicket}?matchId=${matchId}`;
+    return this.http.post<any>(url, formData, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${this.authService.getToken()}`,
+        // NO Content-Type para que Angular lo maneje solo
+      }),
+    });
   }
 
 }

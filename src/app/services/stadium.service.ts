@@ -67,32 +67,22 @@ export class StadiumService {
         }
 
         const headers = this.getHeaders();
-
-        // Imprimir el imageId y la URL construida para verificar si son correctos
-        console.log(`Fetching image with ID: ${imageId}`);
         const url = `${this.baseUrl}${this.imageEndpoint}${imageId}`;
-        console.log(`API URL for image: ${url}`);
 
         return this.http.get(`${url}`, {
             headers,
             responseType: 'text'  // Obtenemos la respuesta como texto
         }).pipe(
             map(urlString => {
-                // Aquí parseamos el string JSON manualmente
-                console.log(`Raw URL from API for imageId ${imageId}:`, urlString);
-
                 try {
                     const parsed = JSON.parse(urlString);  // Convertimos el string JSON en un objeto
-                    const realUrl = parsed.url || 'assets/img/error.jpg';  // Si no hay URL, usamos una por defecto
-                    console.log(`Parsed Image URL: ${realUrl}`);
+                    const realUrl = parsed.url || 'assets/img/defecto.jpg';  // Si no hay URL, usamos una por defecto
                     return this.sanitizer.bypassSecurityTrustUrl(realUrl);  // Sanitizamos la URL para evitar vulnerabilidades
                 } catch (e) {
-                    console.error('Error parsing JSON for image URL:', e);
                     return this.sanitizer.bypassSecurityTrustUrl('assets/img/error.jpg');  // Usamos una imagen por defecto si falla el parseo
                 }
             }),
             catchError(() => {
-                console.error('Error fetching image URL.');
                 return of(this.sanitizer.bypassSecurityTrustUrl('assets/img/error.jpg'));  // En caso de error, usamos una imagen por defecto
             })
         );
@@ -137,4 +127,5 @@ export class StadiumService {
         const headers = this.getHeaders();
         return this.http.delete(`${this.baseUrl}${this.stadiumEndpoint}/delete/${stadiumId}`, { headers });
     }
+
 }

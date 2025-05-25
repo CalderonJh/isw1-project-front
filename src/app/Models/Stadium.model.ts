@@ -1,13 +1,21 @@
-import { Stand } from './Stand.model';
 import { SafeUrl } from '@angular/platform-browser';
 
 export interface Stadium {
-    id: number;
-    name: string;
-    stands: Stand[];
-    imageId: string;           // Public ID
+  id: number;
+  name: string;
+  stands: Stand[];
+  imageId: string; // Public ID
 }
 
 export interface StadiumWithImage extends Stadium {
-    imageUrl: SafeUrl;       // Sanitized URL
+  imageUrl: SafeUrl; // Sanitized URL
 }
+
+export interface Stand {
+  id: number;
+  name: string;
+  capacity: number;
+  price?: number;
+  isEnabled?: boolean;
+}
+

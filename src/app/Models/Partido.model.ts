@@ -1,13 +1,22 @@
 export interface Partido {
-  matchId?: number;    // Opcional para crear
-  awayClubId: number;
-  stadiumId: number;
-  year: number;
-  season: number;
-  matchDate: string;
+    matchId: number;
+    awayClub: { 
+        id: number;
+        description: string;
+    };
+    stadium: { 
+        id: number;
+        description: string;
+    }; 
+    year: number;
+    season: number;
+    matchDate: string;
+}
 
-  visitante?: string;
-  estadio?: string;
-  temporada?: string;
-  fecha?: string;
+export interface PartidoSave {
+    awayClubId: number,
+    stadiumId: number,
+    year: number,
+    season: number,
+    matchDate: string
 }

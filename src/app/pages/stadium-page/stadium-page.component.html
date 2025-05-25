@@ -66,11 +66,12 @@
           <ng-container matColumnDef="acciones">
             <th mat-header-cell *matHeaderCellDef>Acciones</th>
             <td mat-cell *matCellDef="let tribuna">
-              <button mat-button (click)="editTribunaDialog(stadium, tribuna)">
+              <button mat-button (click)="openEditTribunaDialog(stadium, tribuna.standId)">
                 <mat-icon>edit</mat-icon> Editar
               </button>
 
-              <button mat-button color="warn" (click)="deleteTribuna(stadium, tribuna)">
+
+              <button mat-button color="warn" (click)="deleteTribuna(stadium)">
                 <mat-icon>delete</mat-icon> Eliminar
               </button>
             </td>
