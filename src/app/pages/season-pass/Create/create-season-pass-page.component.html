@@ -17,45 +17,36 @@
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="createSeasonPass()">
-        
+
         <!--Descripción-->
-        <mat-form-field >
-            <mat-label>Descripción</mat-label>
-            <input matInput type="text"
-                   placeholder="Abono para la temporada"
-                   formControlName="description"
-                   required>
-          </mat-form-field>
+        <mat-form-field>
+          <mat-label>Descripción</mat-label>
+          <input matInput type="text" placeholder="Abono para la temporada" formControlName="description" required>
+        </mat-form-field>
 
         <!-- Estadio -->
         <div class="flex">
           <mat-form-field appearance="fill">
             <mat-label>Estadio</mat-label>
-            <mat-select formControlName="selectedStadium"
-                        (selectionChange)="onStadiumChange($event.value)"
-                        required>
+            <mat-select formControlName="selectedStadium" (selectionChange)="onStadiumChange($event.value)" required>
               <mat-option *ngFor="let stadium of stadiums" [value]="stadium">
                 {{ stadium.name }}
               </mat-option>
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field >
+          <mat-form-field>
             <mat-label>Año</mat-label>
-            <input matInput type="number"
-                   placeholder="Año del abono"
-                   formControlName="year"
-                   required>
+            <input matInput type="number" placeholder="Año del abono" formControlName="year" required>
           </mat-form-field>
 
           <mat-form-field>
             <mat-label>Temporada</mat-label>
-            <mat-select formControlName="season"
-                        required>
-              <mat-option value = 1>
+            <mat-select formControlName="season" required>
+              <mat-option value=1>
                 1
               </mat-option>
-              <mat-option value = 2>
+              <mat-option value=2>
                 2
               </mat-option>
             </mat-select>
@@ -69,16 +60,13 @@
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
               <mat-checkbox (change)="$event ? toggleAllRows() : null"
-                            [checked]="selection.hasValue() && isAllSelected()"
-                            [indeterminate]="selection.hasValue() && !isAllSelected()"
-                            [aria-label]="checkboxLabel()">
+                [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
               </mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let row">
-              <mat-checkbox (click)="$event.stopPropagation()"
-                            (change)="$event ? selection.toggle(row) : null"
-                            [checked]="selection.isSelected(row)"
-                            [aria-label]="checkboxLabel(row)">
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
               </mat-checkbox>
             </td>
           </ng-container>
@@ -105,8 +93,7 @@
             <td mat-cell *matCellDef="let element"> {{ element.matchDate | date: 'shortTime' }}</td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-              (click)="selection.toggle(row)">
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
           </tr>
         </table>
         <div class="">
@@ -115,48 +102,35 @@
         <!-- Fechas -->
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Fecha de inicio</mat-label>
-          <input matInput
-                 [matDatepicker]="startPicker"
-                 formControlName="startDate"
-                 required/>
+          <input matInput [matDatepicker]="startPicker" formControlName="startDate" required />
           <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
           <mat-datepicker #startPicker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Fecha de fin</mat-label>
-          <input matInput
-                 [matDatepicker]="endPicker"
-                 formControlName="endDate"
-                 required/>
+          <input matInput [matDatepicker]="endPicker" formControlName="endDate" required />
           <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
           <mat-datepicker #endPicker></mat-datepicker>
         </mat-form-field>
 
         <!-- Cargar imagen -->
-        <div class="full-width">
+        <div class="full-width form-field">
           <mat-label>Imagen del abono</mat-label>
-          <input type="file"
-                 (change)="onImageSelected($event)"
-                 accept="image/*"
-                 required/>
-          <small *ngIf="selectedImage">Archivo seleccionado: {{ selectedImage.name }}</small>
+          <input type="file" (change)="onImageSelected($event)" accept="image/*" required />
+          <small *ngIf="selectedImage" class="file-name">Archivo seleccionado: {{ selectedImage.name }}</small>
         </div>
 
         <!-- Botones -->
-        <div class="buttons">
-          <button mat-raised-button
-                  color="primary"
-                  type="submit">
+        <div class="buttons actions-container">
+          <button mat-raised-button color="primary" type="submit">
             Crear Oferta
           </button>
-          <button mat-raised-button
-                  color="warn"
-                  type="button"
-                  (click)="cancel()">
+          <button mat-raised-button color="warn" type="button" (click)="cancel()">
             Cancelar
           </button>
         </div>
+
       </form>
     </mat-card-content>
   </mat-card>

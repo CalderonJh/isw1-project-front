@@ -130,3 +130,46 @@ mat-form-field {
   box-shadow: none;
   cursor: not-allowed;
 }
+
+/* Botones */
+.actions-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.actions-container button {
+  min-width: 140px;
+  font-weight: 600;
+  padding: 12px 0;
+  border-radius: 24px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  margin: 0 10px;
+}
+
+.actions-container button:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.actions-container button:disabled {
+  background-color: #ccc;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Estilo de los botones */
+.buttons button {
+  min-width: 180px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.buttons button:hover {
+  transform: scale(1.05);
+}
+
+.buttons button:active {
+  transform: scale(0.98);
+}
