@@ -7,60 +7,73 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'view-ticket-offers-dialog',
   standalone: true,
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSlideToggleModule, // importante para el toggle deslizante
+  ],
   template: `
     <h2 mat-dialog-title>Editar Boleta</h2>
 
-<mat-dialog-content class="dialog-content">
-  <mat-slide-toggle [(ngModel)]="isEnabled">Activo</mat-slide-toggle>
+    <mat-dialog-content class="dialog-content">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Fecha inicio de venta</mat-label>
+        <input matInput [matDatepicker]="pickerStart" [(ngModel)]="dates.start" />
+        <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+        <mat-datepicker #pickerStart></mat-datepicker>
+      </mat-form-field>
 
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Fecha de inicio de venta</mat-label>
-    <input matInput [matDatepicker]="pickerStart" [(ngModel)]="dates.start" />
-    <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
-    <mat-datepicker #pickerStart></mat-datepicker>
-  </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Fecha fin de venta</mat-label>
+        <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="dates.end" />
+        <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+        <mat-datepicker #pickerEnd></mat-datepicker>
+      </mat-form-field>
 
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Fecha fin de venta</mat-label>
-    <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="dates.end" />
-    <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-    <mat-datepicker #pickerEnd></mat-datepicker>
-  </mat-form-field>
+      <mat-slide-toggle [(ngModel)]="isEnabled">Activar o Desactivar</mat-slide-toggle>
 
-  <div class="prices-section">
-    <h3>Precios por Tribuna</h3>
-    <div *ngFor="let price of prices" class="price-item">
-      <span>Tribuna ID: {{price.standId}}</span>
-      <input
-        matInput
-        type="number"
-        [(ngModel)]="price.price"
-        placeholder="Precio"
-        class="price-input"
-      />
-      <mat-checkbox [(ngModel)]="price.isDisabled">Deshabilitado</mat-checkbox>
-    </div>
-  </div>
 
-  <div class="image-upload">
-    <label>Imagen:</label>
-    <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-    <div *ngIf="previewImage" class="preview-container">
-      <img [src]="previewImage" alt="Preview" class="preview-image" />
-    </div>
-  </div>
-</mat-dialog-content>
+      <div class="prices-section">
+        <h3>Precios por Tribuna</h3>
+        <div *ngFor="let price of prices; let i = index" class="price-item">
+          <span>ID Tribuna: {{price.standId}}</span>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="price.price"
+            placeholder="Precio"
+            class="price-input"
+          />
+          <mat-checkbox [(ngModel)]="price.isDisabled">Deshabilitado</mat-checkbox>
+        </div>
+      </div>
 
-<mat-dialog-actions align="end">
-  <button mat-button (click)="onNoClick()">Cancelar</button>
-  <button mat-button color="primary" (click)="save()">Guardar</button>
-</mat-dialog-actions>
+      <div class="image-upload">
+        <label>Imagen:</label>
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+        <div *ngIf="previewImage" class="preview-container">
+          <img [src]="previewImage" alt="Preview" class="preview-image" />
+        </div>
+      </div>
+    </mat-dialog-content>
 
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="onNoClick()">Cancelar</button>
+      <button mat-button color="primary" (click)="save()">Guardar</button>
+    </mat-dialog-actions>
   `,
   styles: [`
     .full-width {
@@ -88,19 +101,7 @@ import { CommonModule } from '@angular/common';
       border-radius: 4px;
     }
   `],
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-  ],
 })
-
 export class ViewTicketOffersDialog {
   previewImage: string | ArrayBuffer | null = null;
   selectedImageFile?: File;

@@ -67,12 +67,11 @@ export class ViewTicketService {
       })
     );
   }
-  
+
   toggleStatus(id: number, status: 'ENABLED' | 'DISABLED'): Observable<any> {
   const url = `${this.baseUrl}/${id}/toggle-status`;
-  return this.http.post(url, { status }, { headers: this.getHeaders() });
-}
-
+  return this.http.patch(url, { status }, { headers: this.getHeaders() });
+  }
 
   updateDates(id: number, dates: { start: string; end: string }): Observable<any> {
     const url = `${this.baseUrl}/${id}/update/dates`;
@@ -88,7 +87,7 @@ export class ViewTicketService {
     const url = `${this.baseUrl}/${id}/update/image`;
     const formData = new FormData();
     formData.append('image', imageFile);
-    return this.http.put(url, formData, {
+    return this.http.patch(url, formData, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${this.authService.getToken()}`,
         // No Content-Type para que el navegador lo establezca automáticamente
