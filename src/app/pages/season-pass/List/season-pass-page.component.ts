@@ -35,6 +35,7 @@ export class SeasonPassPageComponent implements OnInit {
     this.seasonPassService.getAllSeasonPasses().subscribe(
       (data: GetSeasonPass[]) => { 
         console.log(data);
+        this.seasonPasses = data;
       },
       (error: GetSeasonPass) => { // También puedes especificar el tipo aquí
         console.error(error);
