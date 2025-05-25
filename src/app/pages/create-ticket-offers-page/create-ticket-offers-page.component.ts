@@ -156,7 +156,7 @@ export class CreateTicketOffersPageComponent implements OnInit {
       next: () => {
         alert('Oferta creada exitosamente');
         this.resetForm();
-        this.router.navigate(['']);
+        this.router.navigate(['ticket']);
       },
       error: (error) => {
         console.error('Error creando oferta:', error);

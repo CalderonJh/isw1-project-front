@@ -2,10 +2,10 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'ticket',
     loadComponent: () =>
       import('./view-ticket-offers-page.component').then(
-        (m) => m.ViewTicketOffersPageComponent,
+        (m) => m.ViewTicketPageComponent,
       ),
   },
   {
