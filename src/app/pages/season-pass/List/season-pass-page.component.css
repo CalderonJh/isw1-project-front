@@ -57,17 +57,17 @@ button mat-icon {
   padding: 15px;
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(30, 94, 168, 0.2);
-  /* width ya no es necesario porque grid define el tamaño */
-  text-align: left;
   font-size: 16px;
   border: 2px solid #1e5ea8;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
-  color: #1e2a43;
+  color: #000000; /* texto negro */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 360px; /* altura mínima para evitar cards muy cortas */
+  align-items: center; /* centra horizontalmente todo el contenido */
+  min-height: 320px;
+  text-align: center; /* centra texto dentro */
 }
 
 /* Sombra y efecto hover */
@@ -89,16 +89,22 @@ button mat-icon {
 /* Detalles con menos margen para compactar */
 .abono-details p {
   margin: 4px 0;
-  color: #1e5ea8;
+  color: #000000; /* texto negro */
   font-weight: 600;
 }
+
 
 /* Estado */
 .abono-status {
   font-size: 14px;
   font-weight: 600;
-  color: #d9534f; /* rojo para pausado */
   margin-top: 10px;
+  /* color según estado */
+  color: green;
+}
+
+.abono-status.pausado {
+  color: red;
 }
 
 /* Contenedor para botón */

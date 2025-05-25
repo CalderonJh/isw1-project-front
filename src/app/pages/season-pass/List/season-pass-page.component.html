@@ -13,12 +13,7 @@
 <div class="content-container">
   <div class="header-container">
     <h1 class="section-title">Abonos Disponibles</h1>
-    <button
-      mat-raised-button
-      color="primary"
-      class="crear-abono-btn"
-      (click)="createNewSeasonPass()"
-    >
+    <button mat-raised-button color="primary" class="crear-abono-btn" (click)="createNewSeasonPass()">
       Crear Nuevo Abono
     </button>
   </div>
@@ -35,7 +30,10 @@
       </div>
 
       <div class="abono-card-footer">
-        <p class="abono-status">{{ pass.isPaused ? 'Pausado' : 'Activo' }}</p>
+        <p class="abono-status" [ngClass]="{'pausado': pass.isPaused, 'activo': !pass.isPaused}">
+          {{ pass.isPaused ? 'Pausado' : 'Activo' }}
+        </p>
+
       </div>
 
       <div class="abono-actions">
