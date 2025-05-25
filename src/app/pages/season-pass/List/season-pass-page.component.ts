@@ -48,8 +48,8 @@ export class SeasonPassPageComponent implements OnInit {
     this.router.navigate(['create-season-pass']);
   }
 
-  toggleStatus(id: number): void {
-    this.seasonPassService.toggleStatus(id).subscribe(
+  toggleStatus(id: number, isPaused: boolean): void {
+    this.seasonPassService.toggleStatus(id, isPaused).subscribe(
       () => this.loadSeasonPasses(),
       (error) => console.error('Error cambiando el estado', error)
     );
@@ -59,6 +59,7 @@ export class SeasonPassPageComponent implements OnInit {
     this.router.navigate(['home']);
   }
 
+  
   logout(): void {
     this.router.navigate(['']);
   }

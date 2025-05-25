@@ -33,7 +33,7 @@
         <p class="abono-status">{{ pass.isPaused }}</p>
       </div>
       <div class="abono-actions">
-        <button mat-raised-button color="accent" (click)="toggleStatus(pass.id)">
+        <button mat-raised-button color="accent" (click)="toggleStatus(pass.id, pass.isPaused)">
           {{ "Pausar Abono" }}
         </button>
       </div>

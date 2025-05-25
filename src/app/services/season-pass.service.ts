@@ -54,28 +54,28 @@ export class SeasonPassService {
   // Actualizar el precio de un abono
   updatePrice(id: string, price: number): Observable<any> {
     return this.http
-      .put<any>(`${this.baseUrl}/season-pass/${id}/update/price`, { price }, { headers: this.getHeadersJson() })
+      .patch<any>(`${this.baseUrl}/season-pass/${id}/update/price`, { price }, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));
   }
 
   // Actualizar la imagen de un abono
   updateImage(id: string, image: string): Observable<any> {
     return this.http
-      .put<any>(`${this.baseUrl}/season-pass/${id}/update/image`, { image }, { headers: this.getHeadersJson() })
+      .patch<any>(`${this.baseUrl}/season-pass/${id}/update/image`, { image }, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));
   }
 
   // Actualizar las fechas de un abono
   updateDates(id: number, startDate: string, endDate: string): Observable<any> {
     return this.http
-      .put<any>(`${this.baseUrl}/season-pass/${id}/update/dates`, { startDate, endDate }, { headers: this.getHeadersJson() })
+      .patch<any>(`${this.baseUrl}/season-pass/${id}/update/dates`, { startDate, endDate }, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));
   }
 
   // Cambiar el estado de un abono
-  toggleStatus(id: number): Observable<any> {
+  toggleStatus(id: number, isPaused: boolean): Observable<any> {
     return this.http
-      .put<any>(`${this.baseUrl}/season-pass/${id}/toggle-status`, {}, { headers: this.getHeadersJson() })
+      .patch<any>(`${this.baseUrl}/season-pass/${id}/toggle-status`, {isPaused}, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));
   }
 
