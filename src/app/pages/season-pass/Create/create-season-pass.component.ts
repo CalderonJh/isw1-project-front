@@ -89,8 +89,8 @@ export class CreateSeasonPassComponent implements OnInit {
       selectedStadium: [null, Validators.required],
       year: [null, Validators.required],
       season: [null, Validators.required],
-      selectedMatches: [[], Validators.required], // ✅ Array simple, no FormArray
-      selectedStands: [[], Validators.required], // ✅ Array simple, no FormArray
+      selectedMatches: [[], Validators.required],
+      selectedStands: [[], Validators.required], 
       startDate: [null, Validators.required],
       endDate: [null, Validators.required],
       selectedImage: [null, Validators.required],
@@ -115,9 +115,6 @@ export class CreateSeasonPassComponent implements OnInit {
       });
     this.stands = stadium.stands;
   }
-
-  // ❌ ELIMINAR - Ya no necesitas estos métodos para mat-select multiple
-  // onMatchSelectionChange() y onStandSelectionChange() no son necesarios
 
   // Manejar carga de imagen
   onImageSelected(event: Event): void {
