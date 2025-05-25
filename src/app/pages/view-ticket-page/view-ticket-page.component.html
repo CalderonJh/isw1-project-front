@@ -28,7 +28,7 @@
     />
 
     <h3>
-      {{ oferta.homeClub.description || 'Club local' }} vs {{ oferta.awayClub.description || 'Visitante' }}
+      {{ oferta.homeClub.description }} vs {{ oferta.awayClub.description || 'Visitante' }}
     </h3>
 
     <p><strong>Fecha:</strong> {{ oferta.matchDay | date: 'medium' }}</p>
