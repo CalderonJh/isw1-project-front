@@ -5,7 +5,7 @@ export const routes: Routes = [
     path: '',
     loadComponent: () =>
       import('./view-ticket-offers-page.component').then(
-        (m) => m.ViewTicketOffersPageComponent,
+        (m) => m.ViewTicketPageComponent,
       ),
   },
   {
