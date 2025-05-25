@@ -96,9 +96,12 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
           </tr>
         </table>
+
+        <!-- Tribunas -->
         <div class="">
           <app-stand-price [tribunas]="this.stands"></app-stand-price>
         </div>
+        
         <!-- Fechas -->
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Fecha de inicio</mat-label>
