@@ -66,14 +66,14 @@ export class SeasonPassService {
   }
 
   // Actualizar las fechas de un abono
-  updateDates(id: string, startDate: string, endDate: string): Observable<any> {
+  updateDates(id: number, startDate: string, endDate: string): Observable<any> {
     return this.http
       .put<any>(`${this.baseUrl}/season-pass/${id}/update/dates`, { startDate, endDate }, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));
   }
 
   // Cambiar el estado de un abono
-  toggleStatus(id: string): Observable<any> {
+  toggleStatus(id: number): Observable<any> {
     return this.http
       .put<any>(`${this.baseUrl}/season-pass/${id}/toggle-status`, {}, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));

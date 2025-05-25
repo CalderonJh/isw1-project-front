@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon'; // <-- Para mat-icon
 import { MatButtonModule } from '@angular/material/button'; // <-- Para botones material
 import { SeasonPassService } from '../../../services/season-pass.service';
 import { Router } from '@angular/router';
+import { GetSeasonPass } from '../../../Models/Season-pass.model';
 
 @Component({
   selector: 'app-season-pass-page',
@@ -19,7 +20,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./season-pass-page.component.css']
 })
 export class SeasonPassPageComponent implements OnInit {
-  seasonPasses: any[] = [];
+  seasonPasses: GetSeasonPass[] = [];
 
   constructor(
     private seasonPassService: SeasonPassService,
@@ -32,10 +33,10 @@ export class SeasonPassPageComponent implements OnInit {
 
   loadSeasonPasses(): void {
     this.seasonPassService.getAllSeasonPasses().subscribe(
-      (data: any[]) => {  // Cambia `any[]` por el tipo adecuado
+      (data: GetSeasonPass[]) => { 
         console.log(data);
       },
-      (error: any) => { // También puedes especificar el tipo aquí
+      (error: GetSeasonPass) => { // También puedes especificar el tipo aquí
         console.error(error);
       }
     );
@@ -46,7 +47,7 @@ export class SeasonPassPageComponent implements OnInit {
     this.router.navigate(['create-season-pass']);
   }
 
-  toggleStatus(id: string): void {
+  toggleStatus(id: number): void {
     this.seasonPassService.toggleStatus(id).subscribe(
       () => this.loadSeasonPasses(),
       (error) => console.error('Error cambiando el estado', error)

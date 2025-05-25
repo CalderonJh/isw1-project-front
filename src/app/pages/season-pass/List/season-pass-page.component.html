@@ -27,15 +27,15 @@
     <div *ngFor="let pass of seasonPasses" class="abono-card">
       <div class="abono-card-header">
         <p class="abono-title">Abono: {{ pass.id }}</p>
-        <p class="abono-status">{{ pass.status ? 'Activo' : 'Inactivo' }}</p>
+        <p class="abono-status">{{ pass.isPaused }}</p>
       </div>
       <div class="abono-details">
-        <p><strong>Precio:</strong> ${{ pass.price }}</p>
-        <p><strong>Fechas:</strong> {{ pass.startDate | date }} - {{ pass.endDate | date }}</p>
+        <p><strong>Descripción:</strong> ${{ pass.description }}</p>
+        <p><strong>Fechas:</strong> {{ pass.offerPeriod.start| date }} - {{ pass.offerPeriod.end| date }}</p>
       </div>
       <div class="abono-actions">
         <button mat-raised-button color="accent" (click)="toggleStatus(pass.id)">
-          {{ pass.status ? 'Desactivar' : 'Activar' }}
+          {{ pass.isPaused }}
         </button>
       </div>
     </div>
