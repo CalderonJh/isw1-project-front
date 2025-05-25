@@ -137,3 +137,60 @@ button {
 .classboletas:hover, .classabonos:hover, .classestadios:hover, .classpartidos:hover {
   background: linear-gradient(to right, #bbbec3, #347fdc); /* Efecto de degradado */
 }
+
+/* Para pantallas más pequeñas (dispositivos móviles) */
+@media screen and (max-width: 768px) {
+
+  /* Barra de navegación: ajustamos la altura y espaciado */
+  mat-toolbar {
+    padding: 0 10px;
+    font-size: 14px; /* Reducimos el tamaño de la fuente */
+  }
+
+  /* Ajuste de los botones en el dashboard para dispositivos móviles */
+  .dashboard-buttons {
+    grid-template-columns: 1fr; /* Un solo botón por fila */
+    gap: 15px; /* Reducimos el espacio entre los botones */
+    padding: 20px; /* Ajustamos el padding */
+  }
+
+  /* Ajuste de tamaño de los botones en pantallas pequeñas */
+  .dashboard-buttons button {
+    width: 100%; /* Los botones ocupan todo el ancho disponible */
+    height: 180px; /* Reducimos la altura */
+  }
+
+  /* Ajuste del icono dentro de los botones */
+  .dashboard-buttons button mat-icon {
+    font-size: 18px; /* Hacemos los iconos más pequeños */
+  }
+
+  /* Barra de navegación: ajustar el botón de logout */
+  .logout {
+    font-size: 14px; /* Reducir el tamaño de la fuente */
+  }
+
+  /* Ajustamos el espaciado entre los botones en el contenedor */
+  .dashboard-container {
+    padding: 60px 0;
+  }
+}
+
+/* Para pantallas más grandes (tabletas y más grandes) */
+@media screen and (min-width: 769px) {
+
+  /* Barra de navegación más espaciosa */
+  mat-toolbar {
+    font-size: 16px; /* Aumentamos el tamaño de la fuente */
+  }
+}
+
+/* Para pantallas muy grandes (computadoras de escritorio grandes) */
+@media screen and (min-width: 1200px) {
+
+  /* Ajuste de la barra de navegación para pantallas grandes */
+  mat-toolbar {
+    font-size: 18px; /* Tamaño de fuente más grande */
+  }
+}
+
