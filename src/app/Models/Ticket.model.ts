@@ -12,6 +12,7 @@ export interface Ticket {
       id: number,
       description: string
     },
+    stadiumImageId: string,
     matchDay: string,
     offerPeriod: {
       start: string,

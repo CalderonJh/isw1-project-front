@@ -12,7 +12,7 @@ import { tick } from '@angular/core/testing';
 })
 
 export class ViewTicketService {
-  private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/match/all';
+  private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/ticket/all';
   private imageBaseUrl = 'https://res.cloudinary.com/demo/image/upload/';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
