@@ -31,15 +31,15 @@ export class ViewTicketPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.viewService.getAllOffers().subscribe(
+      this.viewService.getAllOffers().subscribe(
       (response: Ticket[]) => {
-        this.ofertas = response;
-        console.log('Ofertas:', this.ofertas);
-      },
-      (error) => {
-        console.error('Error fetching offers:', error);
-      }
-    );
+      console.log('Respuesta completa:', response);
+      this.ofertas = response;
+    },
+    (error) => {
+      console.error('Error fetching offers:', error);
+    }
+  );  
   }
 
   navigateToHome(): void {
