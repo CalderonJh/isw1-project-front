@@ -49,7 +49,7 @@ export class SeasonPassService {
     );
   }
 
-    private getImageUrl(imageId: string): Observable<SafeUrl> {
+  private getImageUrl(imageId: string): Observable<SafeUrl> {
     if (!imageId) {
       return of(this.sanitizer.bypassSecurityTrustUrl('assets/img/defecto.jpg'));
     }
@@ -109,10 +109,13 @@ export class SeasonPassService {
 
   // Actualizar las fechas de un abono
   updateDates(id: number, offerPeriod: any): Observable<any> {
-    return this.http
-      .patch<any>(`${this.baseUrl}${this.admin}/season-pass/${id}/update/dates`, { offerPeriod }, { headers: this.getHeadersJson() })
-      .pipe(catchError(this.handleError));
+    return this.http.patch<any>(
+      `${this.baseUrl}${this.admin}/season-pass/${id}/update/dates`,
+      offerPeriod, // no como objeto {offerPeriod}, sino directamente
+      { headers: this.getHeadersJson() }
+    ).pipe(catchError(this.handleError));
   }
+
 
   // Cambiar el estado de un abono
   toggleStatus(id: number, isPaused: boolean): Observable<any> {

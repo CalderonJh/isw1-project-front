@@ -5,6 +5,8 @@ import { MatIconModule } from '@angular/material/icon'; // <-- Para mat-icon
 import { MatButtonModule } from '@angular/material/button'; // <-- Para botones material
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SeasonPassService } from '../../../services/season-pass.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { SeasonPassWithImage } from '../../../Models/Season-pass.model';
 import { SeasonPassDialogComponent } from './season-pass-dialog.component';
@@ -17,6 +19,8 @@ import { SeasonPassDialogComponent } from './season-pass-dialog.component';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatDialogModule  
   ], // <--- Importa aquí los módulos que usa el template
   templateUrl: './season-pass-page.component.html',
