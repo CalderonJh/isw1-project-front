@@ -36,7 +36,7 @@ import { CreateTicketOffersService } from '../../services/create-ticket-offers.s
         <mat-label>Partido</mat-label>
         <mat-select [(ngModel)]="matchId" required>
           <mat-option *ngFor="let match of matches$ | async" [value]="match.matchId">
-            Partido #{{ match.matchId }} - Fecha: {{ match.matchDate | date:'short' }}
+            Partido Contra #{{ match.awayClub.description }} - Fecha: {{ match.matchDate | date:'short' }}
           </mat-option>
         </mat-select>
       </mat-form-field>

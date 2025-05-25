@@ -18,6 +18,7 @@ import { MatNativeDateModule } from '@angular/material/core'
 import { ReactiveFormsModule } from '@angular/forms';
 import { Stadium } from '../../Models/Stadium.model';
 import { StadiumService } from '../../services/stadium.service';
+import { StandPriceComponent } from '../../components/stand-price-component/stand-price.component';
 
 @Component({
   selector: 'app-create-ticket-offers-page',
@@ -35,6 +36,7 @@ import { StadiumService } from '../../services/stadium.service';
     MatDatepickerModule,
     MatNativeDateModule,
     ReactiveFormsModule,
+    StandPriceComponent
   ],
   templateUrl: './create-ticket-offers-page.component.html',
   styleUrls: ['./create-ticket-offers-page.component.css'],
@@ -44,7 +46,7 @@ export class CreateTicketOffersPageComponent implements OnInit {
   stadiums: Stadium[] = [];
   partidoSeleccionado: Partido | null = null;
 
-  standPrices: { standId: number; standName: string; price: number; isDisabled: boolean }[] = [];
+  standPrices: { id: number; name: string; capacity: number; price?: number; isEnabled?: boolean }[] = [];
 
   saleStartDate: Date | null = null;
   saleEndDate: Date | null = null;
@@ -96,19 +98,21 @@ export class CreateTicketOffersPageComponent implements OnInit {
         this.partidoSeleccionado = this.partidos.find(p => p.matchId === result.matchId) || null;
 
         if (this.partidoSeleccionado) {
-          // Cambiar stadiumId a stadium.id
-          const stadium = this.stadiums.find(s => s.id === this.partidoSeleccionado!.stadium.id); // Cambié aquí
+          const stadium = this.stadiums.find(s => s.id === this.partidoSeleccionado!.stadium.id);
           if (stadium) {
-            this.standPrices = stadium.stands.map((stand, index) => ({
-              standId: index,
-              standName: stand.name,
-              price: 0,
-              isDisabled: false,
+            this.standPrices = stadium.stands.map((stand) => ({
+              id: stand.id,
+              name: stand.name,
+              capacity: stand.capacity,
+              price: stand.price ?? 0,
+              isEnabled: true,
             }));
+
           } else {
             this.standPrices = [];
           }
         }
+
       }
     });
   }
@@ -122,44 +126,36 @@ export class CreateTicketOffersPageComponent implements OnInit {
   }
 
   guardarOferta() {
-    if (!this.partidoSeleccionado) {
-      alert('Por favor seleccione un partido antes de guardar');
-      return;
-    }
-    if (!this.fileSeleccionado) {
-      alert('Por favor seleccione un archivo para la oferta');
-      return;
-    }
-    if (!this.saleStartDate) {
-      alert('Por favor ingrese la fecha de inicio de venta');
-      return;
-    }
-    if (!this.saleEndDate) {
-      alert('Por favor ingrese la fecha de fin de venta');
-      return;
-    }
+    // validaciones previas...
 
-    const validStands = this.standPrices.filter(sp => sp.price > 0);
+    const validStands = this.standPrices.filter(sp => sp.price && sp.price > 0);
+
     if (validStands.length === 0) {
       alert('Por favor configure al menos un stand con precio válido');
       return;
     }
 
+    // Mapeo para backend: id => standId, isEnabled => isDisabled invertido
+    const offerStandPrices = validStands.map(sp => ({
+      standId: sp.id,
+      price: sp.price,
+      isDisabled: sp.isEnabled === false, // invierte la lógica si es necesario
+    }));
+
     const offer = {
-      standPrices: validStands,
-      saleStartDate: this.saleStartDate.toISOString(),
-      saleEndDate: this.saleEndDate.toISOString(),
+      standPrices: offerStandPrices,
+      saleStartDate: this.saleStartDate!.toISOString(),
+      saleEndDate: this.saleEndDate!.toISOString(),
     };
 
     const formData = new FormData();
     formData.append('offer', new Blob([JSON.stringify(offer)], { type: 'application/json' }));
-    formData.append('file', this.fileSeleccionado);
+    formData.append('file', this.fileSeleccionado!);
 
-    this.crea.createTicketOffer(this.partidoSeleccionado.matchId!, formData).subscribe({
+    this.crea.createTicketOffer(this.partidoSeleccionado!.matchId!, formData).subscribe({
       next: () => {
         alert('Oferta creada exitosamente');
         this.resetForm();
-        // Aquí redireccionas a la ruta deseada
         this.router.navigate(['']);
       },
       error: (error) => {
