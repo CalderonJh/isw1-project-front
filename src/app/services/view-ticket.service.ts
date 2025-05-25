@@ -8,23 +8,25 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 @Injectable({
   providedIn: 'root',
 })
-
 export class ViewTicketService {
   private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/ticket/all';
   private baseUrl = 'http://100.26.187.163/fpc/api/club-admin/ticket';
-  private imageBaseUrl = 'http://100.26.187.163/fpc/api/images/'; // Ruta base para las imágenes
+  private imageBaseUrl = 'http://100.26.187.163/fpc/api/images/';
 
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     private authService: AuthService,
     private sanitizer: DomSanitizer
   ) {}
 
-  private getHeaders(): HttpHeaders {
-    return new HttpHeaders({
+  private getHeaders(contentTypeJson = true): HttpHeaders {
+    const headersConfig: { [key: string]: string } = {
       Authorization: `Bearer ${this.authService.getToken()}`,
-      'Content-Type': 'application/json',
-    });
+    };
+    if (contentTypeJson) {
+      headersConfig['Content-Type'] = 'application/json';
+    }
+    return new HttpHeaders(headersConfig);
   }
 
   getAllOffers(): Observable<any[]> {
@@ -42,7 +44,6 @@ export class ViewTicketService {
     );
   }
 
-  // Obtiene la URL real de la imagen a partir del imageId
   getImageUrl(imageId: string): Observable<SafeUrl> {
     if (!imageId) {
       return of(this.sanitizer.bypassSecurityTrustUrl('assets/img/defecto.jpg'));
@@ -68,31 +69,18 @@ export class ViewTicketService {
     );
   }
 
-  toggleStatus(id: number, status: 'ENABLED' | 'DISABLED'): Observable<any> {
-  const url = `${this.baseUrl}/${id}/toggle-status`;
-  return this.http.patch(url, { status }, { headers: this.getHeaders() });
-  }
-
   updateDates(id: number, dates: { start: string; end: string }): Observable<any> {
     const url = `${this.baseUrl}/${id}/update/dates`;
-    return this.http.put(url, dates, { headers: this.getHeaders() });
-  }
-
-  updatePrices(id: number, prices: any[]): Observable<any> {
-    const url = `${this.baseUrl}/${id}/update/price`;
-    return this.http.put(url, prices, { headers: this.getHeaders() });
+    return this.http.patch(url, dates, { headers: this.getHeaders() });
   }
 
   updateImage(id: number, imageFile: File): Observable<any> {
     const url = `${this.baseUrl}/${id}/update/image`;
     const formData = new FormData();
     formData.append('image', imageFile);
+    // For FormData, we do NOT set Content-Type header explicitly
     return this.http.patch(url, formData, {
-      headers: new HttpHeaders({
-        Authorization: `Bearer ${this.authService.getToken()}`,
-        // No Content-Type para que el navegador lo establezca automáticamente
-      }),
+      headers: this.getHeaders(false), // false = no 'Content-Type' header
     });
   }
-  
 }

@@ -8,14 +8,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ViewTicketService } from '../../services/view-ticket.service';
 import { Ticket } from '../../Models/Ticket.model';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { forkJoin } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { switchMap, map, concatMap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewTicketOffersDialog } from '../view-ticket-page/view-ticket-offers-dialog.component';
-import { concatMap } from 'rxjs/operators';
-import { of } from 'rxjs';
-
-
 
 @Component({
   selector: 'view-ticket-offers-page',
@@ -30,23 +26,21 @@ import { of } from 'rxjs';
   templateUrl: './view-ticket-page.component.html',
   styleUrls: ['./view-ticket-page.component.css']
 })
-
 export class ViewTicketPageComponent implements OnInit {
-   ofertas: (Ticket & { imageUrl?: SafeUrl })[] = [];
+  ofertas: (Ticket & { imageUrl?: SafeUrl })[] = [];
 
   constructor(
     private router: Router,
-    private viewService: ViewTicketService, 
+    private viewService: ViewTicketService,
     private sanitizer: DomSanitizer,
     private dialog: MatDialog
   ) {}
 
-    ngOnInit(): void {
+  ngOnInit(): void {
     this.viewService.getAllOffers().pipe(
       switchMap((tickets) => {
-        if (!tickets.length) return [];
+        if (!tickets.length) return of([]);
 
-        // Para cada ticket, obtenemos la URL de la imagen y la sanitizamos
         const requests = tickets.map(ticket =>
           this.viewService.getImageUrl(ticket.imageId).pipe(
             map(imageUrl => ({
@@ -68,33 +62,28 @@ export class ViewTicketPageComponent implements OnInit {
     });
   }
 
-  // Método para abrir diálogo con la boleta
   openEditDialog(oferta: any) {
-  const dialogRef = this.dialog.open(ViewTicketOffersDialog, {
-    width: '600px',
-    data: {
-      id: oferta.id,
-      status: oferta.isPaused ? 'DISABLED' : 'ENABLED',
-      dates: {
-        start: oferta.offerPeriod.start,
-        end: oferta.offerPeriod.end,
-      },
-      prices: oferta.prices || [],
-      imageUrl: oferta.imageUrl,
-    }
-  });
+    const dialogRef = this.dialog.open(ViewTicketOffersDialog, {
+      width: '600px',
+      data: {
+        id: oferta.id,
+        dates: {
+          start: oferta.offerPeriod.start,
+          end: oferta.offerPeriod.end,
+        },
+        imageUrl: oferta.imageUrl,
+      }
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.saveChanges(oferta.id, result);
-    }
-  });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.saveChanges(oferta.id, result);
+      }
+    });
   }
 
   saveChanges(ticketId: number, changes: any) {
-    this.viewService.toggleStatus(ticketId, changes.status).pipe(
-      concatMap(() => this.viewService.updateDates(ticketId, changes.dates)),
-      concatMap(() => this.viewService.updatePrices(ticketId, changes.prices)),
+    this.viewService.updateDates(ticketId, changes.dates).pipe(
       concatMap(() => changes.imageFile
         ? this.viewService.updateImage(ticketId, changes.imageFile)
         : of(null)
@@ -106,7 +95,7 @@ export class ViewTicketPageComponent implements OnInit {
   }
 
   reloadOffers() {
-    this.ngOnInit(); // o llamar directamente al método que carga ofertas
+    this.ngOnInit();
   }
 
   navigateToHome(): void {
