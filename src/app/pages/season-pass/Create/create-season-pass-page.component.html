@@ -101,18 +101,18 @@
         <div>
           <app-stand-price [tribunas]="this.stands"></app-stand-price>
         </div>
-        
+
         <!-- Fechas -->
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Fecha de inicio</mat-label>
-          <input matInput [matDatepicker]="startPicker" formControlName="startDate" required />
+          <input matInput [matDatepicker]="startPicker" formControlName="startDate" required [min]="today()" />
           <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
           <mat-datepicker #startPicker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Fecha de fin</mat-label>
-          <input matInput [matDatepicker]="endPicker" formControlName="endDate" required />
+          <input matInput [matDatepicker]="endPicker" formControlName="endDate" required [min]="startDate()"/>
           <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
           <mat-datepicker #endPicker></mat-datepicker>
         </mat-form-field>

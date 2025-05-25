@@ -15,7 +15,7 @@ export interface Stand {
   id: number;
   name: string;
   capacity: number;
-  price?: number;
+  price: number;
   isEnabled?: boolean;
 }
 

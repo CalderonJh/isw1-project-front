@@ -16,23 +16,42 @@ export interface StandPrice {
 }
 
 export interface GetSeasonPass {
-   id: number,
-    description: string,
-    year: number,
-    season: number,
-    offerPeriod: {
-      start: string,
-      end: string
-    },
-    stadium: {
-      id: number,
-      description: string
-    },
-    imageId: string,
-    isPaused: boolean
+  id: number;
+  description: string;
+  year: number;
+  season: number;
+  offerPeriod: {
+    start: string;
+    end: string;
+  };
+  stadium: {
+    id: number;
+    description: string;
+  };
+  imageId: string;
+  isPaused: boolean;
 }
 
 export interface SeasonPassWithImage extends GetSeasonPass {
   imageUrl: SafeUrl;
 }
 
+export interface SeasonPassDetails {
+  prices: [
+    {
+      saleId: 0;
+      stand: {
+        id: 0;
+        description: 'string';
+      };
+      price: 0;
+      available: true;
+    },
+  ];
+  games: ['string'];
+  stadium: {
+    id: 0;
+    description: 'string';
+  };
+  stadiumImageId: 'string';
+}

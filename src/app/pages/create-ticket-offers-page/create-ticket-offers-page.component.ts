@@ -46,7 +46,7 @@ export class CreateTicketOffersPageComponent implements OnInit {
   stadiums: Stadium[] = [];
   partidoSeleccionado: Partido | null = null;
 
-  standPrices: { id: number; name: string; capacity: number; price?: number; isEnabled?: boolean }[] = [];
+  standPrices: { id: number; name: string; capacity: number; price: number; isEnabled?: boolean }[] = [];
 
   saleStartDate: Date | null = null;
   saleEndDate: Date | null = null;

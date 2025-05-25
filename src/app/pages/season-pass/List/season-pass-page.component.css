@@ -111,7 +111,7 @@ button mat-icon {
 .abono-actions {
   margin-top: 20px;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 /* Botón de acción */

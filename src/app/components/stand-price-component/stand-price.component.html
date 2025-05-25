@@ -20,18 +20,11 @@
           />
         </mat-form-field>
 
-        <mat-slide-toggle
-          [(ngModel)]="tribuna.isEnabled"
-          (change)="onToggleHabilitada(tribuna)"
-          class="tribuna-toggle"
-        >
-          Habilitada
-        </mat-slide-toggle>
+        <mat-checkbox class="example-margin" [(ngModel)]="tribuna.isEnabled" [checked]="tribuna.price >0">Habilitada</mat-checkbox>
       </mat-card-content>
     </mat-card>
   </div>
 </div>
-
 <style>
   .tribunas-container {
   display: flex;

@@ -21,7 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { StadiumService } from '../../../services/stadium.service';
 import { SeasonPassService } from '../../../services/season-pass.service';
 import { SportsMatchesService } from '../../../services/sports-matches.service';
-import {Stadium, Stand} from '../../../Models/Stadium.model';
+import { Stadium, Stand } from '../../../Models/Stadium.model';
 import { Partido } from '../../../Models/Partido.model';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -90,7 +90,7 @@ export class CreateSeasonPassComponent implements OnInit {
       year: [null, Validators.required],
       season: [null, Validators.required],
       selectedMatches: [[], Validators.required],
-      selectedStands: [[], Validators.required], 
+      selectedStands: [[], Validators.required],
       startDate: [null, Validators.required],
       endDate: [null, Validators.required],
       selectedImage: [null, Validators.required],
@@ -128,11 +128,10 @@ export class CreateSeasonPassComponent implements OnInit {
 
   // Crear el abono
   createSeasonPass() {
-
-    console.log(this.stands)
+    console.log(this.stands);
     const formValue = this.form.value;
 
-    console.log(this.selection.selected)
+    console.log(this.selection.selected);
     // Validar que hay partidos seleccionados
     if (!this.selection.selected || this.selection.selected.length === 0) {
       alert('Debe seleccionar al menos un partido.');
@@ -211,5 +210,15 @@ export class CreateSeasonPassComponent implements OnInit {
   // Cerrar sesión
   logout(): void {
     this.router.navigate(['']);
+  }
+
+  today() {
+    return new Date();
+  }
+
+  startDate() {
+    // tomorrow
+
+    return this.form.get('startDate')?.value ?? this.today();
   }
 }
