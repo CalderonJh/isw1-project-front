@@ -94,23 +94,23 @@ export class SeasonPassService {
   }
 
   // Actualizar el precio de un abono
-  updatePrice(id: string, price: number): Observable<any> {
+  updatePrice(id: number, price: number): Observable<any> {
     return this.http
       .patch<any>(`${this.baseUrl}${this.admin}/season-pass/${id}/update/price`, { price }, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));
   }
 
   // Actualizar la imagen de un abono
-  updateImage(id: string, image: string): Observable<any> {
+  updateImage(id: number, image: string): Observable<any> {
     return this.http
       .patch<any>(`${this.baseUrl}${this.admin}/season-pass/${id}/update/image`, { image }, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));
   }
 
   // Actualizar las fechas de un abono
-  updateDates(id: number, startDate: string, endDate: string): Observable<any> {
+  updateDates(id: number, offerPeriod: any): Observable<any> {
     return this.http
-      .patch<any>(`${this.baseUrl}${this.admin}/season-pass/${id}/update/dates`, { startDate, endDate }, { headers: this.getHeadersJson() })
+      .patch<any>(`${this.baseUrl}${this.admin}/season-pass/${id}/update/dates`, { offerPeriod }, { headers: this.getHeadersJson() })
       .pipe(catchError(this.handleError));
   }
 

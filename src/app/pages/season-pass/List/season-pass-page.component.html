@@ -18,9 +18,9 @@
     </button>
   </div>
 
-  <div *ngIf="seasonPasses && seasonPasses.length > 0; else noPasses " class="abonos-container">
-    <div *ngFor="let pass of seasonPasses" class="abono-card">
-      <!-- Aquí usamos directamente la URL ya sanitizada -->
+  <div *ngIf="seasonPasses && seasonPasses.length > 0; else noPasses" class="abonos-container">
+    <div *ngFor="let pass of seasonPasses" class="abono-card" (click)="openSeasonPassDialog(pass)"
+      style="cursor:pointer;">
       <img class="abono-image" [src]="pass.imageUrl" alt="Imagen abono" />
 
       <div class="abono-details">
@@ -33,16 +33,17 @@
         <p class="abono-status" [ngClass]="{'pausado': pass.isPaused, 'activo': !pass.isPaused}">
           {{ pass.isPaused ? 'Pausado' : 'Activo' }}
         </p>
-
       </div>
 
       <div class="abono-actions">
-        <button mat-raised-button color="accent" (click)="toggleStatus(pass.id, pass.isPaused)">
+        <button mat-raised-button color="accent"
+          (click)="toggleStatus(pass.id, pass.isPaused); $event.stopPropagation();">
           {{ pass.isPaused ? 'Reactivar Abono' : 'Pausar Abono' }}
         </button>
       </div>
     </div>
   </div>
+
 
   <ng-template #noPasses>
     <p>No hay abonos disponibles.</p>

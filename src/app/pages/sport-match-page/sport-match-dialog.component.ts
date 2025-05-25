@@ -10,7 +10,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, NativeDateAdapter, DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS  } from '@angular/material/core';
+import { MatNativeDateModule, NativeDateAdapter, DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS } from '@angular/material/core';
 import { SportsMatchesService } from '../../services/sports-matches.service';
 import { Observable, of } from 'rxjs';
 
@@ -95,7 +95,28 @@ import { Observable, of } from 'rxjs';
   <button mat-button color="primary" (click)="onSave()">Guardar</button>
 </mat-dialog-actions>
   `,
-  styleUrls: ['./sport-match-dialog.component.css'],
+  styles: [`
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px; /* Espacio entre las columnas */
+}
+
+.form-field {
+  flex: 1;
+  min-width: 200px; /* Asegura que cada campo tenga un tamaño mínimo */
+}
+
+.mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.snackbar-error {
+  background-color: #f44336; /* rojo para error */
+  color: white;
+}
+  `],
 })
 export class SportMatchDialog implements OnInit {
   clubs$: Observable<any[]> = of([]);  // Observable para los clubes
@@ -151,14 +172,14 @@ export class SportMatchDialog implements OnInit {
 
   onSave(): void {
     if (!this.awayClubId || !this.stadiumId || !this.year || !this.season) {
-    this.snackBar.open('Por favor, complete todos los campos obligatorios.', 'Cerrar', {
-      duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      panelClass: ['snackbar-error'] // Puedes personalizar el estilo con esta clase
-    });
-    return;
-  }
+      this.snackBar.open('Por favor, complete todos los campos obligatorios.', 'Cerrar', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['snackbar-error'] // Puedes personalizar el estilo con esta clase
+      });
+      return;
+    }
 
     let matchDateISO: string | null = null;
     if (this.fecha) {

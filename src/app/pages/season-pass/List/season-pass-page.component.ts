@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common'; // <-- Para ngIf, ngFor, pipe da
 import { MatToolbarModule } from '@angular/material/toolbar'; // <-- Para mat-toolbar
 import { MatIconModule } from '@angular/material/icon'; // <-- Para mat-icon
 import { MatButtonModule } from '@angular/material/button'; // <-- Para botones material
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SeasonPassService } from '../../../services/season-pass.service';
 import { Router } from '@angular/router';
 import { SeasonPassWithImage } from '../../../Models/Season-pass.model';
+import { SeasonPassDialogComponent } from './season-pass-dialog.component';
 
 @Component({
   selector: 'app-season-pass-page',
@@ -14,7 +16,8 @@ import { SeasonPassWithImage } from '../../../Models/Season-pass.model';
     CommonModule,
     MatToolbarModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule  
   ], // <--- Importa aquí los módulos que usa el template
   templateUrl: './season-pass-page.component.html',
   styleUrls: ['./season-pass-page.component.css']
@@ -24,6 +27,7 @@ export class SeasonPassPageComponent implements OnInit {
 
   constructor(
     private seasonPassService: SeasonPassService,
+    private dialog: MatDialog,
     private router: Router
   ) { }
 
@@ -53,6 +57,19 @@ export class SeasonPassPageComponent implements OnInit {
       () => this.loadSeasonPasses(),
       (error) => console.error('Error cambiando el estado', error)
     );
+  }
+
+  openSeasonPassDialog(pass: SeasonPassWithImage): void {
+    const dialogRef = this.dialog.open(SeasonPassDialogComponent, {
+      width: '600px',
+      data: pass  // Pasar la información del abono al diálogo
+    });
+
+    dialogRef.afterClosed().subscribe((result: string) => {
+      if (result === 'updated') {
+        this.loadSeasonPasses();  // Recargar lista si hubo actualización
+      }
+    });
   }
 
   navigateToHome(): void {
