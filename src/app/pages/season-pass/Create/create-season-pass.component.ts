@@ -161,7 +161,7 @@ export class CreateSeasonPassComponent implements OnInit {
         .subscribe({
           next: () => {
             alert('Abono creado exitosamente');
-            this.router.navigate(['season-passes']);
+            this.router.navigate(['boletas']);
           },
           error: (error) => {
             alert('Error al crear el abono');
