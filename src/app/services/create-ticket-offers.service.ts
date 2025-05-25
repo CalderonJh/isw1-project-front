@@ -9,7 +9,7 @@ import { Partido } from '../Models/Partido.model';
   providedIn: 'root',
 })
 export class CreateTicketOffersService {
-  private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/match?toOffer=ticket';
+  private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/match/all';
   private apiUrlCreateTicket = 'http://100.26.187.163/fpc/api/club-admin/ticket/create';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
