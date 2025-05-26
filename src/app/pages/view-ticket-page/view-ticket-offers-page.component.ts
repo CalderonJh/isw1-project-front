@@ -13,6 +13,7 @@ import { switchMap, map } from 'rxjs/operators';
 import { ViewTicketService } from '../../services/view-ticket.service';
 import { Ticket } from '../../Models/Ticket.model';
 import { ViewTicketOffersDialog } from '../view-ticket-page/view-ticket-offers-dialog.component';
+import { ViewTicketPricesDialog } from '../view-ticket-page/view-ticket-prices.dialog.component';
 
 @Component({
   selector: 'view-ticket-offers-page',
@@ -38,7 +39,7 @@ export class ViewTicketPageComponent implements OnInit {
     private viewService: ViewTicketService,
     private sanitizer: DomSanitizer,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.viewService
@@ -121,6 +122,35 @@ export class ViewTicketPageComponent implements OnInit {
       },
     });
   }
+
+  openPricesDialog(oferta: any, event: MouseEvent) {
+    event.stopPropagation();
+
+    this.viewService.getPricesDetails(oferta.id).subscribe({
+      next: (prices) => {
+        const dialogRef = this.dialog.open(ViewTicketPricesDialog, {
+          width: '600px',
+          data: {
+            offerId: oferta.id,
+            prices: prices || [], // datos actualizados desde backend
+          }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result === 'updated') {
+            this.reloadOffers();
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error cargando detalles de precios:', error);
+        alert('No se pudo cargar la información de precios. Intente de nuevo más tarde.');
+      }
+    });
+  }
+
+
+
 
   reloadOffers() {
     this.ngOnInit();
