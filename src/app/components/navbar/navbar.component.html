@@ -21,7 +21,6 @@
     </div>
 </mat-toolbar>
 
-
 <style>
 mat-toolbar {
     background-color: #2e74be;
@@ -39,6 +38,8 @@ mat-toolbar {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 0 20px;
     height: 60px;
+    box-sizing: border-box;
+    overflow: hidden; /* Previene el desbordamiento */
 }
 
 .loading-container {
@@ -72,6 +73,7 @@ mat-toolbar {
     display: flex;
     align-items: center;
     gap: 12px;
+    justify-content: flex-end;
 }
 
 .toolbar-btn {
@@ -93,4 +95,55 @@ mat-toolbar {
     transform: scale(1.05);
 }
 
+/* Responsividad */
+@media (max-width: 768px) {
+    mat-toolbar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        height: auto;
+        padding: 10px 15px;
+    }
+
+    .navbar-info {
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .navbar-text {
+        font-size: 14px;
+    }
+
+    .club-logo {
+        width: 36px;
+        height: 36px;
+    }
+
+    .toolbar-actions {
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .toolbar-btn {
+        font-size: 18px;
+        padding: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-text {
+        font-size: 12px;
+    }
+
+    .club-logo {
+        width: 32px;
+        height: 32px;
+    }
+
+    .toolbar-btn {
+        font-size: 16px;
+        padding: 5px;
+    }
+}
 </style>
