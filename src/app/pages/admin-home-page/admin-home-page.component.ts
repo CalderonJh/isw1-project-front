@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,7 +16,6 @@ import { NavbarComponent } from "../../components/navbar/navbar.component"; // I
   templateUrl: './admin-home-page.component.html',
   standalone: true,
   styleUrls: ['./admin-home-page.component.css'], // Cambié "styleUrl" por "styleUrls" (es el nombre correcto)
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class AdminHomePageComponent {

@@ -2,7 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { UserToken } from '../Models/UserToken.model'; // Asegúrate de que la ruta sea correcta
 
 @Injectable({
@@ -11,6 +11,8 @@ import { UserToken } from '../Models/UserToken.model'; // Asegúrate de que la r
 
 export class AuthService {
   private loginUrl = 'http://100.26.187.163/fpc/api/auth/login';
+  private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/my-club';
+  private imageBaseUrl = 'http://100.26.187.163/fpc/api/images/';
   private tokenKey = 'auth_token';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
@@ -119,6 +121,35 @@ export class AuthService {
     } catch {
       return null;
     }
+  }
+
+  getClub(): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`
+    });
+
+    return this.http.get(this.apiUrl, { headers }).pipe(
+      catchError(err => {
+        console.error('Error al obtener el club:', err);
+        return of(null);
+      })
+    );
+  }
+
+  getImageUrl(imageId: string): Observable<string> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`
+    });
+
+    const imageUrl = `${this.imageBaseUrl}${imageId}`;
+    return this.http.get<{ url: string }>(imageUrl, { headers }).pipe(
+      catchError(err => {
+        console.error('Error al obtener la imagen:', err);
+        return of('assets/img/defecto.jpg');
+      }),
+      // Transformamos para que solo devuelva la URL directamente
+      map(res => (typeof res === 'object' && res !== null && 'url' in res) ? res.url : 'assets/img/defecto.jpg')
+    );
   }
 
 }

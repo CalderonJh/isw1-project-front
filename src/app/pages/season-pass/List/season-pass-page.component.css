@@ -55,8 +55,8 @@
 /* Imagen con proporción fija y que mantenga el aspecto */
 .abono-image {
   width: 100%;
-  aspect-ratio: 16 / 9; /* Mantiene proporción 16:9 */
-  object-fit: cover;
+  aspect-ratio: 9 / 16; /* Cambio de proporción */
+  object-fit: cover;    /* Puedes usar contain si no quieres recorte */
   border-radius: 10px;
   margin-bottom: 15px;
   box-shadow: 0 4px 8px rgba(30, 94, 168, 0.25);
