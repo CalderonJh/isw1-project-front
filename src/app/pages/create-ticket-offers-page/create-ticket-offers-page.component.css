@@ -8,43 +8,6 @@
   box-sizing: border-box;
 }
 
-/* Barra de navegación */
-mat-toolbar {
-  background-color: #2e74be;
-  color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 600;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 0 24px;
-  height: 56px;
-}
-
-.divider {
-  border: none;
-  height: 0;
-  margin: 0;
-  padding: 0;
-}
-
-
-.toolbar-actions button mat-icon {
-  font-size: 24px;
-  color: white;
-  transition: color 0.3s ease;
-}
-
-.toolbar-actions button:hover mat-icon {
-  color: #a8c0e5;
-}
-
 /* Título principal */
 h2.text-primary {
   text-align: center;

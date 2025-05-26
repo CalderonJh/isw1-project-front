@@ -19,6 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Stadium } from '../../Models/Stadium.model';
 import { StadiumService } from '../../services/stadium.service';
 import { StandPriceComponent } from '../../components/stand-price-component/stand-price.component';
+import { NavbarComponent } from "../../components/navbar/navbar.component";
 
 @Component({
   selector: 'app-create-ticket-offers-page',
@@ -36,8 +37,9 @@ import { StandPriceComponent } from '../../components/stand-price-component/stan
     MatDatepickerModule,
     MatNativeDateModule,
     ReactiveFormsModule,
-    StandPriceComponent
-  ],
+    StandPriceComponent,
+    NavbarComponent
+],
   templateUrl: './create-ticket-offers-page.component.html',
   styleUrls: ['./create-ticket-offers-page.component.css'],
 })
@@ -174,13 +176,5 @@ export class CreateTicketOffersPageComponent implements OnInit {
     this.saleEndDate = null;
     this.fileSeleccionado = null;
     this.standPrices = [];
-  }
-
-  navigateToHome(): void {
-    this.router.navigate(['/home']);
-  }
-
-  logout(): void {
-    this.router.navigate(['']);
   }
 }
