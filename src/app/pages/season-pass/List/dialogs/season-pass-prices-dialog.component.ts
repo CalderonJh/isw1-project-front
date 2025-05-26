@@ -28,7 +28,7 @@ import { StandPriceDialogData } from '../../../../Models/Season-pass.model';
     MatDialogModule,
   ],
   template: `
-    <h2 mat-dialog-title>Editar precios por tribuna</h2>
+    <h2 mat-dialog-title>Editar Precios por Tribuna</h2>
     <mat-dialog-content style="max-height: 400px; overflow-y: auto;">
       <div *ngFor="let price of stands; let i = index" style="margin-bottom: 1rem; border: 1px solid #ccc; padding: 1rem; border-radius: 8px;">
         <div><strong>{{ price.stand.description }}</strong></div>

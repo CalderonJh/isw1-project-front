@@ -135,27 +135,33 @@ export class SeasonPassService {
   }
 
 
-  // Actualizar la imagen de un abono
   updateImage(id: number, image: File): Observable<any> {
-    return this.http
-      .patch<any>(
-        `${this.baseUrl}${this.admin}/season-pass/${id}/update/image`,
-        { image },
-        { headers: this.getHeadersJson() },
-      )
-      .pipe(catchError(this.handleError));
+    const formData = new FormData();
+    formData.append('file', image);
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authService.getToken()}`,
+      // NO incluir 'Content-Type' para que Angular lo gestione automáticamente
+    });
+
+    return this.http.patch<any>(
+      `${this.baseUrl}${this.admin}/season-pass/${id}/update/image`,
+      formData,
+      { headers }
+    ).pipe(
+      catchError(this.handleError)
+    );
   }
 
   // Actualizar las fechas de un abono
-  updateDates(id: number, offerPeriod: any): Observable<any> {
-    return this.http
-      .patch<any>(
-        `${this.baseUrl}${this.admin}/season-pass/${id}/update/dates`,
-        offerPeriod, // no como objeto {offerPeriod}, sino directamente
-        { headers: this.getHeadersJson() },
-      )
-      .pipe(catchError(this.handleError));
+  updateDates(id: number, offerPeriod: { start: string; end: string }): Observable<any> {
+    return this.http.patch<any>(
+      `${this.baseUrl}${this.admin}/season-pass/${id}/update/dates`,
+      offerPeriod, // Enviar directamente el objeto con start y end
+      { headers: this.getHeadersJson() } // Content-Type: application/json
+    ).pipe(catchError(this.handleError));
   }
+
 
   // Cambiar el estado de un abono
   toggleStatus(id: number): Observable<any> {
