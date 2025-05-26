@@ -7,8 +7,7 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import {
   GetSeasonPass,
   SeasonPassDetails,
-  SeasonPassWithImage,
-  StandPrice,
+  SeasonPassWithImage
 } from '../Models/Season-pass.model';
 
 @Injectable({
@@ -117,14 +116,22 @@ export class SeasonPassService {
   }
 
   // Actualizar el precio de un abono
-  updatePrice(offerId: number, prices: StandPrice[]): Observable<any> {
-    return this.http
-      .patch<any>(
-        `${this.baseUrl}${this.admin}/season-pass/${offerId}/update/price`,
-        prices, // Enviar directamente el arreglo, no dentro de un objeto
-        { headers: this.getHeadersJson() },
-      )
-      .pipe(catchError(this.handleError));
+  updatePrice(seasonPassId: number, prices: {
+    saleId: number;
+    standId: number;
+    price: number;
+    available: boolean;
+  }[]): Observable<any> {
+    return this.http.patch<any>(
+      `${this.baseUrl}${this.admin}/season-pass/${seasonPassId}/update/price`,
+      prices,
+      { headers: this.getHeadersJson() }
+    );
+  }
+
+
+  getSeasonPassDetails(seasonPassId: number): Observable<SeasonPassDetails> {
+    return this.http.get<SeasonPassDetails>(`${this.baseUrl}/offer/season-pass/details/${seasonPassId}`, { headers: this.getHeadersJson() });
   }
 
 

@@ -4,69 +4,69 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { ReactiveFormsModule } from '@angular/forms';
-import { SeasonPassService } from '../../../../services/season-pass.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { StandPriceComponent } from '../../../../components/stand-price-component/stand-price.component';
-import { CommonModule } from '@angular/common';
-import { StandPricedialog } from '../../../../Models/Stadium.model';
-import { StandPrice } from '../../../../Models/Season-pass.model';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SeasonPassService } from '../../../../services/season-pass.service';
+import { StandPriceDialogData } from '../../../../Models/Season-pass.model';
+
 
 @Component({
   selector: 'season-pass-dialog',
+  standalone: true,
   imports: [
     CommonModule,
-    MatDialogModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    ReactiveFormsModule,
-    StandPriceComponent,
+    MatCheckboxModule,
+    MatDialogModule,
   ],
-  providers: [MatNativeDateModule],
   template: `
     <h2 mat-dialog-title>Editar precios por tribuna</h2>
-    <mat-dialog-content class="content-container">
-      <app-stand-price
-        [tribunas]="data.stands"
-        (pricesChange)="onPricesChange($event)">
-      </app-stand-price>
+    <mat-dialog-content style="max-height: 400px; overflow-y: auto;">
+      <div *ngFor="let price of stands; let i = index" style="margin-bottom: 1rem; border: 1px solid #ccc; padding: 1rem; border-radius: 8px;">
+        <div><strong>{{ price.stand.description }}</strong></div>
+        <mat-form-field appearance="fill" style="width: 100%; margin-top: 8px;">
+          <mat-label>Precio</mat-label>
+          <input matInput type="number" [(ngModel)]="stands[i].price" min="0" />
+        </mat-form-field>
+        <mat-checkbox [(ngModel)]="stands[i].available" style="margin-top: 8px;">Disponible</mat-checkbox>
+      </div>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
-      <button mat-button type="button" (click)="cancel()">Cancelar</button>
-      <button mat-button color="primary" type="submit" (click)="saveChanges()">
-        Guardar cambios
-      </button>
+      <button mat-button (click)="cancel()">Cancelar</button>
+      <button mat-button color="primary" (click)="saveChanges()">Guardar cambios</button>
     </mat-dialog-actions>
   `,
-  standalone: true,
-  styles: [],
 })
 export class SeasonPassPricesDialogComponent {
-  tribunePrices: StandPrice[] = [];
+  stands: StandPriceDialogData['stands'];
 
   constructor(
     private dialogRef: MatDialogRef<SeasonPassPricesDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: StandPricedialog,
+    @Inject(MAT_DIALOG_DATA) public data: StandPriceDialogData,
     private seasonPassService: SeasonPassService,
   ) {
-    this.tribunePrices = [];
+    // Clonamos el arreglo para evitar modificar el objeto externo antes de guardar
+    this.stands = data.stands.map(s => ({ ...s }));
   }
 
   saveChanges() {
-    if (!this.tribunePricesChanged()) {
-      alert('No hay cambios para guardar.');
-      return;
-    }
+    const pricesToSave = this.stands.map(p => ({
+      saleId: p.saleId,
+      standId: p.stand.id,
+      price: p.price,
+      available: p.available,
+    }));
 
-    this.seasonPassService.updatePrice(this.data.offerid, this.tribunePrices).subscribe({
+    this.seasonPassService.updatePrice(this.data.offerid, pricesToSave).subscribe({
       next: () => {
         alert('Cambios guardados correctamente');
         this.dialogRef.close('updated');
@@ -76,26 +76,6 @@ export class SeasonPassPricesDialogComponent {
         console.error(error);
       },
     });
-  }
-
-  tribunePricesChanged(): boolean {
-    // Aquí puedes implementar lógica para detectar cambios reales
-    // Por ahora, siempre retorna true para permitir guardar siempre
-    return true;
-  }
-
-  onPricesChange(prices: any[] | Event) {
-    // Si prices es un evento, extraer el valor correcto
-    if (prices instanceof Event && (prices.target as any)?.value) {
-      prices = (prices.target as any).value;
-    }
-    // Aseguramos que el arreglo tenga solo las propiedades necesarias
-    this.tribunePrices = Array.isArray(prices)
-      ? prices.map(p => ({
-          standId: p.standId,
-          price: p.price
-        }))
-      : [];
   }
 
   cancel() {

@@ -13,6 +13,7 @@ export interface CreateSeasonPass {
 export interface StandPrice {
   standId: number;
   price: number;
+  isDisabled?: boolean;
 }
 
 export interface GetSeasonPass {
@@ -54,4 +55,14 @@ export interface SeasonPassDetails {
     description: string;
   };
   stadiumImageId: string;
+}
+
+export interface StandPriceDialogData {
+  stands: {
+    saleId: number;
+    stand: { id: number; description: string };
+    price: number;
+    available: boolean;
+  }[];
+  offerid: number;
 }
