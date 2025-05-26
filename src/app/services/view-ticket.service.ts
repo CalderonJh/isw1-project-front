@@ -12,6 +12,7 @@ export class ViewTicketService {
   private apiUrl = 'http://100.26.187.163/fpc/api/club-admin/ticket/all';
   private baseUrl = 'http://100.26.187.163/fpc/api/club-admin/ticket';
   private imageBaseUrl = 'http://100.26.187.163/fpc/api/images/';
+  private detailsUrl = 'http://100.26.187.163/fpc/api/offer/ticket/details'; // Nuevo endpoint detalles precios
 
   constructor(
     private http: HttpClient,
@@ -35,7 +36,7 @@ export class ViewTicketService {
     });
   }
 
-  getTicketOffers(): Observable<any> {
+  getTicketOffers(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl, { headers: this.getHeaders() }).pipe(
       catchError((error) => {
         console.error('Error fetching ticket offers:', error);
@@ -70,12 +71,12 @@ export class ViewTicketService {
   }
 
   updateImage(id: number, imageFile: File): Observable<any> {
-  const url = `${this.baseUrl}/${id}/update/image`;
-  const formData = new FormData();
-  formData.append('file', imageFile, imageFile.name); // Cambié 'image' a 'file'
-  return this.http.patch(url, formData, {
-    headers: this.getHeaders(false), // no Content-Type explícito para FormData
-  });
+    const url = `${this.baseUrl}/${id}/update/image`;
+    const formData = new FormData();
+    formData.append('file', imageFile, imageFile.name);
+    return this.http.patch(url, formData, {
+      headers: this.getHeaders(false), // no Content-Type explícito para FormData
+    });
   }
 
   updateDates(id: number, dates: { start: string; end: string }): Observable<any> {
@@ -89,6 +90,27 @@ export class ViewTicketService {
     return this.http.patch(url, prices, {
       headers: this.getHeaders(),
     }).pipe(catchError(this.handleError));
+  }
+
+  // Obtener detalles de precios por tribuna para un ticket específico
+  getPricesDetails(ticketId: number): Observable<Array<{
+    saleId: number;
+    stand: { id: number; description: string };
+    price: number;
+    available: boolean;
+  }>> {
+    const url = `${this.detailsUrl}/${ticketId}`;
+    return this.http.get<Array<{
+      saleId: number;
+      stand: { id: number; description: string };
+      price: number;
+      available: boolean;
+    }>>(url, { headers: this.getHeaders() }).pipe(
+      catchError((error) => {
+        console.error('Error fetching price details:', error);
+        return of([]);
+      })
+    );
   }
 
   // Cambiar estado (status) boleta como {status: 'ENABLED' | 'DISABLED'}

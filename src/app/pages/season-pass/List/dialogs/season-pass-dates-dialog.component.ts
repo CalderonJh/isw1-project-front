@@ -10,9 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { StandPriceComponent } from "../../../../components/stand-price-component/stand-price.component";
-import { forkJoin } from 'rxjs';
-import { SafeUrl } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -33,33 +30,27 @@ import { CommonModule } from '@angular/common';
 
     <form [formGroup]="form" (ngSubmit)="saveChanges()">
       <mat-dialog-content class="content-container">
-          <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Fecha Inicio</mat-label>
-            <input
-              matInput
-              [matDatepicker]="pickerStart"
-              formControlName="startDate"
-            />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="pickerStart"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #pickerStart></mat-datepicker>
-          </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Fecha Inicio</mat-label>
+          <input
+            matInput
+            [matDatepicker]="pickerStart"
+            formControlName="startDate"
+          />
+          <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+          <mat-datepicker #pickerStart></mat-datepicker>
+        </mat-form-field>
 
-          <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Fecha Fin</mat-label>
-            <input
-              matInput
-              [matDatepicker]="pickerEnd"
-              formControlName="endDate"
-            />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="pickerEnd"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #pickerEnd></mat-datepicker>
-          </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Fecha Fin</mat-label>
+          <input
+            matInput
+            [matDatepicker]="pickerEnd"
+            formControlName="endDate"
+          />
+          <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+          <mat-datepicker #pickerEnd></mat-datepicker>
+        </mat-form-field>
       </mat-dialog-content>
 
       <mat-dialog-actions align="end">
@@ -76,14 +67,22 @@ import { CommonModule } from '@angular/common';
     </form>
   `,
   standalone: true,
-  styles: [],
+  styles: [
+    `
+      .content-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        min-width: 300px;
+      }
+      .full-width {
+        width: 100%;
+      }
+    `,
+  ],
 })
 export class SeasonPassDatesDialogComponent {
   form: FormGroup;
-  stands: any; // Se inicializa en el constructor
-
-  // Variable para guardar precios por tribunas desde el componente app-stand-price
-  tribunePrices: any;
 
   constructor(
     private dialogRef: MatDialogRef<SeasonPassDatesDialogComponent>,
@@ -91,19 +90,11 @@ export class SeasonPassDatesDialogComponent {
     private fb: FormBuilder,
     private seasonPassService: SeasonPassService,
   ) {
+    // Inicializar fechas como objetos Date para el Datepicker
     this.form = this.fb.group({
-      price: [null, Validators.required],
-      imageId: [data.imageId, Validators.required],
-      startDate: [data.offerPeriod.start, Validators.required],
-      endDate: [data.offerPeriod.end, Validators.required],
+      startDate: [new Date(data.offerPeriod.start), Validators.required],
+      endDate: [new Date(data.offerPeriod.end), Validators.required],
     });
-    this.stands = []; // Inicialización segura aquí
-  }
-
-  currentImageUrl: SafeUrl | null = null;
-
-  ngOnInit() {
-    this.currentImageUrl = this.data.imageUrl || null;
   }
 
   saveChanges() {
@@ -111,23 +102,26 @@ export class SeasonPassDatesDialogComponent {
       return;
     }
 
-    const observables = [];
+    const startDateForm = new Date(this.form.value.startDate);
+    const endDateForm = new Date(this.form.value.endDate);
 
-    // Comparar y actualizar fechas si cambiaron
-    const startDateForm = new Date(this.form.value.startDate).toISOString();
-    const endDateForm = new Date(this.form.value.endDate).toISOString();
+    const originalStart = new Date(this.data.offerPeriod.start);
+    const originalEnd = new Date(this.data.offerPeriod.end);
 
-    if (
-      startDateForm !== this.data.offerPeriod.start ||
-      endDateForm !== this.data.offerPeriod.end
-    ) {
-      const datesPayload = { start: startDateForm, end: endDateForm };
-      observables.push(
-        this.seasonPassService.updateDates(this.data.id, datesPayload),
-      );
+    const isStartChanged = startDateForm.getTime() !== originalStart.getTime();
+    const isEndChanged = endDateForm.getTime() !== originalEnd.getTime();
+
+    if (!isStartChanged && !isEndChanged) {
+      alert('No hay cambios para guardar.');
+      return;
     }
 
-    forkJoin(observables).subscribe({
+    const datesPayload = {
+      start: startDateForm.toISOString(),
+      end: endDateForm.toISOString(),
+    };
+
+    this.seasonPassService.updateDates(this.data.id, datesPayload).subscribe({
       next: () => {
         alert('Cambios guardados correctamente');
         this.dialogRef.close('updated');
