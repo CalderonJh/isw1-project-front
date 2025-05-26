@@ -19,10 +19,10 @@
 </div>
 
 <div class="cards-container">
-  <div class="card" *ngFor="let oferta of ofertas">
+  <div class="card" *ngFor="let oferta of ofertas" (click)="openEditDialog(oferta)" style="cursor:pointer;">
     <img
-      *ngIf="oferta.imageId"
-      [src]="'https://res.cloudinary.com/dwvvz3b4w/image/upload/' + oferta.imageId"
+      *ngIf="oferta.imageUrl"
+      [src]="oferta.imageUrl"
       alt="Imagen del partido"
       class="card-image"
     />
@@ -44,5 +44,15 @@
         {{ oferta.isPaused ? 'Pausada' : 'Activa' }}
       </span>
     </p>
+
+    <!-- Botón para activar o desactivar la boleta -->
+    <button
+      mat-stroked-button
+      color="warn"
+      (click)="toggleTicketStatus(oferta, $event)"
+      style="margin-top: 8px;"
+    >
+      {{ oferta.isPaused ? 'Activar' : 'Desactivar' }}
+    </button>
   </div>
 </div>

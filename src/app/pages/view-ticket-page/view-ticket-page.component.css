@@ -102,8 +102,6 @@ button mat-icon {
 
 
 
-
-
 .cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -153,3 +151,22 @@ button mat-icon {
   color: #c62828;
   font-weight: 600;
 }
+
+
+.cards-container .card {
+  position: relative;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background: white;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
+}
+
+.cards-container .card button {
+  margin-top: 8px;
+  width: 120px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
