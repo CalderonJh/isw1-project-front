@@ -17,6 +17,7 @@ import { SeasonPassDatesDialogComponent } from './dialogs/season-pass-dates-dial
 import { SeasonPassPricesDialogComponent } from './dialogs/season-pass-prices-dialog.component';
 import { map } from 'rxjs';
 import {SeasonPassImageDialogComponent} from './dialogs/season-pass-image-dialog.component';
+import { NavbarComponent } from "../../../components/navbar/navbar.component";
 
 @Component({
   selector: 'app-season-pass-page',
@@ -31,7 +32,8 @@ import {SeasonPassImageDialogComponent} from './dialogs/season-pass-image-dialog
     MatDialogModule,
     MatButtonModule,
     MatMenuModule,
-  ], // <--- Importa aquí los módulos que usa el template
+    NavbarComponent
+], // <--- Importa aquí los módulos que usa el template
   templateUrl: './season-pass-page.component.html',
   styleUrls: ['./season-pass-page.component.css'],
 })
@@ -84,14 +86,6 @@ export class SeasonPassPageComponent implements OnInit {
         this.loadSeasonPasses(); // Recargar lista si hubo actualización
       }
     });
-  }
-
-  navigateToHome(): void {
-    this.router.navigate(['home']);
-  }
-
-  logout(): void {
-    this.router.navigate(['']);
   }
 
   protected readonly onpause = onpause;

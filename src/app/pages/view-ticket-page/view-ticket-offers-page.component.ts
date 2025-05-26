@@ -14,6 +14,7 @@ import { ViewTicketService } from '../../services/view-ticket.service';
 import { Ticket } from '../../Models/Ticket.model';
 import { ViewTicketOffersDialog } from '../view-ticket-page/view-ticket-offers-dialog.component';
 import { ViewTicketPricesDialog } from '../view-ticket-page/view-ticket-prices.dialog.component';
+import { NavbarComponent } from "../../components/navbar/navbar.component";
 
 @Component({
   selector: 'view-ticket-offers-page',
@@ -25,8 +26,9 @@ import { ViewTicketPricesDialog } from '../view-ticket-page/view-ticket-prices.d
     MatButtonModule,
     MatToolbarModule,
     MatDialogModule,
-    MatNativeDateModule
-  ],
+    MatNativeDateModule,
+    NavbarComponent
+],
   templateUrl: './view-ticket-page.component.html',
   styleUrls: ['./view-ticket-page.component.css'],
 })
@@ -149,19 +151,8 @@ export class ViewTicketPageComponent implements OnInit {
     });
   }
 
-
-
-
   reloadOffers() {
     this.ngOnInit();
-  }
-
-  navigateToHome(): void {
-    this.router.navigate(['home']);
-  }
-
-  logout(): void {
-    this.router.navigate(['']);
   }
 
   crearOferta(): void {

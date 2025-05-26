@@ -27,6 +27,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
 import { StandPriceComponent } from '../../../components/stand-price-component/stand-price.component';
 import { CreateSeasonPass } from '../../../Models/Season-pass.model';
+import { NavbarComponent } from "../../../components/navbar/navbar.component";
 
 @Component({
   selector: 'app-create-season-pass-page',
@@ -49,7 +50,8 @@ import { CreateSeasonPass } from '../../../Models/Season-pass.model';
     MatTableModule,
     MatCheckboxModule,
     StandPriceComponent,
-  ],
+    NavbarComponent
+],
   templateUrl: './create-season-pass-page.component.html',
   styleUrls: ['./create-season-pass-page.component.css'],
 })
@@ -200,16 +202,6 @@ export class CreateSeasonPassComponent implements OnInit {
   // Cancelar creación de abono y redirigir
   cancel() {
     this.router.navigate(['abonos']);
-  }
-
-  // Redirigir al inicio
-  navigateToHome(): void {
-    this.router.navigate(['home']);
-  }
-
-  // Cerrar sesión
-  logout(): void {
-    this.router.navigate(['']);
   }
 
   today() {

@@ -11,51 +11,6 @@ body {
   padding-top: 80px;
 }
 
-/* Barra de navegación */
-mat-toolbar {
-  background-color: #2e74be;
-  color: rgb(255, 255, 255);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  position: fixed; /* Fija la barra de navegación */
-  top: 0; /* La coloca en la parte superior */
-  left: 0; /* Asegura que esté alineada a la izquierda */
-  width: 100%; /* Ocupa todo el ancho de la ventana */
-  z-index: 1000; /* Asegura que esté por encima de otros elementos */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más suave */
-  padding: 0 20px; /* Ajusta el espaciado para que no esté demasiado pegado a los bordes */
-}
-
-/* Estilos para el botón de salir */
-.logout {
-  background: transparent; /* Fondo transparente */
-  color: white; /* Color del texto */
-  border: none; /* Elimina borde */
-  display: flex; /* Flexbox para alinear el icono y texto */
-  align-items: center; /* Alinea verticalmente */
-  justify-content: flex-end; /* Alinea el botón a la derecha */
-  cursor: pointer;
-  font-size: 16px;
-  padding: 0 12px; /* Reduce el tamaño del botón */
-  width: auto; /* Que ocupe solo el espacio necesario */
-  height: auto; /* Que ocupe solo lo necesario */
-  min-width: auto; /* No obligar a un tamaño mínimo */
-  margin: 0; /* Sin márgenes extra */
-}
-
-/* Icono de logout */
-.logout i {
-  margin-right: 8px; /* Espacio entre el icono y el texto */
-}
-
-/* Alineación de la barra de navegación */
-mat-toolbar > .menu-btn.logout {
-  margin-left: auto; /* Esto asegura que el botón de logout esté alineado a la derecha */
-}
-
 button {
   width: 100%;
   height: 80px;

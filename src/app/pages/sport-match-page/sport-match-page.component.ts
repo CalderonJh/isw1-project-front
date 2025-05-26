@@ -18,6 +18,7 @@ import { SportsMatchesService } from '../../services/sports-matches.service';
 import { Partido, PartidoSave } from '../../Models/Partido.model';
 import { SportMatchDialog } from './sport-match-dialog.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { NavbarComponent } from "../../components/navbar/navbar.component";
 
 @Component({
   selector: 'app-sport-match-page',
@@ -34,7 +35,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatInputModule,
     MatSnackBarModule,
     FormsModule,
-  ],
+    NavbarComponent
+],
   templateUrl: './sport-match-page.component.html',
   styleUrls: ['./sport-match-page.component.css'],
 })
@@ -83,14 +85,6 @@ export class SportMatchPageComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.partidos);
       this.dataSource.paginator = this.paginator;
     });
-  }
-
-  navigateToHome(): void {
-    this.router.navigate(['/home']);
-  }
-
-  logout(): void {
-    this.router.navigate(['']);
   }
 
   openDialog(partidoToEdit?: any): void {

@@ -15,6 +15,7 @@ import { StadiumService } from '../../services/stadium.service';
 import { StadiumDialog } from './stadium-dialog.component';
 import { TribunaDialog } from './tribuna-dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NavbarComponent } from "../../components/navbar/navbar.component";
 
 @Component({
   selector: 'app-stadium-page',
@@ -33,7 +34,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatIconModule,
     FormsModule,
     MatTooltipModule,
-  ],
+    NavbarComponent
+],
 })
 export class StadiumPageComponent implements OnInit {
   stadiums: StadiumWithImage[] = [];
@@ -141,14 +143,6 @@ export class StadiumPageComponent implements OnInit {
         }
       });
     }
-  }
-
-  navigateToHome(): void {
-    this.router.navigate(['home']);
-  }
-
-  logout(): void {
-    this.router.navigate(['']);
   }
 
   onImageSelected(event: Event, stadiumId: number): void {
