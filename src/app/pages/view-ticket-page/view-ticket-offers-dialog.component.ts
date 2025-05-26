@@ -19,77 +19,109 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     MatButtonModule,
     MatDatepickerModule,
-    MatNativeDateModule,
+    MatNativeDateModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-CO' }
   ],
   template: `
-    <h2 mat-dialog-title>Editar Boleta</h2>
-
-    <mat-dialog-content class="dialog-content">
-
-      <div class="image-upload" style="text-align: center;">
+    <mat-dialog-content class="dialog-content" style="min-width: 400px;">
+      <div class="image-upload" style="text-align: center; margin-bottom: 12px;">
+        <label>Imagen:</label><br />
         <input type="file" (change)="onFileSelected($event)" accept="image/*" />
         <div *ngIf="previewImage" class="preview-container" style="margin-top: 8px; display: inline-block;">
-          <img [src]="previewImage" alt="Preview" class="preview-image" style="max-width: 100%; max-height: 150px; border-radius: 4px;" />
+          <img
+            [src]="previewImage"
+            alt="Preview"
+            class="preview-image"
+            style="max-width: 100%; max-height: 150px; border-radius: 4px;"
+          />
         </div>
       </div>
 
-      <mat-form-field appearance="fill" class="full-width">
+      <!-- Fecha y Hora Inicio -->
+      <mat-form-field appearance="fill" class="full-width" style="display: inline-block; width: 48%; margin-right: 4%;">
         <mat-label>Fecha inicio de venta</mat-label>
-        <input matInput [matDatepicker]="pickerStart" [(ngModel)]="dates.start" />
-        <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
-        <mat-datepicker #pickerStart></mat-datepicker>
+        <input matInput type="date" [(ngModel)]="dateStart" />
       </mat-form-field>
-
-      <mat-form-field appearance="fill" class="full-width">
+      
+      <!-- Fecha y Hora Fin -->
+      <mat-form-field appearance="fill" class="full-width" style="display: inline-block; width: 48%; margin-right: 4%;">
         <mat-label>Fecha fin de venta</mat-label>
-        <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="dates.end" />
-        <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-        <mat-datepicker #pickerEnd></mat-datepicker>
+        <input matInput type="date" [(ngModel)]="dateEnd" />
       </mat-form-field>
+      </mat-dialog-content>
 
-    </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button mat-button (click)="onNoClick()">Cancelar</button>
+        <button mat-button color="primary" (click)="save()">Guardar</button>
+      </mat-dialog-actions>
 
-    <mat-dialog-actions align="end">
-      <button mat-button (click)="onNoClick()">Cancelar</button>
-      <button mat-button color="primary" (click)="save()">Guardar</button>
-    </mat-dialog-actions>
   `,
   styles: [`
     .full-width {
       width: 100%;
       margin-bottom: 12px;
     }
-    .image-upload {
-      margin-bottom: 20px;
-    }
-    .preview-container {
-      margin-top: 8px;
-    }
     .preview-image {
       max-width: 100%;
       max-height: 150px;
       border-radius: 4px;
     }
-  `],
+  `]
 })
+
 export class ViewTicketOffersDialog {
+
   previewImage: string | ArrayBuffer | null = null;
   selectedImageFile?: File;
 
-  dates = { start: null as Date | null, end: null as Date | null };
+  dateStart: Date | null = null;
+  timeStart: string = '00:00';
+
+  dateEnd: Date | null = null;
+  timeEnd: string = '00:00';
 
   constructor(
     public dialogRef: MatDialogRef<ViewTicketOffersDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.dates.start = data.dates?.start ? new Date(data.dates.start) : null;
-    this.dates.end = data.dates?.end ? new Date(data.dates.end) : null;
     if (data.imageUrl) {
       this.previewImage = data.imageUrl;
     }
+
+    if (data.dates?.start) {
+      const startDate = new Date(data.dates.start);
+      this.dateStart = startDate;
+      this.timeStart = this.formatTime(startDate);
+    }
+
+    if (data.dates?.end) {
+      const endDate = new Date(data.dates.end);
+      this.dateEnd = endDate;
+      this.timeEnd = this.formatTime(endDate);
+    }
+  }
+
+  formatTime(date: Date): string {
+    const h = date.getHours().toString().padStart(2, '0');
+    const m = date.getMinutes().toString().padStart(2, '0');
+    return `${h}:${m}`;
+  }
+
+  combineDateTime(date: Date | null, time: string): string | null {
+    if (!date) return null;
+    const [hours, minutes] = time.split(':').map(Number);
+    const combined = new Date(Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      hours,
+      minutes,
+      0,
+      0
+    ));
+    return combined.toISOString();
   }
 
   onFileSelected(event: any): void {
@@ -109,10 +141,10 @@ export class ViewTicketOffersDialog {
   save(): void {
     this.dialogRef.close({
       dates: {
-        start: this.dates.start ? this.dates.start.toISOString() : null,
-        end: this.dates.end ? this.dates.end.toISOString() : null,
+        start: this.combineDateTime(this.dateStart, this.timeStart),
+        end: this.combineDateTime(this.dateEnd, this.timeEnd),
       },
-      imageFile: this.selectedImageFile,
+      imageFile: this.selectedImageFile || null,
     });
   }
 }

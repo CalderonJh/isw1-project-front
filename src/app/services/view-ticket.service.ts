@@ -69,18 +69,38 @@ export class ViewTicketService {
     );
   }
 
+  updateImage(id: number, imageFile: File): Observable<any> {
+  const url = `${this.baseUrl}/${id}/update/image`;
+  const formData = new FormData();
+  formData.append('file', imageFile, imageFile.name); // Cambié 'image' a 'file'
+  return this.http.patch(url, formData, {
+    headers: this.getHeaders(false), // no Content-Type explícito para FormData
+  });
+  }
+
   updateDates(id: number, dates: { start: string; end: string }): Observable<any> {
     const url = `${this.baseUrl}/${id}/update/dates`;
     return this.http.patch(url, dates, { headers: this.getHeaders() });
   }
 
-  updateImage(id: number, imageFile: File): Observable<any> {
-    const url = `${this.baseUrl}/${id}/update/image`;
-    const formData = new FormData();
-    formData.append('image', imageFile);
-    // For FormData, we do NOT set Content-Type header explicitly
-    return this.http.patch(url, formData, {
-      headers: this.getHeaders(false), // false = no 'Content-Type' header
-    });
+  // Actualizar precios como array de objetos [{standId, price, isDisabled}, ...]
+  updatePrices(id: number, prices: any[]): Observable<any> {
+    const url = `${this.baseUrl}/${id}/update/price`;
+    return this.http.patch(url, prices, {
+      headers: this.getHeaders(),
+    }).pipe(catchError(this.handleError));
+  }
+
+  // Cambiar estado (status) boleta como {status: 'ENABLED' | 'DISABLED'}
+  toggleStatus(id: number, status: 'ENABLED' | 'DISABLED'): Observable<any> {
+    const url = `${this.baseUrl}/${id}/toggle-status`;
+    return this.http.patch(url, { status }, {
+      headers: this.getHeaders(),
+    }).pipe(catchError(this.handleError));
+  }
+
+  private handleError(error: any): Observable<never> {
+    console.error('Ocurrió un error:', error);
+    throw error;
   }
 }

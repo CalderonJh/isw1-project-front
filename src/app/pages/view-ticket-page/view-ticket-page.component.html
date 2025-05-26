@@ -44,5 +44,15 @@
         {{ oferta.isPaused ? 'Pausada' : 'Activa' }}
       </span>
     </p>
+
+    <!-- Botón para activar o desactivar la boleta -->
+    <button
+      mat-stroked-button
+      color="warn"
+      (click)="toggleTicketStatus(oferta, $event)"
+      style="margin-top: 8px;"
+    >
+      {{ oferta.isPaused ? 'Activar' : 'Desactivar' }}
+    </button>
   </div>
 </div>

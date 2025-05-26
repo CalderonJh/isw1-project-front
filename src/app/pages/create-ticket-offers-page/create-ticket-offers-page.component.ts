@@ -112,7 +112,6 @@ export class CreateTicketOffersPageComponent implements OnInit {
             this.standPrices = [];
           }
         }
-
       }
     });
   }
