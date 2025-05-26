@@ -10,7 +10,7 @@ export interface Partido {
     }; 
     year: number;
     season: number;
-    matchDate: string;
+    matchDate: string
 }
 
 export interface PartidoSave {

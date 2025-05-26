@@ -23,7 +23,7 @@ export class SeasonPassService {
     private http: HttpClient,
     private authService: AuthService,
     private sanitizer: DomSanitizer,
-  ) {}
+  ) { }
 
   // Método para obtener los headers con token
   private getHeadersJson(): HttpHeaders {
@@ -121,14 +121,15 @@ export class SeasonPassService {
     return this.http
       .patch<any>(
         `${this.baseUrl}${this.admin}/season-pass/${offerId}/update/price`,
-        { prices },
+        prices, // Enviar directamente el arreglo, no dentro de un objeto
         { headers: this.getHeadersJson() },
       )
       .pipe(catchError(this.handleError));
   }
 
+
   // Actualizar la imagen de un abono
-  updateImage(id: number, image: string): Observable<any> {
+  updateImage(id: number, image: File): Observable<any> {
     return this.http
       .patch<any>(
         `${this.baseUrl}${this.admin}/season-pass/${id}/update/image`,

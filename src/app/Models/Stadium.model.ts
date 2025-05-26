@@ -19,3 +19,8 @@ export interface Stand {
   isEnabled?: boolean;
 }
 
+export interface StandPricedialog{
+  stands: Stand[];
+  offerid: number;
+}
+

@@ -39,7 +39,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   styleUrls: ['./sport-match-page.component.css'],
 })
 export class SportMatchPageComponent implements OnInit {
-  partidos: any[] = [];
+  partidos: Partido[] = [];
   displayedColumns: string[] = ['visitante', 'estadio', 'temporada', 'fecha', 'acciones'];
 
   // Agregando dataSource y pageSize

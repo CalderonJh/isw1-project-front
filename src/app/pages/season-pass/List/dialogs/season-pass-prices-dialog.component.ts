@@ -4,7 +4,7 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SeasonPassService } from '../../../../services/season-pass.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -12,9 +12,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { StandPriceComponent } from '../../../../components/stand-price-component/stand-price.component';
-import { forkJoin } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Stand } from '../../../../Models/Stadium.model';
+import { StandPricedialog } from '../../../../Models/Stadium.model';
+import { StandPrice } from '../../../../Models/Season-pass.model';
 
 @Component({
   selector: 'season-pass-dialog',
@@ -33,12 +33,15 @@ import { Stand } from '../../../../Models/Stadium.model';
   template: `
     <h2 mat-dialog-title>Editar precios por tribuna</h2>
     <mat-dialog-content class="content-container">
-      <app-stand-price [tribunas]="data"></app-stand-price>
+      <app-stand-price
+        [tribunas]="data.stands"
+        (pricesChange)="onPricesChange($event)">
+      </app-stand-price>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
       <button mat-button type="button" (click)="cancel()">Cancelar</button>
-      <button mat-button color="primary" type="submit">
+      <button mat-button color="primary" type="submit" (click)="saveChanges()">
         Guardar cambios
       </button>
     </mat-dialog-actions>
@@ -47,33 +50,23 @@ import { Stand } from '../../../../Models/Stadium.model';
   styles: [],
 })
 export class SeasonPassPricesDialogComponent {
-  stands: any; // Se inicializa en el constructor
-
-  // Variable para guardar precios por tribunas desde el componente app-stand-price
-  tribunePrices: any;
+  tribunePrices: StandPrice[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<SeasonPassPricesDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Stand[],
+    @Inject(MAT_DIALOG_DATA) public data: StandPricedialog,
     private seasonPassService: SeasonPassService,
   ) {
-    this.stands = []; // Inicialización segura aquí
+    this.tribunePrices = [];
   }
 
   saveChanges() {
-    const observables = [];
-
-    // Comparar y actualizar precios si cambiaron
-    if (this.tribunePricesChanged()) {
-      observables.push(
-        this.seasonPassService.updatePrice(
-          1,
-          this.data.map((s) => ({ standId: s.id, price: s.price })),
-        ),
-      );
+    if (!this.tribunePricesChanged()) {
+      alert('No hay cambios para guardar.');
+      return;
     }
 
-    forkJoin(observables).subscribe({
+    this.seasonPassService.updatePrice(this.data.offerid, this.tribunePrices).subscribe({
       next: () => {
         alert('Cambios guardados correctamente');
         this.dialogRef.close('updated');
@@ -86,11 +79,23 @@ export class SeasonPassPricesDialogComponent {
   }
 
   tribunePricesChanged(): boolean {
-    return true; // No hay cambios en los precios
+    // Aquí puedes implementar lógica para detectar cambios reales
+    // Por ahora, siempre retorna true para permitir guardar siempre
+    return true;
   }
 
-  onPricesChange(prices: any) {
-    this.tribunePrices = prices;
+  onPricesChange(prices: any[] | Event) {
+    // Si prices es un evento, extraer el valor correcto
+    if (prices instanceof Event && (prices.target as any)?.value) {
+      prices = (prices.target as any).value;
+    }
+    // Aseguramos que el arreglo tenga solo las propiedades necesarias
+    this.tribunePrices = Array.isArray(prices)
+      ? prices.map(p => ({
+          standId: p.standId,
+          price: p.price
+        }))
+      : [];
   }
 
   cancel() {

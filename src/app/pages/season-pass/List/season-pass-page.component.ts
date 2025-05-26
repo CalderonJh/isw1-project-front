@@ -117,7 +117,7 @@ export class SeasonPassPageComponent implements OnInit {
         this.passDetails = details; // Aquí sí puedes asignarlo a una variable del tipo SeasonPassDetails
         const dialogRef = this.dialog.open(SeasonPassPricesDialogComponent, {
           width: '600px',
-          data: this.passDetails.prices, // Pasar la información del abono al diálogo
+          data: {stands: this.passDetails.prices, offerid: pass.id}, // Pasar la información del abono al diálogo
         });
 
         dialogRef.afterClosed().subscribe((result: string) => {

@@ -39,19 +39,19 @@ export interface SeasonPassWithImage extends GetSeasonPass {
 export interface SeasonPassDetails {
   prices: [
     {
-      saleId: 0;
+      saleId: number;
       stand: {
-        id: 0;
-        description: 'string';
+        id: number;
+        description: string;
       };
-      price: 0;
+      price: number;
       available: true;
     },
   ];
-  games: ['string'];
+  games: string[];
   stadium: {
-    id: 0;
-    description: 'string';
+    id: number;
+    description: string;
   };
-  stadiumImageId: 'string';
+  stadiumImageId: string;
 }
