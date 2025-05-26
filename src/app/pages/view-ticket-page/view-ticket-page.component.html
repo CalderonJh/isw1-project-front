@@ -1,0 +1,42 @@
+<app-navbar></app-navbar>
+
+<!-- Sección de Ofertas de Boletas -->
+<div class="content-container">
+  <div class="header-container">
+    <h1 class="section-title">Ofertas de Boletas</h1>
+    <button mat-raised-button color="primary" class="crear-oferta-btn" (click)="crearOferta()">Crear oferta</button>
+  </div>
+</div>
+
+<div class="cards-container">
+  <div class="card" *ngFor="let oferta of ofertas" (click)="openEditDialog(oferta)" style="cursor:pointer;">
+    <img *ngIf="oferta.imageUrl" [src]="oferta.imageUrl" alt="Imagen del partido" class="card-image" />
+
+    <h3>
+      {{ oferta.homeClub.description }} vs {{ oferta.awayClub.description || 'Visitante' }}
+    </h3>
+
+    <p><strong>Fecha:</strong> {{ oferta.matchDay | date: 'medium' }}</p>
+
+    <p>
+      <strong>Periodo de venta:</strong>
+      {{ oferta.offerPeriod.start | date: 'short' }} - {{ oferta.offerPeriod.end | date: 'short' }}
+    </p>
+
+    <p>
+      <strong>Estado:</strong>
+      <span [ngClass]="{ 'pausada': oferta.isPaused, 'activa': !oferta.isPaused }">
+        {{ oferta.isPaused ? 'Pausada' : 'Activa' }}
+      </span>
+    </p>
+
+    <!-- Botón para activar o desactivar la boleta -->
+    <button mat-stroked-button color="warn" (click)="toggleTicketStatus(oferta, $event)" style="margin-top: 8px;">
+      {{ oferta.isPaused ? 'Activar' : 'Desactivar' }}
+    </button>
+    <button mat-stroked-button color="primary" (click)="openPricesDialog(oferta, $event)" style="margin-top: 8px;">
+      Editar Precios
+    </button>
+
+  </div>
+</div>

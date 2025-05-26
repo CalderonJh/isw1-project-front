@@ -13,8 +13,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent {
-  email: string = 'admin';
-  password: string = 'admin';
+  email: string = '';
+  password: string = '';
   showPassword: boolean = false;
   loading: boolean = false;
   errorMessage: string | null = null;

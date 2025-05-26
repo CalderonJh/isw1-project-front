@@ -1,21 +1,59 @@
-<mat-toolbar color="primary">
-    <span>Bienvenido ADMIN</span>
-    <div class="toolbar-actions">
-      <button mat-icon-button (click)="navigateToHome()">
-        <mat-icon>home</mat-icon>
-      </button>
-      <button mat-icon-button (click)="logout()">
-        <mat-icon>logout</mat-icon>
-      </button>
-    </div>
-  </mat-toolbar>
+<app-navbar></app-navbar>
 
+<hr class="divider" />
 
-  <hr class="divider" />
+<h2 class="text-2xl font-semibold my-6 text-primary" style="text-align: center;">
+  Crear Oferta
+</h2>
 
-  <!-- Título y botón "Nuevo Partido" -->
-  <div class="header-container">
-    <h2 class="section-title">Creacion Ofertas Boletas <button mat-raised-button color="primary" >Nuevo Partido</button> </h2>
+<div class="boton-centro">
+  <button mat-raised-button class="custom-primary-btn" (click)="openDialog()">
+    Seleccionar Partidos Creados
+  </button>
+</div>
+
+<div *ngIf="partidoSeleccionado" class="boletas-config-container">
+  <h3>Partido Seleccionado</h3>
+  <p><strong>ID:</strong> {{ partidoSeleccionado.matchId }}</p>
+  <!-- Accediendo a la propiedad description del club visitante sin ? -->
+  <p><strong>Club Visitante:</strong> {{ partidoSeleccionado.awayClub.description }}</p>
+  <!-- Accediendo a la propiedad description del estadio sin ? -->
+  <p><strong>Estadio:</strong> {{ partidoSeleccionado.stadium.description }}</p>
+  <p><strong>Año:</strong> {{ partidoSeleccionado.year }}</p>
+  <p><strong>Temporada:</strong> {{ partidoSeleccionado.season }}</p>
+  <p><strong>Fecha:</strong> {{ partidoSeleccionado.matchDate | date:'medium' }}</p>
+
+        <!-- Tribunas -->
+        <div class="">
+          <app-stand-price [tribunas]="this.standPrices"></app-stand-price>
+        </div>
+        
+
+  <label for="fileInput" style="display: block; margin-top: 1rem; margin-bottom: 0.5rem;">
+    Seleccione archivo
+  </label>
+  <input id="fileInput" type="file" (change)="onFileSelected($event)" />
+
+  <mat-form-field appearance="fill" style="width: 100%; margin-top: 1rem;">
+    <mat-label>Fecha Inicio Venta</mat-label>
+    <input matInput [matDatepicker]="startPicker" [(ngModel)]="saleStartDate" />
+    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+    <mat-datepicker #startPicker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width: 100%; margin-top: 1rem;">
+    <mat-label>Fecha Fin Venta</mat-label>
+    <input matInput [matDatepicker]="endPicker" [(ngModel)]="saleEndDate" />
+    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+    <mat-datepicker #endPicker></mat-datepicker>
+  </mat-form-field>
+
+  <div class="actions-container" style="text-align: center; margin-top: 1.5rem;">
+    <button mat-raised-button color="primary" (click)="guardarOferta()" class="mr-4">
+      Guardar
+    </button>
+    <button mat-raised-button color="warn" (click)="cancelarOferta()">
+      Cancelar
+    </button>
   </div>
-  
-<p>create-ticket-offers-page CREAR LAS OFERTAS DE LAS boletas!</p>
+</div>

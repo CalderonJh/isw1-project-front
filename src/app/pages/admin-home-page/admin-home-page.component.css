@@ -11,58 +11,21 @@ body {
   padding-top: 80px;
 }
 
-/* Barra de navegación */
-mat-toolbar {
-  background-color: #2e74be;
-  color: rgb(255, 255, 255);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  position: fixed; /* Fija la barra de navegación */
-  top: 0; /* La coloca en la parte superior */
-  left: 0; /* Asegura que esté alineada a la izquierda */
-  width: 100%; /* Ocupa todo el ancho de la ventana */
-  z-index: 1000; /* Asegura que esté por encima de otros elementos */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más suave */
-  padding: 0 20px; /* Ajusta el espaciado para que no esté demasiado pegado a los bordes */
-}
-
-/* Estilos para el botón de salir */
-.logout {
-  background: transparent; /* Fondo transparente */
-  color: white; /* Color del texto */
-  border: none; /* Elimina borde */
-  display: flex; /* Flexbox para alinear el icono y texto */
-  align-items: center; /* Alinea verticalmente */
-  justify-content: flex-end; /* Alinea el botón a la derecha */
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.logout i {
-  margin-right: 8px; /* Espacio entre el icono y el texto */
-}
-
-/* Alineación de la barra de navegación */
-mat-toolbar > .menu-btn.logout {
-  margin-left: auto; /* Esto asegura que el botón de logout esté alineado a la derecha */
-}
-
-button{
-  width:100%;
-  height:80px;
-  position:relative;
-  background:rgba(255, 255, 255, .27);
-  text-transform:uppercase;
-  color:white;
-  font-weight:700;
-  letter-spacing:1px;
-  border:none;
-  font-size:15px;
-  outline:none;
+button {
+  width: 100%;
+  height: 80px;
+  position: relative;
+  background: #ffffff; /* Fondo blanco */
+  color: #2e74be; /* Color de texto azul */
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border: 2px solid #2e74be; /* Borde azul */
+  font-size: 15px;
+  outline: none;
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  padding: 0 20px;
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 /* Contenedor del dashboard */
@@ -71,42 +34,47 @@ button{
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 50px;
+  padding: 100px 0 0 0;
   flex-direction: column;
   gap: 30px; /* Espacio entre los elementos */
 }
 
 /* Contenedor de los botones */
 .dashboard-buttons {
-  display: flex;
-  flex-direction: column; /* Alinea los botones de manera vertical */
+  display: grid; /* Usamos grid para tener dos botones por fila */
+  grid-template-columns: repeat(2, 1fr); /* Dos botones por fila */
   gap: 25px; /* Espacio entre los botones */
   justify-items: center;
-  padding: 30px;
+  padding: 50px; /* Aumenté el padding para hacer más grande el contenedor */
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 2px solid #4b6fff;
   width: 100%;
-  max-width: 400px; /* Aumenté el ancho máximo para los botones */
+  max-width: 800px; /* Aumenté el ancho máximo para los botones */
   margin-top: 30px; /* Espacio entre la imagen y los botones */
 }
 
 /* Estilo de los botones */
 .dashboard-buttons button {
-  width: 100%;
+  width: 250 px; /* Ocupa solo el tamaño necesario */
+  height: 250 px; /* Ocupa solo lo necesario */
+  padding: 12px 12px; /* Ajuste de padding para botones más pequeños */
   font-size: 16px; /* Ajusté el tamaño de la fuente */
   font-weight: bold;
-  border-radius: 15px;
-  padding: 20px; /* Tamaño más adecuado para los botones */
-  transition: all 0.3s ease;
-  color: #fff;
-  border: none;
-  cursor: pointer;
+  color: #2e74be; /* Texto azul */
+  border: 2px solid #2e74be; /* Borde azul */
   font-family: 'Roboto', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
+
+/* Iconos dentro de los botones */
+.dashboard-buttons button mat-icon {
+  font-size: 20px; /* Ajustamos el tamaño del ícono */
+}
+
 
 /* Estilos al pasar el cursor sobre los botones */
 .dashboard-buttons button:hover {
@@ -116,11 +84,68 @@ button{
 
 /* Colores específicos de los botones */
 #boletas, #abonos, #estadios, #partidos {
-  background-color: #446fee;
+  background-color: #ffffff; /* Fondo blanco para los botones */
+  color: #2e74be; /* Texto azul */
 }
 
 /* Colores específicos de los botones al pasar el cursor */
-/* Estilos al pasar el cursor sobre los botones */
 .classboletas:hover, .classabonos:hover, .classestadios:hover, .classpartidos:hover {
-  background: linear-gradient(to right, #bbbec3, #347fdc);
+  background: linear-gradient(to right, #bbbec3, #347fdc); /* Efecto de degradado */
 }
+
+/* Para pantallas más pequeñas (dispositivos móviles) */
+@media screen and (max-width: 768px) {
+
+  /* Barra de navegación: ajustamos la altura y espaciado */
+  mat-toolbar {
+    padding: 0 10px;
+    font-size: 14px; /* Reducimos el tamaño de la fuente */
+  }
+
+  /* Ajuste de los botones en el dashboard para dispositivos móviles */
+  .dashboard-buttons {
+    grid-template-columns: 1fr; /* Un solo botón por fila */
+    gap: 15px; /* Reducimos el espacio entre los botones */
+    padding: 20px; /* Ajustamos el padding */
+  }
+
+  /* Ajuste de tamaño de los botones en pantallas pequeñas */
+  .dashboard-buttons button {
+    width: 100%; /* Los botones ocupan todo el ancho disponible */
+    height: 180px; /* Reducimos la altura */
+  }
+
+  /* Ajuste del icono dentro de los botones */
+  .dashboard-buttons button mat-icon {
+    font-size: 18px; /* Hacemos los iconos más pequeños */
+  }
+
+  /* Barra de navegación: ajustar el botón de logout */
+  .logout {
+    font-size: 14px; /* Reducir el tamaño de la fuente */
+  }
+
+  /* Ajustamos el espaciado entre los botones en el contenedor */
+  .dashboard-container {
+    padding: 60px 0;
+  }
+}
+
+/* Para pantallas más grandes (tabletas y más grandes) */
+@media screen and (min-width: 769px) {
+
+  /* Barra de navegación más espaciosa */
+  mat-toolbar {
+    font-size: 16px; /* Aumentamos el tamaño de la fuente */
+  }
+}
+
+/* Para pantallas muy grandes (computadoras de escritorio grandes) */
+@media screen and (min-width: 1200px) {
+
+  /* Ajuste de la barra de navegación para pantallas grandes */
+  mat-toolbar {
+    font-size: 18px; /* Tamaño de fuente más grande */
+  }
+}
+

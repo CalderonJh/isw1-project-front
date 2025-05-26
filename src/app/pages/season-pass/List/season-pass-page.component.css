@@ -1,0 +1,134 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  color: #bbbec3;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+}
+
+/* Contenedor principal */
+.content-container {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px; /* Limitar ancho para centrar contenido y evitar que sea muy ancho */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 10px;
+}
+
+/* Contenedor para las cards con grid para controlar filas y columnas */
+.abonos-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
+  gap: 20px;
+  width: 100%;
+}
+
+/* Cards más anchas y compactas */
+.abono-card {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(30, 94, 168, 0.2);
+  font-size: 16px;
+  border: 2px solid #1e5ea8;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  color: #000000; /* texto negro */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center; /* centra horizontalmente todo el contenido */
+  min-height: 320px;
+  text-align: center; /* centra texto dentro */
+}
+
+/* Sombra y efecto hover */
+.abono-card:hover {
+  box-shadow: 0 12px 24px rgba(30, 94, 168, 0.35);
+  transform: translateY(-5px);
+}
+
+/* Imagen con proporción fija y que mantenga el aspecto */
+.abono-image {
+  width: 100%;
+  aspect-ratio: 9 / 16; /* Cambio de proporción */
+  object-fit: cover;    /* Puedes usar contain si no quieres recorte */
+  border-radius: 10px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 8px rgba(30, 94, 168, 0.25);
+}
+
+/* Detalles con menos margen para compactar */
+.abono-details p {
+  margin: 4px 0;
+  color: #000000; /* texto negro */
+  font-weight: 600;
+}
+
+
+/* Estado */
+.abono-status {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 10px;
+  /* color según estado */
+  color: green;
+}
+
+.abono-status.pausado {
+  color: red;
+}
+
+/* Contenedor para botón */
+.abono-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+/* Botón de acción */
+button[mat-raised-button][color="accent"] {
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+button[mat-raised-button][color="accent"]:hover {
+  background-color: #1452a2;
+  color: #fff;
+}
+
+/* Cabecera y botón crear abono - hacer más compacto */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 0 10px;
+}
+
+/* Título */
+.section-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #1e5ea8;
+  margin: 0;
+}
+
+/* Botón crear abono */
+.crear-abono-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.crear-abono-btn:hover {
+  background-color: #a3b3c6;
+}

@@ -1,0 +1,129 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>Crear Abono</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="createSeasonPass()">
+
+        <!--Descripción-->
+        <mat-form-field>
+          <mat-label>Descripción</mat-label>
+          <input matInput type="text" placeholder="Abono para la temporada" formControlName="description" required>
+        </mat-form-field>
+
+        <!-- Estadio -->
+        <div class="flex">
+          <mat-form-field appearance="fill">
+            <mat-label>Estadio</mat-label>
+            <mat-select formControlName="selectedStadium" (selectionChange)="onStadiumChange($event.value)" required>
+              <mat-option *ngFor="let stadium of stadiums" [value]="stadium">
+                {{ stadium.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Año</mat-label>
+            <input matInput type="number" placeholder="Año del abono" formControlName="year" required>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Temporada</mat-label>
+            <mat-select formControlName="season" required>
+              <mat-option value=1>
+                1
+              </mat-option>
+              <mat-option value=2>
+                2
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+
+        <!-- Partidos -->
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <!-- Checkbox Column -->
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="visitante">
+            <th mat-header-cell *matHeaderCellDef> Visitante</th>
+            <td mat-cell *matCellDef="let element"> {{ element.awayClub.description }}</td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="temporada">
+            <th mat-header-cell *matHeaderCellDef> Temporada</th>
+            <td mat-cell *matCellDef="let element"> {{ element.year }} - {{ element.season }}</td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="fecha">
+            <th mat-header-cell *matHeaderCellDef> Fecha</th>
+            <td mat-cell *matCellDef="let element"> {{ element.matchDate | date }}</td>
+          </ng-container>
+          <ng-container matColumnDef="hora">
+            <th mat-header-cell *matHeaderCellDef> Hora</th>
+            <td mat-cell *matCellDef="let element"> {{ element.matchDate | date: 'shortTime' }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+          </tr>
+        </table>
+
+        <!-- Tribunas -->
+        <div>
+          <app-stand-price [tribunas]="this.stands"></app-stand-price>
+        </div>
+
+        <!-- Fechas -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Fecha de inicio</mat-label>
+          <input matInput [matDatepicker]="startPicker" formControlName="startDate" required [min]="today()" />
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Fecha de fin</mat-label>
+          <input matInput [matDatepicker]="endPicker" formControlName="endDate" required [min]="startDate()"/>
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+
+        <!-- Cargar imagen -->
+        <div class="full-width form-field">
+          <mat-label>Imagen del abono</mat-label>
+          <input type="file" (change)="onImageSelected($event)" accept="image/*" required />
+          <small *ngIf="selectedImage" class="file-name">Archivo seleccionado: {{ selectedImage.name }}</small>
+        </div>
+
+        <!-- Botones -->
+        <div class="buttons actions-container">
+          <button mat-raised-button color="primary" type="submit">
+            Crear Oferta
+          </button>
+          <button mat-raised-button color="warn" type="button" (click)="cancel()">
+            Cancelar
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

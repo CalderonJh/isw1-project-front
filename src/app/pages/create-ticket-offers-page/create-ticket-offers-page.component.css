@@ -1,44 +1,154 @@
 :host {
   display: block;
   min-height: 100vh;
-  color: #bbbec3;
+  background-color: #f9fafb;
+  color: #222;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 20px;
+  padding: 80px 20px 40px; /* padding top para dejar espacio a toolbar fija */
+  box-sizing: border-box;
 }
 
-/* Barra de navegación */
-mat-toolbar {
-  background-color: #2e74be;
-  color: rgb(255, 255, 255);
+/* Título principal */
+h2.text-primary {
+  text-align: center;
+  font-weight: 700;
+  color: #1976d2;
+  margin-bottom: 2rem;
+}
+
+/* Botón central */
+.boton-centro {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  position: fixed; /* Fija la barra de navegación */
-  top: 0; /* La coloca en la parte superior */
-  left: 0; /* Asegura que esté alineada a la izquierda */
-  width: 100%; /* Ocupa todo el ancho de la ventana */
-  z-index: 1000; /* Asegura que esté por encima de otros elementos */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más suave */
-  padding: 0 20px; /* Ajusta el espaciado para que no esté demasiado pegado a los bordes */
+  justify-content: center;
+  margin-bottom: 2rem;
 }
 
-/* Estilo para el contenedor del título y el botón */
-.header-container {
-  margin-top: 20px; /* Este margen empuja el título hacia abajo */
-  padding: 10px;
+.custom-primary-btn {
+  background-color: #1976d2 !important;
+  color: white !important;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 10px 28px;
+  border-radius: 24px;
+  box-shadow: 0 3px 8px rgba(25, 118, 210, 0.4);
+  transition: background-color 0.3s ease;
 }
 
-/* Estilo para el título de "Creación de Partidos" */
-.section-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #1e5ea8; /* Cambié el color a un azul más destacado */
-  margin-bottom: 10px; /* Un pequeño margen debajo del título */
+.custom-primary-btn:hover {
+  background-color: #145ea8 !important;
+  box-shadow: 0 5px 15px rgba(20, 94, 168, 0.6);
 }
 
-button {
-  margin-left: 20px;
+/* Contenedor de la oferta */
+.boletas-config-container {
+  background: #ffffff;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+  padding: 24px 32px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
 }
 
+/* Título sección partido */
+.boletas-config-container h3 {
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #333;
+  border-bottom: 2px solid #1976d2;
+  padding-bottom: 8px;
+}
+
+/* Datos del partido */
+.boletas-config-container p {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #444;
+}
+
+/* Cada tribuna */
+.boletas-config-container > div[ng-reflect-ng-for-of] > div {
+  margin-top: 1.5rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1.5rem;
+}
+
+/* Encabezado tribuna */
+.boletas-config-container h4 {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+/* Formularios Angular Material */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 1.25rem;
+}
+
+mat-form-field.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #f5f7fa;
+  border-radius: 6px;
+}
+
+mat-form-field .mat-form-field-label {
+  color: #666;
+  font-weight: 600;
+}
+
+input.mat-input-element {
+  font-size: 1rem;
+  padding: 10px 12px;
+  color: #222;
+}
+
+/* Archivo selector */
+label[for="fileInput"] {
+  font-weight: 600;
+  color: #444;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* Botones acciones */
+.actions-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.actions-container button {
+  min-width: 140px;
+  font-weight: 600;
+  padding: 12px 0;
+  border-radius: 24px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.actions-container button:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilo para botón cancelar */
+.actions-container button[color="warn"] {
+  background-color: #d32f2f;
+  color: white;
+}
+
+.actions-container button[color="warn"]:hover {
+  background-color: #b71c1c;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .boletas-config-container {
+    padding: 16px 20px;
+  }
+
+  .custom-primary-btn {
+    font-size: 1rem;
+    padding: 8px 20px;
+  }
+}

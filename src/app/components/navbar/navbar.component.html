@@ -1,0 +1,149 @@
+<mat-toolbar color="primary">
+    <!-- Spinner mientras carga -->
+    <div *ngIf="isLoading" class="loading-container">
+        <mat-spinner diameter="20"></mat-spinner>
+    </div>
+
+    <!-- Contenido cargado -->
+    <div *ngIf="!isLoading" class="navbar-info">
+        <img [src]="clubImageUrl" alt="Logo Club" class="club-logo" />
+        <span class="navbar-text">Bienvenido ADMIN - {{ shortName }}</span>
+    </div>
+
+    <!-- Acciones -->
+    <div class="toolbar-actions">
+        <button mat-icon-button (click)="navigateToHome()" matTooltip="Inicio" class="toolbar-btn">
+            <mat-icon>home</mat-icon>
+        </button>
+        <button mat-icon-button (click)="logout()" matTooltip="Cerrar sesión" class="toolbar-btn">
+            <mat-icon>logout</mat-icon>
+        </button>
+    </div>
+</mat-toolbar>
+
+<style>
+mat-toolbar {
+    background-color: #2e74be;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 0 20px;
+    height: 60px;
+    box-sizing: border-box;
+    overflow: hidden; /* Previene el desbordamiento */
+}
+
+.loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.navbar-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.club-logo {
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    border: 2px solid white;
+}
+
+.navbar-text {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.toolbar-btn {
+    background: transparent;
+    color: white;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.toolbar-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    mat-toolbar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        height: auto;
+        padding: 10px 15px;
+    }
+
+    .navbar-info {
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .navbar-text {
+        font-size: 14px;
+    }
+
+    .club-logo {
+        width: 36px;
+        height: 36px;
+    }
+
+    .toolbar-actions {
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .toolbar-btn {
+        font-size: 18px;
+        padding: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-text {
+        font-size: 12px;
+    }
+
+    .club-logo {
+        width: 32px;
+        height: 32px;
+    }
+
+    .toolbar-btn {
+        font-size: 16px;
+        padding: 5px;
+    }
+}
+</style>

@@ -26,13 +26,6 @@ export const routes: Routes = [
     canActivate: [AuthGuard], // Protege esta ruta
   },
   {
-    path: 'favorite',
-    loadComponent: () =>
-      import('./pages/favorite-team-page/favorite-team-page.component').then(
-        (m) => m.FavoriteTeamPageComponent,
-      ),
-  },
-  {
     path: 'estadios',
     loadComponent: () =>
       import('./pages/stadium-page/stadium-page.component').then(
@@ -44,8 +37,8 @@ export const routes: Routes = [
     path: 'boletas',
     loadComponent: () =>
       import(
-        './pages/view-ticket-offers-page/view-ticket-offers-page.component'
-      ).then((m) => m.ViewTicketOffersPageComponent),
+        './pages/view-ticket-page/view-ticket-offers-page.component' // Cambia la ruta según tu estructura de carpetas
+      ).then((m) => m.ViewTicketPageComponent),
   },
   {
     path: 'tickets/create',
@@ -60,16 +53,23 @@ export const routes: Routes = [
   {
     path: 'admin/boletas',
     loadComponent: () =>
-      import('./pages/view-ticket-offers-page/view-ticket-offers-page.component').then(
-        (m) => m.ViewTicketOffersPageComponent
+      import('./pages/view-ticket-page/view-ticket-offers-page.component').then(
+        (m) => m.ViewTicketPageComponent
       ),
   },
   {
     path: 'abonos',
     loadComponent: () =>
-      import('./pages/abono-page/abono-page.component').then(
-        (m) => m.AbonoPageComponent,
+      import('./pages/season-pass/List/season-pass-page.component').then(
+        (m) => m.SeasonPassPageComponent,
       ),
     canActivate: [AuthGuard], // Protege esta ruta
+  },
+  {
+    path: 'create-season-pass',  // Agregamos esta ruta para crear un nuevo abono
+    loadComponent: () =>
+      import('./pages/season-pass/Create/create-season-pass.component').then(
+        (m) => m.CreateSeasonPassComponent,
+      ),
   },
 ];

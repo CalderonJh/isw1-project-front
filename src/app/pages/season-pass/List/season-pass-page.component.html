@@ -1,0 +1,74 @@
+<app-navbar></app-navbar>
+
+<div class="content-container">
+  <div class="header-container">
+    <h1 class="section-title">Abonos Disponibles</h1>
+    <button
+      mat-raised-button
+      color="primary"
+      class="crear-abono-btn"
+      (click)="createNewSeasonPass()"
+    >
+      Crear Nuevo Abono
+    </button>
+  </div>
+
+  <div
+    *ngIf="seasonPasses && seasonPasses.length > 0; else noPasses"
+    class="abonos-container"
+  >
+    <div
+      *ngFor="let pass of seasonPasses"
+      class="abono-card"
+      style="cursor: pointer"
+    >
+      <img class="abono-image" [src]="pass.imageUrl" alt="Imagen abono"/>
+
+      <div class="abono-details">
+        <p><strong>Descripción:</strong> {{ pass.description }}</p>
+        <p>
+          {{ pass.offerPeriod.start | date }} -
+          {{ pass.offerPeriod.end | date }}
+        </p>
+        <p><strong>Estadio:</strong> {{ pass.stadium.description }}</p>
+      </div>
+
+      <div class="abono-card-footer">
+        <p
+          class="abono-status"
+          [ngClass]="{ pausado: pass.isPaused, activo: !pass.isPaused }"
+        >
+          {{ pass.isPaused ? "Pausado" : "Activo" }}
+        </p>
+      </div>
+
+      <div class="abono-actions">
+        <button mat-button [matMenuTriggerFor]="menu">Opciones</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="toggleStatus(pass.id)">
+            <mat-icon style="color: #4b5563">{{ pass.isPaused ? 'play_arrow' : 'pause' }}</mat-icon>
+            <span>
+              {{ pass.isPaused ? "Reactivar" : "Pausar" }}
+            </span>
+          </button>
+          <button mat-menu-item (click)="openSeasonPassDatesDialog(pass)">
+            <mat-icon style="color: #4b5563">edit_calendar</mat-icon>
+            <span>Editar fechas</span>
+          </button>
+          <button mat-menu-item (click)="openSeasonPassImageDialog(pass)">
+            <mat-icon style="color: #4b5563">image</mat-icon>
+            <span>Editar imagen</span>
+          </button>
+          <button mat-menu-item (click)="openSeasonPassPricesDialog(pass)">
+            <mat-icon style="color: #4b5563">attach_money</mat-icon>
+            <span>Editar precios</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noPasses>
+    <p>No hay abonos disponibles.</p>
+  </ng-template>
+</div>
